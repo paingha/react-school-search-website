@@ -261,6 +261,7 @@ import {
         {"country" : "Zimbabwe" , "currency_code" : "ZWD" }
         
   ]
+
   const handleBlur = () => {
     console.log('[blur]');
   };
@@ -275,6 +276,15 @@ import {
   };
   const handleReady = () => {
     console.log('[ready]');
+  };
+
+  let range = (start,end) => {
+    let list = [];
+
+    for(let i=start; i<=end; i++)
+        list.push(i);
+
+    return list;    
   };
   
   const createOptions = (fontSize) => {
@@ -325,6 +335,7 @@ import {
       }*/
       this.state = this.props.getStore();
     }
+
     stripeCharge(){
         const { step, currencyUser, stripeToken, coinNumber, coinPrice, userid, fetching, created } = this.state;
         let coin = coinNumber;
@@ -351,49 +362,64 @@ import {
             .catch(error=>{ console.log(error.message)/*this.setState({fetching: false, error: error.message});*/});
     }
     
-    clickNext() {
-        setTimeout(()=>this.setState({step: 3}), 200);
-    }
+  
     paidSuccess(){
-        return <PaySuccess/>;
+        return <PaySuccess/>
     }
+
+
     onStripe(e) {
-        this.setState({stripeToken: e.token.id});
-        this.props.updateStore({stripeToken: e.token.id});
+        if(e.error){
+           console.log(e.error.message);
+           return;  
+        }
+
+        this.setState({stripeToken:e.token.id});
+        this.props.updateStore({stripeToken:e.token.id});
+
         //call stripe submit
-        this.stripeCharge();
+        this.stripeCharge(); 
+
         console.log('submitted');
-        /*this.refs.body.className = "modal-body body-get-started is-showing animate-out";
-        setTimeout(()=>this.props.onNext(), 600);*/
+         
+        //this.refs.body.className = "modal-body body-get-started is-showing animate-out";
+
+        //TODO add success/fail handler, prevent moving to next stage if payment wasnt stripped succesfully 
+        setTimeout(()=>this.props.onNext(), 600);
     }
-    handleSubmit(ev){
+
+
+    handleSubmit = (ev) => {
         ev.preventDefault();
         if (this.props.stripe) {
           this.props.stripe
-            .createToken()
-            .then(payload => this.onStripe(payload)); //set token state with token id
+              .createToken()
+              .then(payload => this.onStripe(payload)); //set token state with token id
             //stripeCharge(token, user_id)
         } else {
           console.log('Form submitted before Stripe.js loaded.');
         }
-      };
-  render() {
-     const { stripeToken } = this.state;
-    return (
-      <form onSubmit={this.handleSubmit.bind(this)}>
-          <h3>Stripe token: {stripeToken}</h3>
-          <CardElement
-            onBlur={handleBlur}
-            onChange={handleChange}
-            onFocus={handleFocus}
-            onReady={handleReady}
-            className="StripeElement"
-            {...createOptions(this.props.fontSize)}
-          />
-        <button className="navbar-btn aligner" >Pay</button>
-      </form>
-    );
-  }
+    };
+
+ 
+    render() {
+        const { stripeToken } = this.state;
+
+        return (
+        <form onSubmit={this.handleSubmit}>
+            <h3>Stripe token: {stripeToken}</h3>
+            <CardElement
+                onBlur={handleBlur}
+                onChange={handleChange}
+                onFocus={handleFocus}
+                onReady={handleReady}
+                className="StripeElement"
+                {...createOptions(this.props.fontSize)}
+            />
+            <button className="navbar-btn aligner" >Pay</button>
+        </form>
+        );
+    }
 }
 const CardForm = injectStripe(_CardForm);
 
@@ -470,14 +496,19 @@ class Step1 extends Component {
     }
 }
 
+
+
 class Step2 extends Component {
+
     constructor(props) {
         super(props);
+
         /*this.state = {
           elementFontSize: window.innerWidth < 450 ? '14px' : '18px',
           paymentID: '',
         };*/
         this.state = this.props.getStore();
+
         window.addEventListener('resize', () => {
           if (window.innerWidth < 450 && this.state.elementFontSize !== '14px') {
             this.setState({elementFontSize: '14px'});
@@ -488,12 +519,18 @@ class Step2 extends Component {
             this.setState({elementFontSize: '18px'});
           }
         });
-      }
+    }
+
+
+    componentDidMount() {}
+
     
-    clickNext() {
+    clickNext = () => {
         setTimeout(()=>this.props.onNext(), 600);
     }
-    verifyPaypal(){
+
+
+    verifyPaypal = () => {
         const {elementFontSize, paymentID, coinPrice, coinNumber, currencyUser, userid} = this.state;
         //send payment id to services paypal endpoint
         return fetch(settings.urls.paypal_pay.replace('{user_id}', userid), {
@@ -512,8 +549,7 @@ class Step2 extends Component {
             //.catch(error=>{ this.setState({fetching: false, error: error.message});});
     }
 
-    componentDidMount() {
-    }
+ 
     render () {
         const {elementFontSize, paymentID, coinPrice, coinNumber, currencyUser} = this.state;
 
@@ -557,41 +593,44 @@ class Step2 extends Component {
 
         return (
             <div ref="body" className="pricing-table">
-        <ul className="pricing-cards monthly-pricing-cards clearfix">
-            <li className="col-xs-12 col-md-6 pricing-card professional">
-              <div className="pricing-card-inner pricing-match-height">
-                <span className="monthly">
-                  <p className="pricing-number">Stripe </p>
-                
-                  <StripeProvider apiKey="pk_test_WwdF2h2PYwDQCIJikhCAeBDx">
-                    <div className="Checkout">
-                        <Elements>
-                        <CardForm getStore={() => (this.state)} updateStore={(u) => (this.setState(u))} fontSize={elementFontSize} stripe="pk_test_WwdF2h2PYwDQCIJikhCAeBDx" />
-                        </Elements>
+            <ul className="pricing-cards monthly-pricing-cards clearfix">
+                <li className="col-xs-12 col-md-6 pricing-card professional">
+                <div className="pricing-card-inner pricing-match-height">
+                    <span className="monthly">
+                    <p className="pricing-number">Stripe </p>
                     
-                    </div>
+                    <StripeProvider apiKey="pk_test_WwdF2h2PYwDQCIJikhCAeBDx">
+                        <div className="Checkout">
+                            <Elements>
+                            <CardForm onNext={this.props.onNext} getStore={() => ({...this.state})} updateStore={(u) => (this.setState(u))} fontSize={elementFontSize} stripe="pk_test_WwdF2h2PYwDQCIJikhCAeBDx" />
+                            </Elements>
+                        </div>
                     </StripeProvider>
-                </span>
-                
-              </div>
-            </li>
-            <li className="col-xs-12 col-md-6 pricing-card high-volume">
-              <div className="pricing-card-inner pricing-match-height">
-                <span className="monthly">
-                  <p className="pricing-number">PayPal</p>
-                  <br/>
-                  <h3>Payment ID: {paymentID}</h3>
-            <PaypalExpressBtn env={env} style={style} client={client} shipping={shipping} currency={currency} total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} />
-                </span>
-                <br/>
-              </div>
-            </li>
-        </ul>
-        </div>
-            
+                    </span>
+                    
+                </div>
+                </li>
+                <li className="col-xs-12 col-md-6 pricing-card high-volume">
+                <div className="pricing-card-inner pricing-match-height">
+                    <span className="monthly">
+                    <p className="pricing-number">PayPal</p>
+                    <br/>
+                    <h3>Payment ID: {paymentID}</h3>
+                    <PaypalExpressBtn 
+                        env={env} style={style} client={client} shipping={shipping} currency={currency} 
+                        total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} 
+                    />
+                    </span>
+                    <br/>
+                </div>
+                </li>
+            </ul>
+            </div>
         );
     }
 }
+
+
 
 class Step3 extends Component {
     clickNext() {
@@ -601,57 +640,61 @@ class Step3 extends Component {
     render () {
         return (
             <div className="modal-body body-get-started is-showing animate-in">
-                <div className="get-started-title">Payment Complete! </div>
+                <div className="get-started-title">Payment Complete!</div>
             </div>
         );
     }
 }
 
-class StepsHeader extends Component {
+
+
+class StepsHeader extends Component{
+
     render () {
         const {step, total_steps} = this.props;
-        const steps = new Array(total_steps).fill('').map(function (val, index) {
-            if ((index+1) == step) return 'active';
-            if ((index+1) < step) return 'is-done';
-            return '';
-        });
+        /*
+        const steps = new Array(total_steps)
+                        .fill('')
+                        .map(function (val, index) {
+                            if ((index+1) == step) return 'active';
+                            if ((index+1) < step) return 'is-done';
+                            return '';
+                        });
+        */
+
         return (
+            this.props.total_steps<=0 ? null :
             <div className="row">
-            <section className="five-simple-steps _6">
-            <div className="row centered">
-        <div className="col-xs-12">
-          <br/><br/><br/>
-          <ul className="steps-nav">
-            <div className="line"></div>
-                    <li className="steps active" >
-                    <a className="buy_coin_a" href="#" data-scroll="false">
-                        <h2>1</h2>
-                        <p>Step 1</p>
-                    </a>
-                    </li>
-                    <li className="steps" >
-                    <a className="buy_coin_a" href="#" data-scroll="false">
-                        <h2>2</h2>
-                        <p>Step 2</p>
-                    </a>
-                    </li>
-                    <li className="steps" >
-                    <a className="buy_coin_a" href="#" data-scroll="false">
-                        <h2>3</h2>
-                        <p>Step 3</p>
-                    </a>
-                    </li>
-                    
-          </ul>
-        </div>
-      </div>
-      </section>
-</div>
+                <section className="five-simple-steps _6">
+                    <div className="row centered">
+                        <div className="col-xs-12">
+                            <br/><br/><br/>
+                            <ul className="steps-nav">
+                                <div className="line"></div>
+                                {
+                                    range(1,this.props.total_steps)
+                                    .map((s) => 
+                                        <li key={`step-${s}`} className={step===s ? "steps active" : "steps"}>
+                                            <a className="buy_coin_a" href="#" data-scroll="false">
+                                                <h2>{s}</h2>
+                                                <p>Step {s}</p>
+                                            </a>
+                                        </li>
+                                    )
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
         );
     }
 }
 
+
+
 export class BuyCoin extends Component {
+
     constructor(props) {
         super();
         this.state = {
@@ -660,7 +703,7 @@ export class BuyCoin extends Component {
             fetching: false,
             created: false,
             showCloseIcon: false,
-            currencyUser: '',
+            currencyUser: 'USD',
             symbol: '',
             coinNumber: 0,
             coinPrice: 0,
@@ -669,57 +712,77 @@ export class BuyCoin extends Component {
             paymentID: '',
             userid: '',
         };
-        this.onOpenModal = this.onOpenModal.bind(this);
-        this.onCloseModal = this.onCloseModal.bind(this);
-        this.setCurrency = this.setCurrency.bind(this);
     }
+
+
     componentWillMount(){
         this.onOpenModal()
     }
-    componentDidMount() {
+
+
+    componentDidMount(){
         this.setState({ userid: 1 });
     }
-    onOpenModal() {
+
+
+    onOpenModal = () => {
         this.setState({ open: true });
-      };
+    };
     
-      onCloseModal() {
+
+    onCloseModal = () => {
         this.setState({ open: false });
-      };
-      setCurrency(){
-          console.log(this.state.currencyUser);
-          console.log(this.state.symbol);
-          this.onCloseModal();
-      }
+    };
+
+
+    setCurrency = () => {
+        console.log(this.state.currencyUser);
+        console.log(this.state.symbol);
+        this.onCloseModal();
+    };
+
      
-    throwAwayModal() {
+    throwAwayModal = () => {
         this.refs.wrapper.className = "modal-wrap animate-up";
         setTimeout(this.setStep(4), 600); //next step - show nothing
-    }
+    };
 
-    setStep (number) {
-        return ()=>this.setState({step: number});
-    }
 
-    getStore() {
-        return this.state;
-    }
+    getStore = () => ({...this.state});
+    
 
-    updateStore(update) {
-        this.setState(update);
-    }
+    updateStore = (update) => this.setState(update);
+    
     
     render() {
         const {step, open, showCloseIcon, currencyUser} = this.state;
-        if (step>3) return null; // show nothing
+
+        if (step>3) return null; // show nothing 
+
         return (
             <div ref="wrapper" className="buy_coin">
                 <Section1 title=""/>
                 <StepsHeader step={step} total_steps={3}/>
                 <div className="modal-bodies">
-                    {(step==1) && <Step1 onNext={this.setStep(2)} getStore={() => (this.getStore())} updateStore={(u) => (this.updateStore(u))}/>}
-                    {(step==2) && <Step2 onNext={this.setStep(3)} getStore={() => (this.getStore())} updateStore={(u) => (this.updateStore(u))}/>}
-                    {(step==3) && <Step3 onNext={()=>this.throwAwayModal()}/>}
+                    {
+                        step===1 && 
+                        <Step1 
+                            onNext={() => this.setState({step: 2})} 
+                            getStore={() => this.getStore()} 
+                            updateStore={(u) => this.updateStore(u)}
+                        />
+                    }
+                    {
+                        step===2 && 
+                        <Step2 
+                            onNext={() => this.setState({step: 3})} 
+                            getStore={() => this.getStore()} 
+                            updateStore={(u) => this.updateStore(u)}
+                        />
+                    }
+                    {
+                        step===3 && <Step3 onNext={() => this.throwAwayModal()}/>
+                    } 
                 </div>
                 <Modal className="country-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
                     
@@ -727,17 +790,15 @@ export class BuyCoin extends Component {
                     <p>Set your currency</p>
                     
                     <select className="country-dropdown" onChange={e=>this.setState({currencyUser: e.target.value})}>
-                    <option value="default">Pick Country </option>
-                    {countryCurrency.map((stuff, i)=>
-                        <option key={i} value={stuff.currency_code}>{stuff.country}</option>
-                    )}
+                    <option value="default">Pick Country</option>
+                    { countryCurrency.map((stuff, i) => <option key={i} value={stuff.currency_code}>{stuff.country}</option>) }
                     </select>
                     <br/>
                     <button className="navbar-btn aligner move-down" onClick={()=>this.setCurrency()}>Next</button>
                     
                     </div>
                 </Modal>
-            </div>
+            </div> 
        );
     }
 }
