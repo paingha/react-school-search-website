@@ -68,7 +68,7 @@ export default class Navbar extends Component{
                                 <div className="container">
                                   <div className="navbar-header">
                                    
-                                    <a className="navbar-brand" href="#"><img src="./img/logo.svg" className="logoImg"/></a>
+                                    <a className="navbar-brand" href="#"><img src="http://localhost:4000/img/logo.svg" className="logoImg"/></a>
                                   </div>
          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav navbar-right">
@@ -78,7 +78,7 @@ export default class Navbar extends Component{
                    <li><a href="#" className="white">About US</a></li>
                    <li><a href="#" className="white">GPA Calculator</a></li>
                    <li><a href="#" className="white">School Search</a></li>
-                   <li><a href="#" className="white">Scholarship Search</a></li>
+                   <li><a href="/scholarship/search" className="white">Scholarship Search</a></li>
                    { loginBlock }
                    <li>
                    { navBlock }  

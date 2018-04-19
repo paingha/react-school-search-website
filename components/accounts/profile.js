@@ -1,8 +1,12 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
+import Footer from '../shared/footer'
+import ProfileBox from '../shared/profile_box'
 import {connect} from 'react-redux';
 import {Link, withRouter} from "react-router-dom";
 import settings from '../../settings'
+import {ShoppingCart} from 'react-feather'
+
 
 const ProfileTab = withRouter(function (props) {
     let {name} = props;
@@ -33,6 +37,14 @@ export class Profile extends Component{
         this.state = {
             isloading: false,
             user: null,
+            FirstName: '',
+            LastName: '',
+            Criteria: '',
+            Level: '',
+            ApplicantCountry: '',
+            ScholarshipCountry: '',
+            Gpa: '',
+            error: null,
         };
     }
 
@@ -66,14 +78,58 @@ export class Profile extends Component{
         }
     }
 
+    /*doUpdate(token, user_id) {
+        const {firstName, lastName, gpa, criteria, level, applicantCountryId, scholarshipCountryId} = this.state;
+        this.setState({fetching: true, error: undefined});
+        return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            mode: 'cors',
+            body: JSON.stringify({firstName, lastName, gpa, criteria, level, applicantCountryId, scholarshipCountryId})
+        })
+            .then(response=>response.json())
+            .then(json=>{
+                if (json.error)
+                    throw Error(json.error.message || 'Unknown fetch error');
+                this.setState({fetching: false, error: undefined/*, registered: true});
+            })
+            .catch(error=>this.setState({fetching: false, error: error.message}));
+        
+    }*/
 
-    render(){  
+    render(){
         if(!this.state.user){
-            return <div><h3>Loading</h3></div>;
+            return <div> 
+            <div className="row">
+                <section className="profile-section">
+                    <Navbar />  
+                    <div className="row-fluid hero-box">
+                    <div className="col-md-12">
+                        <div className="headline-box">
+                        <h1 className="home-headline">Loading...</h1>
+                        </div>
+                    </div>
+                    <div className="col-md-6"></div>
+                    </div>
+                </section>
+            </div>
+            <div className="row">
+                <section className="profile-section-2">
+                    <div className="story-box">
+                        <div className="row">
+                                    <div className="col-md-8 col-sm-12">
+                                    
+                                    <div>Loading</div>
+                                    
+                                    </div>
+                        </div>
+                    </div>
+                </section>
+            </div> 
+        </div>
         }
-
         let {
-            applicantCountryId,
+            applicantCountry,
             coin,
             createdAt,
             criteria,
@@ -87,13 +143,14 @@ export class Profile extends Component{
             isDisabled,
             lastName,
             level,
-            majorId,
+            major,
             saved,
-            scholarshipCountryId,
+            scholarshipCountry,
             updatedAt
         } = this.state.user;
 
-        return <div> 
+        
+            return <div> 
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
@@ -111,33 +168,73 @@ export class Profile extends Component{
                 <section className="profile-section-2">
                     <div className="story-box">
                         <div className="row">
-                                    <div className="col-md-4 col-sm-12">
-                                        <div className="col-spaced box profile-box">
-                                        <div className="profile-img">
-                                        <div className="profile-img-tag">
-                                        <img src="https://www.biography.com/.image/t_share/MTE4MDAzNDEwNzQzMTY2NDc4/will-smith-9542165-1-402.jpg" className="profile-image"/>
-                                        </div>
-                                        </div>
-                                        <div className="profile-sub-box">
-                                            <p className="story-paragraph">
-                                            
-                                            Personalize your evaluated GPA to search for schools you might qaspiring to study.</p>
-                                        </div>
-                                        </div>
-                                    </div>
+                        <div className="col-md-4 col-sm-12">
+                                    <ProfileBox userData={this.state.user} />
+                        </div>
                                     <div className="col-md-8 col-sm-12">
+                                    
                                     <div className="col-spaced box">
                                     <ProfileTabs />
-                                    <p className="story-paragraph">{firstName} {lastName}</p>
-                                    </div></div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="First Name" className="register-input"
+                                        value={firstName} onChange={e=>this.setState({FirstName: e.target.value})}/>
+                                        </div>
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="Last Name" className="register-input"
+                                        value={lastName} onChange={e=>this.setState({LastName: e.target.value})}/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="Criteria" className="register-input"
+                                        value={criteria} onChange={e=>this.setState({Criteria: e.target.value})}/>
+                                        </div>
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="Level" className="register-input"
+                                        value={level} onChange={e=>this.setState({Level: e.target.value})}/>
+                                        </div>
+                                    </div>
+
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="Applicant Country" className="register-input"
+                                        value={applicantCountry} onChange={e=>this.setState({ApplicantCountry: e.target.value})}/>
+                                        </div>
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="Scholarship Country" className="register-input"
+                                        value={scholarshipCountry} onChange={e=>this.setState({ScholarshipCountry: e.target.value})}/>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                        <input type="text" placeholder="GPA" className="register-input"
+                                        value={gpa} onChange={e=>this.setState({Gpa: e.target.value})}/>
+                                        </div>
+                                        <div className="col-md-6">
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                    <div className="col-md-6">
+                                    <button className="navbar-btn aligner"><span className="user-info">Update Profile</span></button>
+                                    </div>
+                                    <div className="col-md-6">
+                                    <button className="navbar-btn aligner"><span className="user-info">View Matches</span></button>
+                                    </div>
+                                    </div>
+                                    </div>
+
+                                    </div>
                         </div>
                     </div>
                 </section>
-            </div>  
+            </div> 
         </div>   
+        
     }
 }
-
 
 function mapper(state) {
     return {

@@ -313,8 +313,8 @@ import {
       <div className="align-success">
       <svg id="createdAnimation" className="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
       <path id="createdAnimationResult" fill="#D8D8D8" d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z"/>
-      <circle id="createdAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" stroke-width="2" stroke-linecap="round" fill="transparent"/>
-      <polyline id="createdAnimationCheck" stroke="#979797" stroke-width="2" points="23 34 34 43 47 27" fill="transparent"/>
+      <circle id="createdAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" strokeWidth="2" strokeLinecap="round" fill="transparent"/>
+      <polyline id="createdAnimationCheck" stroke="#979797" strokeWidth="2" points="23 34 34 43 47 27" fill="transparent"/>
       </svg></div>
   
   
@@ -407,7 +407,7 @@ import {
 
         return (
         <form onSubmit={this.handleSubmit}>
-            <h3>Stripe token: {stripeToken}</h3>
+            <br/>
             <CardElement
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -429,6 +429,37 @@ class Step1 extends Component {
 
         this.state = this.props.getStore();
     }
+    /*componentDidMount(){
+        this.fetchUserProfile
+        .then(search(data.applicantCountry, countryCurrency));
+    }*/
+    /*search(nameKey, myArray){
+        for (var i=0; i < myArray.length; i++) {
+            if (myArray[i].country === nameKey) {
+                this.setState({finalCurrency: myArray[i].currency_code})
+                return myArray[i].currency_code;
+            }
+        }
+        
+    }*/
+    
+    /*fetchUserProfile(token, user_id) {
+        this.setState({isloading: true});
+        if (token && user_id) {
+            fetch(settings.urls.get_user.replace('{user_id}', user_id ), {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, user: data.applicantCountry})
+                //search(data.applicantCountry, countryCurrency);
+            )
+        }
+    }*/
     clickNext() {
         this.refs.body.className = "modal-body body-get-started is-showing animate-out";
         setTimeout(()=>this.props.onNext(), 500);
@@ -454,6 +485,7 @@ class Step1 extends Component {
         setTimeout(()=>this.props.onNext(), 500);
     }
     render () {
+        //const {finalCurrency} = this.state
         return (
             <div ref="body" className="pricing-table">
     <ul className="pricing-cards monthly-pricing-cards clearfix">
@@ -536,7 +568,6 @@ class Step2 extends Component {
         return fetch(settings.urls.paypal_pay.replace('{user_id}', userid), {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
-            mode: 'cors',
             body: JSON.stringify({paymentID: paymentID, coin: coinNumber})
         })
             .then(response=>response.json())
@@ -598,7 +629,6 @@ class Step2 extends Component {
                 <div className="pricing-card-inner pricing-match-height">
                     <span className="monthly">
                     <p className="pricing-number">Stripe </p>
-                    
                     <StripeProvider apiKey="pk_test_WwdF2h2PYwDQCIJikhCAeBDx">
                         <div className="Checkout">
                             <Elements>
@@ -615,7 +645,7 @@ class Step2 extends Component {
                     <span className="monthly">
                     <p className="pricing-number">PayPal</p>
                     <br/>
-                    <h3>Payment ID: {paymentID}</h3>
+                    
                     <PaypalExpressBtn 
                         env={env} style={style} client={client} shipping={shipping} currency={currency} 
                         total={total} onError={onError} onSuccess={onSuccess} onCancel={onCancel} 
@@ -639,8 +669,22 @@ class Step3 extends Component {
 
     render () {
         return (
-            <div className="modal-body body-get-started is-showing animate-in">
-                <div className="get-started-title">Payment Complete!</div>
+            <div className="row coin_succeess">
+            <div className="col-md-4">
+            </div>
+            <div className="col-md-4 col-sm-12">
+                <div className="col-spaced box">
+                <div className="align-success">
+            <svg id="createdAnimation" className="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
+            <path id="createdAnimationResult" fill="#D8D8D8" d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z"/>
+            <circle id="createdAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" strokeWidth="2" strokeLinecap="round" fill="transparent"/>
+            <polyline id="createdAnimationCheck" stroke="#979797" strokeWidth="2" points="23 34 34 43 47 27" fill="transparent"/>
+            </svg></div>
+                    <p className="success_text">Payment Success!</p>
+                </div>
+            </div>
+            <div className="col-md-4">
+            </div>
             </div>
         );
     }
@@ -704,13 +748,14 @@ export class BuyCoin extends Component {
             created: false,
             showCloseIcon: false,
             currencyUser: 'USD',
+            finalCurrency: '',
             symbol: '',
             coinNumber: 0,
             coinPrice: 0,
             stripeToken: '',
             elementFontSize: window.innerWidth < 450 ? '14px' : '18px',
             paymentID: '',
-            userid: '',
+            userid: 0,
         };
     }
 
@@ -720,10 +765,10 @@ export class BuyCoin extends Component {
     }
 
 
-    componentDidMount(){
-        this.setState({ userid: 1 });
+    
+    setUser(token,user){
+        this.setState({userid: user})
     }
-
 
     onOpenModal = () => {
         this.setState({ open: true });
@@ -737,7 +782,8 @@ export class BuyCoin extends Component {
 
     setCurrency = () => {
         console.log(this.state.currencyUser);
-        console.log(this.state.symbol);
+        //sessionStorage.setItem('myCurrency', this.state.currencyUser);
+        this.setUser(localStorage.token, this.props.user_id);
         this.onCloseModal();
     };
 

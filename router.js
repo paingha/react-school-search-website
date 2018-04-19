@@ -9,7 +9,9 @@ import {Pay} from './components/pay'
 import {CheckoutForm} from './components/CheckoutForm'
 import {Register} from './components/accounts/register'
 import Profile from './components/accounts/profile'
-import {ProfileTransactions} from './components/accounts/transactions'
+import ProfileTransactions from './components/accounts/transactions'
+import ScholarshipSearch from './components/search/scholarship-search'
+import {ProfileSettings} from './components/accounts/settings'
 import BuyCoin from './components/buy_coin'
 import Login from './components/accounts/login'
 import {Forgot} from './components/accounts/forgot'
@@ -45,6 +47,8 @@ export const Router = props => (
             <App>
             <Route exact path="/profile" component={Profile}/>
             <Route path="/profile/transactions" component={ProfileTransactions} />
+            <Route path="/profile/settings" component={ProfileSettings} />
+            <Route path="/scholarship-search" component={ScholarshipSearch}/>
             <Route path="/pay" component={Pay}/>
             <Route path="/buy_coin" component={BuyCoin}/>
             <Route path="/paypal" component={CheckoutForm} />
