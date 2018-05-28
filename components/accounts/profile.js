@@ -99,34 +99,64 @@ export class Profile extends Component{
 
     render(){
         if(!this.state.user){
-            return <div> 
+            return <React.Fragment>
             <div className="row">
-                <section className="profile-section">
-                    <Navbar />  
+            <section className="profile-section">
+                     <Navbar />  
+                    
                     <div className="row-fluid hero-box">
-                    <div className="col-md-12">
-                        <div className="headline-box">
-                        <h1 className="home-headline">Loading...</h1>
+                        <div className="col-md-12">
+                            <div className="headline-box">
+                            <h1 className="home-headline">Loading </h1>
+                             
+                            </div>
                         </div>
-                    </div>
-                    <div className="col-md-6"></div>
-                    </div>
+                        <div className="col-md-6">
+
+                            </div>
+                        </div>
+                    
                 </section>
-            </div>
-            <div className="row">
+                
+                </div>
+                <div className="row">
                 <section className="profile-section-2">
-                    <div className="story-box">
-                        <div className="row">
-                                    <div className="col-md-8 col-sm-12">
+                <div className="story-box">
+                <div className="row">
+                <div className="col-md-4 col-sm-12">
+                <div className="col-spaced box profile-box">
+                <div className="profile-img">
+                <div className="profile-img-tag">
+                    <img src="https://www.biography.com/.image/t_share/MTE4MDAzNDEwNzQzMTY2NDc4/will-smith-9542165-1-402.jpg" className="profile-image"/>
+                </div>
+                </div>
+                <div className="profile-sub-box">
+                    <p className="story-paragraph">
+                        <br/>
+                        <div className='text-input__loading--line3'></div>
+                        <br/>
+                        </p>
+                        <a href="/buy_coin"><button className="navbar-btn aligner"><ShoppingCart className="user-chevron-down-icon"/><span className="user-info">Buy Coins</span></button></a>
                                     
-                                    <div>Loading</div>
-                                    
-                                    </div>
+                </div>
+                </div>
+                </div>
+                                <div className="col-md-8 col-sm-12">
+                              <div className="col-spaced box">
+                              <ProfileTabs />
+                              <div className='text-input__loading--line3'></div>
+                              <div className='text-input__loading--line3'></div>
+                              <div className='text-input__loading--line3'></div>
+                              <div className='text-input__loading--line3'></div>
+                              <div className='text-input__loading--line3'></div>
+                              <div className='text-input__loading--line3'></div>
+                              
+                                   </div></div>
                         </div>
-                    </div>
+                        </div>
                 </section>
-            </div> 
-        </div>
+                </div>  
+                </React.Fragment>
         }
         let {
             applicantCountry,
@@ -177,41 +207,41 @@ export class Profile extends Component{
                                     <ProfileTabs />
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="First Name" className="register-input"
-                                        value={firstName} onChange={e=>this.setState({FirstName: e.target.value})}/>
+                                        <input type="text" placeholder={firstName} className="register-input"
+                                        onChange={e=>this.setState({FirstName: e.target.value})}/>
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="Last Name" className="register-input"
-                                        value={lastName} onChange={e=>this.setState({LastName: e.target.value})}/>
+                                        <input type="text" placeholder={lastName} className="register-input"
+                                        onChange={e=>this.setState({LastName: e.target.value})}/>
                                         </div>
                                     </div>
                                     
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="Criteria" className="register-input"
-                                        value={criteria} onChange={e=>this.setState({Criteria: e.target.value})}/>
+                                        <input type="text" placeholder={criteria} className="register-input"
+                                        onChange={e=>this.setState({Criteria: e.target.value})}/>
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="Level" className="register-input"
-                                        value={level} onChange={e=>this.setState({Level: e.target.value})}/>
+                                        <input type="text" placeholder={level} className="register-input"
+                                        onChange={e=>this.setState({Level: e.target.value})}/>
                                         </div>
                                     </div>
 
 
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="Applicant Country" className="register-input"
-                                        value={applicantCountry} onChange={e=>this.setState({ApplicantCountry: e.target.value})}/>
+                                        <input type="text" placeholder={applicantCountry} className="register-input"
+                                        onChange={e=>this.setState({ApplicantCountry: e.target.value})}/>
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="Scholarship Country" className="register-input"
-                                        value={scholarshipCountry} onChange={e=>this.setState({ScholarshipCountry: e.target.value})}/>
+                                        <input type="text" placeholder={scholarshipCountry} className="register-input"
+                                        onChange={e=>this.setState({ScholarshipCountry: e.target.value})}/>
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder="GPA" className="register-input"
-                                        value={gpa} onChange={e=>this.setState({Gpa: e.target.value})}/>
+                                        <input type="text" placeholder={gpa} className="register-input"
+                                        onChange={e=>this.setState({Gpa: e.target.value})}/>
                                         </div>
                                         <div className="col-md-6">
                                         </div>
@@ -231,6 +261,7 @@ export class Profile extends Component{
                     </div>
                 </section>
             </div> 
+            <Footer />
         </div>   
         
     }

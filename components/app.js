@@ -6,8 +6,8 @@ export class App extends Component {
         return (
             <div className="container-fluid">
                 {this.props.children}
-                <Footer/>
             </div>
+            
         );
     }
 }

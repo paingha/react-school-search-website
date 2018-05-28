@@ -7,7 +7,10 @@ export default class Navbar extends Component{
         super(props);
         this.state = {
             open: false,
+            more: false,
         }
+        this.clickMore = this.clickMore.bind(this);
+        this.clickNomore = this.clickNomore.bind(this);
         this.clickNext = this.clickNext.bind(this);
         this.clickBack = this.clickBack.bind(this);
     }
@@ -18,7 +21,18 @@ export default class Navbar extends Component{
             open: true
         })
     }
-
+    clickMore(){
+        document.getElementById('more-dropDown').classList.replace("account_dropdown", "account_dropdown_display");
+        this.setState({
+            more: true
+        })
+    }
+    clickNomore() {
+        document.getElementById('more-dropDown').classList.replace("account_dropdown_display", "account_dropdown");
+        this.setState({
+            more: false
+        })
+    }
     clickBack() {
         document.getElementById('dropDown').classList.replace("account_dropdown_display", "account_dropdown");
         this.setState({
@@ -29,7 +43,8 @@ export default class Navbar extends Component{
         let navBlock;
         let loginBlock;
         let dropdownBlock;
-        let { open } = this.state
+        let moreBlock
+        let { open, more } = this.state
         if(localStorage.token == null){
             navBlock = (
                 <a className="navbar-btn" href="/register">Get Started</a>
@@ -63,12 +78,18 @@ export default class Navbar extends Component{
                 <li></li>
             )
         }
+        moreBlock = (
+            <ul id="dropDown" className="account_dropdown">
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Forum</a></li>
+            </ul>
+        )
         return(
             <div className="navbar navbar-transparent">
                                 <div className="container">
                                   <div className="navbar-header">
                                    
-                                    <a className="navbar-brand" href="#"><img src="http://localhost:4000/img/logo.svg" className="logoImg"/></a>
+                                    <a className="navbar-brand" href="#"><img src="https://theacademist.herokuapp.com/img/logo.svg" className="logoImg"/></a>
                                   </div>
          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav navbar-right">
@@ -77,8 +98,10 @@ export default class Navbar extends Component{
                    </li>
                    <li><a href="#" className="white">About US</a></li>
                    <li><a href="#" className="white">GPA Calculator</a></li>
-                   <li><a href="#" className="white">School Search</a></li>
-                   <li><a href="/scholarship/search" className="white">Scholarship Search</a></li>
+                   <li><a href="/school-search" className="white">School Search</a></li>
+                   <li><a href="/scholarship-search" className="white">Scholarship Search</a></li>
+                   <li><a href="/blog" className="white">Blog</a></li>
+                   <li><a href="/forum" className="white">Forum</a></li>
                    { loginBlock }
                    <li>
                    { navBlock }  

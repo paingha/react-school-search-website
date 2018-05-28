@@ -2,8 +2,11 @@ import React, {Component} from 'react'
 import {Compass} from 'react-feather'
 import Section1 from './shared/section1'
 import {connect} from 'react-redux';
+import {Redirect} from 'react-router-dom';
+import { parse } from 'query-string';
 import settings from '../settings';
 import Modal from 'react-responsive-modal'
+import Footer from './shared/footer'
 import {
     CardElement,
     CardNumberElement,
@@ -306,7 +309,9 @@ import {
     };
   };
   class PaySuccess extends Component {
+      
       render(){
+        
           return(
       <div className="container-fluid">
       <div className="row">
@@ -319,7 +324,7 @@ import {
   
   
         <h1 className="grey move-center">Coin added Successfully!</h1>
-        
+       
       </div>
       
     </div>
@@ -335,7 +340,7 @@ import {
       }*/
       this.state = this.props.getStore();
     }
-
+    
     stripeCharge(){
         const { step, currencyUser, stripeToken, coinNumber, coinPrice, userid, fetching, created } = this.state;
         let coin = coinNumber;
@@ -364,7 +369,8 @@ import {
     
   
     paidSuccess(){
-        return <PaySuccess/>
+        
+        return <PaySuccess />
     }
 
 
@@ -664,10 +670,20 @@ class Step2 extends Component {
 
 class Step3 extends Component {
     clickNext() {
+        const query = parse(location.search);
+        if (query.search_callback == "true"){
         this.props.onNext();
+        }
+        return
     }
-
+    componentDidMount(){
+        setTimeout(()=>{
+            this.props.onNext();
+        }, 3000)
+    }
+    
     render () {
+        const query = parse(location.search);
         return (
             <div className="row coin_succeess">
             <div className="col-md-4">
@@ -681,6 +697,11 @@ class Step3 extends Component {
             <polyline id="createdAnimationCheck" stroke="#979797" strokeWidth="2" points="23 34 34 43 47 27" fill="transparent"/>
             </svg></div>
                     <p className="success_text">Payment Success!</p>
+                    {
+                        query.search_callback == "true" ?
+                        <p className="success_text">You will be redirected soon</p>
+                        : null
+                    }
                 </div>
             </div>
             <div className="col-md-4">
@@ -764,7 +785,21 @@ export class BuyCoin extends Component {
         this.onOpenModal()
     }
 
-
+    redirectFunc(){
+        const query = parse(location.search);
+        console.log(query);
+        console.log(query.search_callback);
+        console.log(query.criteria);
+        console.log(query.level);
+        console.log(query.gpa);
+        //bug starts here
+        if (query.search_callback == "true"){
+            console.log("works here")
+            //return <Redirect to='/'/>
+            this.props.history.push(`/scholarship-search?search_callback=true&criteria=${query.criteria}&level=${query.level}&amount=${amount}&gpa=${query.gpa}&applicant_country=${query.applicant_country}&country=${query.country}&major=${query.major}&offset=${query.offset}`);
+        }
+        return
+      }
     
     setUser(token,user){
         this.setState({userid: user})
@@ -827,9 +862,10 @@ export class BuyCoin extends Component {
                         />
                     }
                     {
-                        step===3 && <Step3 onNext={() => this.throwAwayModal()}/>
+                        step===3 && <Step3 onNext={() => this.redirectFunc()}/>
                     } 
                 </div>
+                <Footer />
                 <Modal className="country-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
                     
                     <div className="country-wrapper">

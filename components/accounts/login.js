@@ -26,7 +26,12 @@ class Login extends Component {
                     throw new Error(json.error.message);
                 dispatch(receiveLogin(json));
                 localStorage.token = json.token;
+                if (!json.user.firstLogin){
                 history.push(location.state? location.state.from : {pathname: '/'});
+                }
+                else{
+                    history.push(location.state? location.state.from : {pathname: '/get-started'});  
+                }
             })
             .catch(error=>dispatch(errorLogin(error.message)));
     }
