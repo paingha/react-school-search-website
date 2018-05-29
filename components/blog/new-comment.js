@@ -48,16 +48,16 @@ export class NewBlogComment extends Component{
     postComment(){
         const {isloading, error, content} = this.state;
         let by = this.state.idUser;
-        let forumId = this.props.parentBlog;
+        let blogId = this.props.parentBlog;
         this.setState({isloading: true, error: undefined});
         console.log(content);
         console.log(by);
-        console.log(forumId);
-        return fetch(settings.urls.new_reply, {
+        console.log(blogId)
+        return fetch(settings.urls.new_comment, {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
             mode: 'cors',
-            body: JSON.stringify({content, by, forumId})
+            body: JSON.stringify({content, by, blogId})
         })
         .then(
             response => response.json()
