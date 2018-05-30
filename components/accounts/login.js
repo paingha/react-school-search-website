@@ -13,6 +13,7 @@ class Login extends Component {
 
     doLogin(login, password) {
         const {dispatch, history, location} = this.props;
+        console.log('location', location)
         dispatch(requestLogin());
         return fetch(settings.urls.login, {
                          method: 'POST',

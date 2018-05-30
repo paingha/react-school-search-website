@@ -163,7 +163,8 @@ export class Forum extends Component{
                     )}
                 </div>
                
-                <h4 className="view-more">View More</h4>
+                {/* <h4 className="view-more">View More</h4> */}
+                <button className="getstarted-button">View More</button>
                 </div>
                 </div>
                 <div className="col-md-2">

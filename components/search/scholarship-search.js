@@ -174,7 +174,7 @@ export class ScholarshipSearch extends Component{
     }
 
     handleMajorChange (Majors) {
-		console.log('You\'ve selected:', Majors);
+		console.log('You\'ve selected-----:', Majors);
 		this.setState({ Majors }, ()=>{
             console.log(this.state.Majors)
         });
@@ -296,7 +296,7 @@ export class ScholarshipSearch extends Component{
         .then(
             data => {
                 this.setState({isloading: false, resultObj: data, noCoin: true},()=>{
-                    console.log(data)
+                    console.log('coin', data)
                 })
         
         })
@@ -304,10 +304,10 @@ export class ScholarshipSearch extends Component{
     Search() {
         let {offset} = this.state;
         let {id,coin} = this.state.user;
-        if(coin < 1 && offset < 15){
-            this.noCoin();
-        }
-        else{
+        // if(coin < 1 && offset < 15){
+        //     this.noCoin();
+        // }
+        // else{
         const {applicantCountry, resultCount, amount, gpa, criteria, level, country, isloading, results, error, Majors} = this.state;
         let user_id = id;
         let major = [];
@@ -319,22 +319,22 @@ export class ScholarshipSearch extends Component{
             mode: 'cors',
             body: JSON.stringify({applicantCountry, major, country, gpa, criteria, level, amount, user_id, offset})
         })
-        .then(
-            response => response.json()
+        .then(            
+            response => response.json()                        
         )
         .then(
             data => {
                 if(data.length != 0){
                 this.setState({isloading: false, results: data.rows, resultCount: data.count}, ()=>{
                     //show share modal
-                    console.log(this.state.results)
+                    console.log('results', this.state.results)
         let savedItems = _.map(this.state.results, function(currentObject) {
             return _.pick(currentObject, "id");
         });
-        console.log(savedItems)
+        console.log('savedItems',savedItems)
         let result = savedItems.map(v => v.visible = true)
           this.setState({stuffs: result},()=>{
-              console.log(this.state.stuffs)
+              console.log('stuff',this.state.stuffs)
           })
                     this.OpenModal();
                 })
@@ -343,7 +343,7 @@ export class ScholarshipSearch extends Component{
         }
         }
         )
-    }
+    // }
     }
 
     render(){

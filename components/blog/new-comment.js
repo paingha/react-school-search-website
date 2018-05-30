@@ -19,7 +19,7 @@ export class NewBlogComment extends Component{
         }
         this.postComment = this.postComment.bind(this);
     }
-    componentDidMount() {
+    componentDidMount() {        
         this.fetchUser(localStorage.token, this.props.user_id);
     }
 
@@ -46,9 +46,9 @@ export class NewBlogComment extends Component{
         }
     }
     postComment(){
-        const {isloading, error, content} = this.state;
+        const {isloading, error, content, created} = this.state;
         let by = this.state.idUser;
-        let blogId = this.props.parentBlog;
+        let blogId = this.props.parentBlog;        
         this.setState({isloading: true, error: undefined});
         console.log(content);
         console.log(by);
@@ -62,15 +62,15 @@ export class NewBlogComment extends Component{
         .then(
             response => response.json()
         )
-        .then(json=>{
+        .then(json=>{            
+            this.props.getblog(blogId);
             if (json.error)
                 throw Error(json.error.message || 'Unknown fetch error');
-            this.setState({isloading: false, error: undefined, created: true}, ()=>{
-                //this.props.callback(this.state.created);
-            });
+            this.setState({isloading: false, error: undefined, content: ''})    
         })
         .catch(error=>this.setState({isloading: false, error: error.message}));
     }
+    
     render(){
         let {firstName, lastName, content} = this.state
         return(
@@ -128,10 +128,10 @@ export class NewBlogComment extends Component{
 }
 
 function mapper(state) {
+    console.log('userID', state.user.data, state.blog.isCreated)
     return {
         user_id: state.user.data && state.user.data.id
     }
 }
-
 
 export default connect(mapper)(NewBlogComment);

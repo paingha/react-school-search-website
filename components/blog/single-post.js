@@ -8,7 +8,9 @@ import Moment from 'react-moment';
 import {Helmet} from "react-helmet";
 import BlogComments from './comments'
 import NewBlogComment from './new-comment'
-export class SinglePost extends Component{
+
+
+export class SinglePost extends React.Component{
     constructor(props){
         super(props)
         this.state = {
@@ -22,14 +24,19 @@ export class SinglePost extends Component{
         this.updateComment = this.updateComment.bind(this);
     }
     
-    componentDidMount() {
-        let {id} = this.state
+    componentDidMount() {        
+        let {id} = this.state        
         this.getBlog(id);
         window.scrollTo(0, 0)
     }
     componentWillReceiveProps(nextProps) {
-        if (!this.state.id && !!nextProps.id ) {
-            this.getBlog(nextProps.id);
+        // if (!this.state.id && !!nextProps.id && nextProps.isCreated) {
+        //     console.log('nextPropsID', nextProps.id)
+        //     this.getBlog(nextProps.id);
+        // }
+        console.log('willreceiveprops', nextProps.isCreated)
+        if(nextProps.isCreated != this.props.isCreated){
+            this.getBlog(this.state.id)
         }
     }
     updateComment(val){
@@ -40,9 +47,9 @@ export class SinglePost extends Component{
               console.log(val);
           });
     }
-    loadPoster(poster_id){
-        this.setState({isloading: true});
-            fetch(settings.urls.show_info.replace('{user_id}', poster_id ), {
+    loadPoster = (poster_id) =>{
+        this.setState({isloading: true});            
+            fetch(settings.urls.show_info.replace('{user_id}', poster_id.by ), {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
@@ -55,8 +62,12 @@ export class SinglePost extends Component{
                     console.log(data);
                 })
             )
+            // .then((data) => {
+            //     console.log('here is loadPoster', data)
+            //     this.setState({firstName: data.firstName, lastName: data.lastName})
+            // })
     }
-    getBlog(blogid){
+    getBlog = (blogid) => {                
         this.setState({isloading: true});
             fetch(settings.urls.get_singleblog.replace('{blog_id}', blogid ), {
                 method: 'GET',
@@ -74,6 +85,13 @@ export class SinglePost extends Component{
                     this.loadPoster(data.by);
                 })
             )
+        //     .then((data) => {
+        //         console.log(data)
+        //         console.log('----------------------------------')
+        //         this.loadPoster(data)
+        //         this.setState({ thing: data})
+        //     })
+        // console.log("aabbvc|")
     }
     render(){
         if(!this.state.thing){
@@ -241,7 +259,7 @@ export class SinglePost extends Component{
     </div>
  </div>
     <BlogComments reply={comments}/>
-    <NewBlogComment parentBlog={this.state.id} callBack={this.updateComment}/>
+    <NewBlogComment parentBlog={this.state.id} getblog = {this.getBlog} />
 <Footer />
 </div>
         

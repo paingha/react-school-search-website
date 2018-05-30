@@ -24,6 +24,7 @@ export default class ScholarshipResult extends Component{
           reply: '',
           stuffs: null,
           visible: true,
+          visibleID: null,        
         };
         this.onOpenModal = this.onOpenModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
@@ -83,9 +84,11 @@ export default class ScholarshipResult extends Component{
         }
         )
     }
-    clickSave(e) {
-        let scholarship_id = e;
-        let {id} = this.props.currentUser
+    clickSave(e) {        
+        let scholarship_id = e;        
+        let {id, savedID} = this.props.currentUser
+        let saved_ID = savedID
+        saved_ID.push(parseInt(scholarship_id))
         return fetch(settings.urls.save_scholarship.replace('{user_id}', id), {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
@@ -96,7 +99,7 @@ export default class ScholarshipResult extends Component{
             response => response.json()
         )
         .then(
-            data => {
+            data => {                
                 this.setState({isloading: false})
         }
         )
@@ -104,8 +107,8 @@ export default class ScholarshipResult extends Component{
 
     componentDidMount() {
     }
-    mouseEnter(){
-        this.setState({visible: false},()=>{
+    mouseEnter(e){
+        this.setState({visibleID: e, visible: false},()=>{
             console.log("hover")
         })
     }
@@ -122,78 +125,82 @@ export default class ScholarshipResult extends Component{
         return give;
     }
     render(){
-        let { school, showCloseIcon, open, opened, isloading } = this.state;
+        let { school, showCloseIcon, open, opened, isloading, visible, visibleID} = this.state;
         //let { name, criteria, level, applicantCountry, gpa, amount, deadline, country, description, major, institution, comment, url} = this.state.results;
         let searchResults = this.props.search;
         let {isAdmin, coin, savedID} = this.props.currentUser;
         let userCoin = this.props.coin
-        let {id, name, amount, description, criteria, level, applicantCountry, country, gpa, deadline, institution, comment, url} = this.props.noCoinObj;
+        let {id, name, amount, description, criteria, level, applicantCountry, country, gpa, deadline, institution, comment, url} = this.props.noCoinObj;        
         
         let noCoinBlock;
        
         if (userCoin == true){
             noCoinBlock = (
                 <React.Fragment>
-                        <div className="row">
-                        <div className="col-md-1">
-                        </div>
+                    { this.props.noCoinObj && this.props.noCoinObj.map((noCoinObj, index) => {
+                        return (
+                            <div key={index} className="row">
+                                <div className="col-md-1">
+                                </div>
 
-                                    
-                                    <div key={id} className="col-md-10 col-sm-12">
-                                    <div className="col-spaced box">
-                                    <div className="row">
-                                        <div className="col-md-5">
-                                        <h3 className="word-wrap"><TextTruncate
-                                            line={3}
-                                            truncateText="…"
-                                            text={name}
-                                        /></h3>
-                                        </div>
-                                        <div className="col-md-3">
-                                        <div className="aligner"><DollarSign className="dollar-icon" />
-                                        <span className="search-info"><h3>{amount}</h3></span></div>
-                                        </div>
-                                        <div className="col-md-4">
-                                        <div className="aligner"><Calendar className="date-icon" />
-                                        <span className="search-info"><h3>
-                                        { deadline !== null ?
                                             
-                                            <Moment parse="D/MMM/YYYY" format="MMMM Do">
-                                            {deadline}
-                                            </Moment> :
-                                            <span>N/A</span>
-                                        }  
-                                        </h3></span></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div className="row search-push-down">
-                                        <div className="col-md-2">
-                                        <h4>{criteria}</h4>
-                                        </div>
-                                        <div className="col-md-2">
-                                        <h4>{applicantCountry}</h4>
-                                        </div>
-                                        <div className="col-md-1">
-                                        
-                                        </div>
-                                        <div className="col-md-3">
-                                        
-                                        </div>
-                                        <div className="col-md-4">
-                                        <a href="/buy_coin"><button disabled className="search-btn aligner"><Lock className="user-icon"/> <span className="user-info">Buy Coin</span></button></a>
-                                        
-                                        </div>
-                                    </div>
-                                    
-                                    </div>
+                                            <div key={noCoinObj.id} className="col-md-10 col-sm-12">
+                                            <div className="col-spaced box">
+                                            <div className="row">
+                                                <div className="col-md-5">
+                                                <h3 className="word-wrap"><TextTruncate
+                                                    line={3}
+                                                    truncateText="…"
+                                                    text={noCoinObj.name}
+                                                /></h3>
+                                                </div>
+                                                <div className="col-md-3">
+                                                <div className="aligner"><DollarSign className="dollar-icon" />
+                                                <span className="search-info"><h3>{noCoinObj.amount}</h3></span></div>
+                                                </div>
+                                                <div className="col-md-4">
+                                                <div className="aligner"><Calendar className="date-icon" />
+                                                <span className="search-info"><h3>
+                                                { noCoinObj.deadline !== null ?
+                                                    
+                                                    <Moment parse="D/MMM/YYYY" format="MMMM Do">
+                                                    {noCoinObj.deadline}
+                                                    </Moment> :
+                                                    <span>N/A</span>
+                                                }  
+                                                </h3></span></div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="row search-push-down">
+                                                <div className="col-md-2">
+                                                <h4>{noCoinObj.criteria}</h4>
+                                                </div>
+                                                <div className="col-md-2">
+                                                <h4>{noCoinObj.applicantCountry}</h4>
+                                                </div>
+                                                <div className="col-md-1">
+                                                
+                                                </div>
+                                                <div className="col-md-3">
+                                                
+                                                </div>
+                                                <div className="col-md-4">
+                                                <a href="/buy_coin"><button disabled className="search-btn aligner"><Lock className="user-icon"/> <span className="user-info">Buy Coin</span></button></a>
+                                                
+                                                </div>
+                                            </div>
+                                            
+                                            </div>
 
-                                    </div>
-                                    <div className="col-md-1">
-                        </div>
-                        </div>
+                                            </div>
+                                            <div className="col-md-1">
+                                </div>
+                                </div>
+                        )
+                    })}                        
 
-                    <div className="row">
+                    {/* <div className="row">
                     <div className="col-md-1">
                     </div>
 
@@ -486,7 +493,7 @@ export default class ScholarshipResult extends Component{
                                 </div>
                                 <div className="col-md-1">
                     </div>
-                    </div>     
+                    </div>      */}
                     </React.Fragment>           
             )
         }
@@ -501,13 +508,26 @@ export default class ScholarshipResult extends Component{
                                 
                                 <div key={id} className="col-md-10 col-sm-12">
                                 <div className="col-spaced box">
-                                { _.includes(savedID, result.id) ?
+                                { _.includes(savedID, result.id) ? 
                                     <React.Fragment>
-                                        {
-                                            this.doStuff(`${result.id}`) != false ?
-                                            <div onMouseEnter={this.mouseEnter.bind(this)} className="ribbon-wrapper-saved"><div className="ribbon-saved"><Check className="heart-icon"/> <span className="saved-info">SAVED</span></div></div>
-                                            :
-                                            <div onMouseLeave={this.mouseLeave.bind(this)} className="ribbon-wrapper-unsave"><div className="ribbon-unsave"><X className="heart-icon"/> <span className="unsave-info">UNSAVE</span></div></div>
+                                        { visible ?
+                                            <div> 
+                                            {
+                                                this.doStuff(`${result.id}`) != false ?
+                                                <div onMouseEnter={this.mouseEnter.bind(this, result.id)} className="ribbon-wrapper-saved"><div className="ribbon-saved"><Check className="heart-icon"/> <span className="saved-info">SAVED</span></div></div>
+                                                :
+                                                <div onMouseLeave={this.mouseLeave.bind(this)} className="ribbon-wrapper-unsave"><div className="ribbon-unsave"><X className="heart-icon"/> <span className="unsave-info">UNSAVE</span></div></div>
+                                            }
+                                            </div>
+                                        :
+                                            <div>
+                                            {
+                                                this.doStuff(`${result.id}`) != false && visibleID != result.id ?
+                                                <div onMouseEnter={this.mouseEnter.bind(this, result.id)} className="ribbon-wrapper-saved"><div className="ribbon-saved"><Check className="heart-icon"/> <span className="saved-info">SAVED</span></div></div>
+                                                :
+                                                <div onMouseLeave={this.mouseLeave.bind(this)} className="ribbon-wrapper-unsave"><div className="ribbon-unsave"><X className="heart-icon"/> <span className="unsave-info">UNSAVE</span></div></div>
+                                            }
+                                            </div>
                                         }
                                     </React.Fragment>
                                 : 
