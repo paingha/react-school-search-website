@@ -174,7 +174,7 @@ export class ScholarshipSearch extends Component{
     }
 
     handleMajorChange (Majors) {
-		console.log('You\'ve selected-----:', Majors);
+		console.log('You\'ve selected:', Majors);
 		this.setState({ Majors }, ()=>{
             console.log(this.state.Majors)
         });

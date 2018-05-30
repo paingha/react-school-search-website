@@ -20,13 +20,14 @@ export class SinglePost extends React.Component{
             lastName: '',
             isloading: false,
             update: false,
+            commentNo: 5
         };
         this.updateComment = this.updateComment.bind(this);
     }
     
     componentDidMount() {        
         let {id} = this.state        
-        this.getBlog(id);
+        this.moreComments(id);
         window.scrollTo(0, 0)
     }
     componentWillReceiveProps(nextProps) {
@@ -108,7 +109,7 @@ export class SinglePost extends React.Component{
                 data => this.setState({isloading: false, thing: data}, ()=>{
                     console.log(data);
                     console.log("----------------------------------------------------");
-                    console.log(this.state.things);
+                    console.log(this.state.thing);
                     this.loadPoster(data.by);
                 })
             )
@@ -279,6 +280,7 @@ export class SinglePost extends React.Component{
     </div>
  </div>
     <BlogComments reply={comments}/>
+    <div className='view-more-button-wrapper'><button onClick={() => this.moreComments(this.state.id)} className="view-more-button">View More</button></div>
     <NewBlogComment parentBlog={this.state.id} getblog = {this.getBlog} />
 <Footer />
 </div>

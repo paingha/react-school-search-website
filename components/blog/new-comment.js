@@ -127,8 +127,7 @@ export class NewBlogComment extends Component{
     }
 }
 
-function mapper(state) {
-    console.log('userID', state.user.data, state.blog.isCreated)
+function mapper(state) {    
     return {
         user_id: state.user.data && state.user.data.id
     }
