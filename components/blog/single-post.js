@@ -93,6 +93,26 @@ export class SinglePost extends React.Component{
         //     })
         // console.log("aabbvc|")
     }
+    moreComments = (blogid) => {   
+        let {commentNo} = this.state             
+        this.setState({isloading: true, commentNo: this.state.commentNo + 5});
+            fetch(settings.urls.get_singleblog.replace('{blog_id}', `${blogid}?limit=${commentNo}` ), {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, thing: data}, ()=>{
+                    console.log(data);
+                    console.log("----------------------------------------------------");
+                    console.log(this.state.things);
+                    this.loadPoster(data.by);
+                })
+            )
+    }
     render(){
         if(!this.state.thing){
             return <div className="container-fluid"> 
