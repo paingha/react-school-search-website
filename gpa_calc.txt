@@ -1,0 +1,1396 @@
+function(country, type, grade){
+switch(true) {
+    case country == "Nigeria":
+        if (type == "Waec"){
+          switch(true) {
+            case grade == "A1":
+              return "A+"
+            break;
+            case grade == "B2":
+              return "A"
+            break;
+            case grade == "B3":
+              return "B"
+            break;
+            case grade == "C4":
+              return "B"
+            break;
+            case grade == "C5":
+              return "C"
+            break;
+            case grade == "C6":
+              return "C"
+            break;
+            case grade == "D7":
+              return "D"
+            break;
+            case grade == "E8":
+              return "D"
+            break;
+            case grade == "F9":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "University"){
+          switch(true) {
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "B":
+              return "B+"
+            break;
+            case grade == "C":
+              return "B"
+            break;
+            case grade == "D":
+              return "C+"
+            break;
+            case grade == "E":
+              return "C"
+            break;
+            case grade == "F":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        
+        break;
+    case country == "Ghana":
+        if (type == "University"){
+          switch(true) {
+            case grade == "A":
+              return "A+"
+            break;
+            case grade == "A-":
+              return "A"
+            break;
+            case grade == "B":
+              return "B"
+            break;
+            case grade == "C":
+              return "B-"
+            break;
+            case grade == "D":
+              return "C"
+            break;
+            case grade == "F":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Waec"){
+          switch(true) {
+            case grade == "A1":
+              return "A+"
+            break;
+            case grade == "B2":
+              return "A"
+            break;
+            case grade == "B3":
+              return "B"
+            break;
+            case grade == "C4":
+              return "B"
+            break;
+            case grade == "C5":
+              return "C"
+            break;
+            case grade == "C6":
+              return "C"
+            break;
+            case grade == "D7":
+              return "D"
+            break;
+            case grade == "E8":
+              return "D"
+            break;
+            case grade == "F9":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Algeria":
+        switch(true) {
+            case (20 >= grade) && (grade >= 15):
+              return "A+"
+            break;
+            case (14.99 >= grade) && (grade >= 13):
+              return "A"
+            break;
+            case (12.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Benin":
+        switch(true) {
+            case grade == "A+":
+              return "A+"
+            break;
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "A-":
+              return "A-"
+            break;
+            case grade == "B+":
+              return "B+"
+            break;
+            case grade == "B-":
+              return "B-"
+            break;
+            case grade == "B":
+              return "B"
+            break;
+            case grade == "C+":
+              return "C+"
+            break;
+            case grade == "C":
+              return "C"
+            break;
+            case grade == "C-":
+              return "C-"
+            break;
+            case grade == "D":
+              return "D"
+            break;
+            case grade == "F":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Botswana":
+        switch(true) {
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "B":
+              return "A-"
+            break;
+            case grade == "C":
+              return "B"
+            break;
+            case grade == "D":
+              return "C"
+            break;
+            case grade == "E":
+              return "D"
+            break;
+            case grade == "F":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Swaziland":
+        switch(true) {
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "B":
+              return "A-"
+            break;
+            case grade == "C":
+              return "B"
+            break;
+            case grade == "D":
+              return "C"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Zimbabwe":
+        switch(true) {
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "B":
+              return "B"
+            break;
+            case grade == "C":
+              return "C"
+            break;
+            case grade == "D":
+              return "D"
+            break;
+            case grade == "E":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Angola":
+        switch(true) {
+            case (20 >= grade) && (grade >= 16):
+              return "A"
+            break;
+            case (15 >= grade) && (grade >= 13):
+              return "B"
+            break;
+            case (12 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9 >= grade) && (grade >= 1):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Burkina Faso":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Central African Republic":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Chad":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Cote D'ivoire":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Gabon":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Guinea":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Madagascar":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Mali":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Mauritania":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Niger":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Tunisia":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Democratic Republic Of Congo":
+        switch(true) {
+            case (100 >= grade) && (grade >= 90):
+              return "A"
+            break;
+            case (89 >= grade) && (grade >= 80):
+              return "A-"
+            break;
+            case (79 >= grade) && (grade >= 70):
+              return "B"
+            break;
+            case (69 >= grade) && (grade >= 60):
+              return "B-"
+            break;
+            case (59 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Congo":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Eqypt":
+        if (type == "University Scale A"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 90):
+              return "A"
+            break;
+            case (89.99 >= grade) && (grade >= 80):
+              return "A-"
+            break;
+            case (79.99 >= grade) && (grade >= 65):
+              return "B"
+            break;
+            case (64.99 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49.99 >= grade) && (grade >= 35):
+              return "D"
+            break;
+            case (34.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "University Scale B"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 85):
+              return "A"
+            break;
+            case (84.99 >= grade) && (grade >= 80):
+              return "A-"
+            break;
+            case (79.99 >= grade) && (grade >= 65):
+              return "B"
+            break;
+            case (64.99 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49.99 >= grade) && (grade >= 30):
+              return "D"
+            break;
+            case (29.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "University Scale C"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 85):
+              return "A"
+            break;
+            case (84.99 >= grade) && (grade >= 80):
+              return "A-"
+            break;
+            case (79.99 >= grade) && (grade >= 75):
+              return "B+"
+            break;
+            case (74.99 >= grade) && (grade >= 70):
+              return "B"
+            break;
+            case (69.99 >= grade) && (grade >= 65):
+              return "B-"
+            break;
+            case (64.99 >= grade) && (grade >= 60):
+              return "C+"
+            break;
+            case (59.99 >= grade) && (grade >= 55):
+              return "C"
+            break;
+            case (54.99 >= grade) && (grade >= 30):
+              return "D"
+            break;
+            case (29.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Eritrea":
+        switch(true) {
+            case (100 >= grade) && (grade >= 75):
+              return "A"
+            break;
+            case (74.99 >= grade) && (grade >= 65):
+              return "B"
+            break;
+            case (64.99 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49.99 >= grade) && (grade >= 40):
+              return "D"
+            break;
+            case (39.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Ethiopia":
+        if (type == "University"){
+          switch(true) {
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "B+":
+              return "B+"
+            break;
+            case grade == "B":
+              return "B"
+            break;
+            case grade == "C+":
+              return "C+"
+            break;
+            case grade == "C":
+              return "C"
+            break;
+            case grade == "D":
+              return "D"
+            break;
+            case grade == "F":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+    if (type == "Secondary Certificate"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 90):
+              return "A"
+            break;
+            case (89.99 >= grade) && (grade >= 80):
+              return "B"
+            break;
+            case (79.99 >= grade) && (grade >= 60):
+              return "C"
+            break;
+            case (59.99 >= grade) && (grade >= 50):
+              return "D"
+            break;
+            case (49.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Kenya":
+        if (type == "University"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 70):
+              return "A"
+            break;
+            case (69 >= grade) && (grade >= 60):
+              return "A-"
+            break;
+            case (59 >= grade) && (grade >= 50):
+              return "B"
+            break;
+            case (49 >= grade) && (grade >= 40):
+              return "C"
+            break;
+            case (39 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Certificate of Secondary School Education"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 80):
+              return "A"
+            break;
+            case (79.99 >= grade) && (grade >= 75):
+              return "A-"
+            break;
+            case (74.99 >= grade) && (grade >= 70):
+              return "B+"
+            break;
+            case (69.99 >= grade) && (grade >= 65):
+              return "B"
+            break;
+            case (64.99 >= grade) && (grade >= 60):
+              return "B-"
+            break;
+            case (59.99 >= grade) && (grade >= 55):
+              return "C+"
+            break;
+            case (54.99 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49.99 >= grade) && (grade >= 45):
+              return "C-"
+            break;
+            case (44.99 >= grade) && (grade >= 40):
+              return "D+"
+            break;
+            case (39.99 >= grade) && (grade >= 35):
+              return "D"
+            break;
+            case (34.99 >= grade) && (grade >= 30):
+              return "D-"
+            break;
+            case (29.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Most Common"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 70):
+              return "A"
+            break;
+            case (69.99 >= grade) && (grade >= 65):
+              return "A-"
+            break;
+            case (64.99 >= grade) && (grade >= 60):
+              return "B+"
+            break;
+            case (59.99 >= grade) && (grade >= 50):
+              return "B"
+            break;
+            case (49.99 >= grade) && (grade >= 45):
+              return "C+"
+            break;
+            case (44.99 >= grade) && (grade >= 40):
+              return "C"
+            break;
+            case (39.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Secondary Level"){
+          switch(true) {
+            case grade == 12:
+              return "A+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "A"
+            break;
+            case (10.99 >= grade) && (grade >= 10):
+              return "A-"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "B+"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "B"
+            break;
+            case (7.99 >= grade) && (grade >= 7):
+              return "C+"
+            break;
+            case (6.99 >= grade) && (grade >= 6):
+              return "C"
+            break;
+            case (5.99 >= grade) && (grade >= 2):
+              return "D"
+            break;
+            case (1.99 >= grade) && (grade >= 1):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Liberia":
+        if (type == "Most Common"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 90):
+              return "A"
+            break;
+            case (89 >= grade) && (grade >= 80):
+              return "B"
+            break;
+            case (79 >= grade) && (grade >= 70):
+              return "C"
+            break;
+            case (69 >= grade) && (grade >= 60):
+              return "D"
+            break;
+            case (59 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Wassce"){
+          switch(true) {
+            case (1.99 >= grade) && (grade >= 1):
+              return "A"
+            break;
+            case (2.99 >= grade) && (grade >= 2):
+              return "A"
+            break;
+            case (3.99 >= grade) && (grade >= 3):
+              return "B"
+            break;
+            case (4.99 >= grade) && (grade >= 4):
+              return "B"
+            break;
+            case (5.99 >= grade) && (grade >= 5):
+              return "C"
+            break;
+            case (6.99 >= grade) && (grade >= 6):
+              return "C"
+            break;
+            case (7.99 >= grade) && (grade >= 7):
+              return "D"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case grade == 9:
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Morocco":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.49 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case (10.09 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Mozambique":
+        switch(true) {
+            case (20 >= grade) && (grade >= 15):
+              return "A"
+            break;
+            case (14.99 >= grade) && (grade >= 12):
+              return "B"
+            break;
+            case (11 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Namibia":
+        if (type == "IGCSE"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 90):
+              return "A+"
+            break;
+            case (89.99 >= grade) && (grade >= 80):
+              return "A"
+            break;
+            case (79.99 >= grade) && (grade >= 70):
+              return "A-"
+            break;
+            case (69.99 >= grade) && (grade >= 60):
+              return "B"
+            break;
+            case (59.99 >= grade) && (grade >= 50):
+              return "C+"
+            break;
+            case (49.99 >= grade) && (grade >= 40):
+              return "C"
+            break;
+            case (39.99 >= grade) && (grade >= 30):
+              return "D+"
+            break;
+            case (29.99 >= grade) && (grade >= 20):
+              return "D"
+            break;
+            case (19.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "University"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 80):
+              return "A+"
+            break;
+            case (79.99 >= grade) && (grade >= 70):
+              return "A"
+            break;
+            case (69.99 >= grade) && (grade >= 60):
+              return "B"
+            break;
+            case (59.99 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Rwanda":
+        if (type == "Scale 1"){
+          switch(true) {
+            case (11 >= grade) && (grade >= 10.5):
+              return "A"
+            break;
+            case (10.49 >= grade) && (grade >= 9.5):
+              return "A-"
+            break;
+            case (9.49 >= grade) && (grade >= 8.5):
+              return "B+"
+            break;
+            case (8.49 >= grade) && (grade >= 7.5):
+              return "B"
+            break;
+            case (7.49 >= grade) && (grade >= 6.5):
+              return "B-"
+            break;
+            case (6.49 >= grade) && (grade >= 5.5):
+              return "C+"
+            break;
+            case (5.49 >= grade) && (grade >= 4.5):
+              return "C"
+            break;
+            case (4.49 >= grade) && (grade >= 3.5):
+              return "C-"
+            break;
+            case (3.49 >= grade) && (grade >= 1.5):
+              return "D"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Scale 2"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 85):
+              return "A"
+            break;
+            case (84.99 >= grade) && (grade >= 80):
+              return "A-"
+            break;
+            case (79.99 >= grade) && (grade >= 75):
+              return "B+"
+            break;
+            case (74.99 >= grade) && (grade >= 70):
+              return "B"
+            break;
+            case (69.99 >= grade) && (grade >= 65):
+              return "B-"
+            break;
+            case (64.99 >= grade) && (grade >= 60):
+              return "C+"
+            break;
+            case (59.99 >= grade) && (grade >= 55):
+              return "C"
+            break;
+            case (54.99 >= grade) && (grade >= 50):
+              return "C-"
+            break;
+            case (49.99 >= grade) && (grade >= 40):
+              return "D"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Senegal":
+        switch(true) {
+            case (20 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.9 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.9 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.9 >= grade) && (grade >= 10.5):
+              return "B-"
+            break;
+            case (10.4 >= grade) && (grade >= 10.1):
+              return "C+"
+            break;
+            case grade == 10:
+              return "C"
+            break;
+            case (9.9 >= grade) && (grade >= 9):
+              return "C-"
+            break;
+            case (8.9 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            case (7.9 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Togo":
+        switch(true) {
+            case (20 >= grade) && (grade >= 16):
+              return "A+"
+            break;
+            case (15.99 >= grade) && (grade >= 14):
+              return "A"
+            break;
+            case (13.99 >= grade) && (grade >= 12):
+              return "B"
+            break;
+            case (11.99 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 8):
+              return "D"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "South Africa":
+        switch(true) {
+            case (100 >= grade) && (grade >= 75):
+              return "A"
+            break;
+            case (74.99 >= grade) && (grade >= 70):
+              return "B+"
+            break;
+            case (69.99 >= grade) && (grade >= 60):
+              return "B"
+            break;
+            case (59.99 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "Cameroon":
+        if (type == "French System"){
+          switch(true) {
+            case (20 >= grade) && (grade >= 15):
+              return "A+"
+            break;
+            case (14.99 >= grade) && (grade >= 13):
+              return "A-"
+            break;
+            case (12.99 >= grade) && (grade >= 12):
+              return "B+"
+            break;
+            case (11.99 >= grade) && (grade >= 11):
+              return "B"
+            break;
+            case (10.99 >= grade) && (grade >= 10):
+              return "C"
+            break;
+            case (9.99 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "University of Buea"){
+          switch(true) {
+            case (100 >= grade) && (grade >= 80):
+              return "A"
+            break;
+            case (79 >= grade) && (grade >= 70):
+              return "B+"
+            break;
+            case (69 >= grade) && (grade >= 60):
+              return "B"
+            break;
+            case (59 >= grade) && (grade >= 55):
+              return "C+"
+            break;
+            case (54 >= grade) && (grade >= 50):
+              return "C"
+            break;
+            case (49 >= grade) && (grade >= 45):
+              return "F"
+            break;
+            case (44 >= grade) && (grade >= 40):
+              return "F"
+            break;
+            case (39 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        if (type == "Gce A Level"){
+          switch(true) {
+            case grade == "A":
+              return "A"
+            break;
+            case grade == "B":
+              return "B"
+            break;
+            case grade == "C":
+              return "B"
+            break;
+            case grade == "D":
+              return "C"
+            break;
+            case grade == "E":
+              return "C"
+            break;
+            case grade == "F":
+              return "F"
+            break;
+            default:
+              return null
+            }
+        }
+        break;
+    case country == "Zambia":
+        switch(true) {
+            case (2 >= grade) && (grade >= 1):
+              return "A"
+            break;
+            case (4 >= grade) && (grade >= 3):
+              return "B"
+            break;
+            case (6 >= grade) && (grade >= 5):
+              return "C"
+            break;
+            case (8 >= grade) && (grade >= 7):
+              return "D"
+            break;
+            case grade == 9:
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    case country == "China":
+        switch(true) {
+            case (100 >= grade) && (grade >= 90):
+              return "A"
+            break;
+            case (89 >= grade) && (grade >= 80):
+              return "B"
+            break;
+            case (79 >= grade) && (grade >= 70):
+              return "C"
+            break;
+            case (69 >= grade) && (grade >= 60):
+              return "D"
+            break;
+            case (59 >= grade) && (grade >= 0):
+              return "F"
+            break;
+            default:
+              return null
+            }
+        break;
+    default:
+        null;
+}
+}

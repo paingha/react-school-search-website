@@ -18,6 +18,7 @@ export class SingleForum extends Component{
             lastName: '',
             isloading: false,
             update: false,
+            commentNo: 5
         };
         this.updateComment = this.updateComment.bind(this);
     }
@@ -25,11 +26,13 @@ export class SingleForum extends Component{
     componentDidMount() {
         let {id} = this.state
         this.getForum(id);
+        this.moreComments(id);
         window.scrollTo(0, 0);
     }
     componentWillReceiveProps(nextProps) {
-        if (!this.state.id && !!nextProps.id ) {
-            this.getForum(nextProps.id);
+        console.log('willreceiveprops', nextProps.isCreated)
+        if(nextProps.isCreated != this.props.isCreated){
+            this.getForum(this.state.id)
         }
     }
     updateComment(val){
@@ -56,7 +59,7 @@ export class SingleForum extends Component{
                 })
             )
     }
-    getForum(forumid){
+    getForum = (forumid) => {                
         this.setState({isloading: true});
             fetch(settings.urls.get_singleforum.replace('{forum_id}', forumid ), {
                 method: 'GET',
@@ -71,6 +74,26 @@ export class SingleForum extends Component{
                     console.log(data);
                     console.log("----------------------------------------------------");
                     console.log(this.state.things);
+                    this.loadPoster(data.by);
+                })
+            )
+    }
+    moreComments = (forumid) => {   
+        let {commentNo} = this.state             
+        this.setState({isloading: true, commentNo: this.state.commentNo + 5});
+            fetch(settings.urls.get_singleforum.replace('{forum_id}', `${forumid}?limit=${commentNo}` ), {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, thing: data}, ()=>{
+                    console.log(data);
+                    console.log("----------------------------------------------------");
+                    console.log(this.state.thing);
                     this.loadPoster(data.by);
                 })
             )
@@ -227,7 +250,11 @@ export class SingleForum extends Component{
     </div>
  </div>
     <CommentList reply={replies}/>
-    <NewComment parentForum={this.state.id} callBack={this.updateComment}/>
+    { replies.length > 4 ?
+    <div className='blog-view-more-button-wrapper'><button onClick={() => this.moreComments(this.state.id)} className="blog-view-more-button">View More</button></div>
+    : null
+    }
+    <NewComment parentForum={this.state.id} getforum = {this.getForum}/>
 <Footer />
 </div>
         

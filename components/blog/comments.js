@@ -26,7 +26,7 @@ export default class BlogComments extends Component{
     <div className="row">
 
     <div className="col-md-6">
-    <span className="forum-by"><span className="forum-poster-name">Paingha Joe Alagoa</span> said</span>
+    <span className="forum-by"><span className="forum-poster-name">{stuff.firstName} {stuff.lastName}</span> said</span>
     <br/>
     <span className="forum-posted-date">Commented on 
     &nbsp;

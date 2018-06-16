@@ -11,6 +11,7 @@ export default {
         list_transactions: 'https://theacademist.herokuapp.com/api/v1/transaction/list/{user_id}',
         scholarship_search: 'https://theacademist.herokuapp.com/api/v1/scholarship/search',
         get_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/{scholarship_id}',
+        unsave_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/unsave/{user_id}',
         save_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/save/{user_id}',
         delete_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/{scholarship_id}',
         no_coin: 'https://theacademist.herokuapp.com/api/v1/scholarship/no-coin',
@@ -26,6 +27,10 @@ export default {
         get_singleblog: 'https://theacademist.herokuapp.com/api/v1/blog/{blog_id}',
         new_comment: 'https://theacademist.herokuapp.com/api/v1/comment',
         upload: 'https://theacademist.herokuapp.com/services/aws-signed-url',
-        get_referrals: 'https://theacademist.herokuapp.com/api/v1/user/referral/{user_id}'
+        get_referrals: 'https://theacademist.herokuapp.com/api/v1/user/referral/{user_id}',
+        get_currency: 'https://theacademist.herokuapp.com/services/ip-currency',
+        get_reward: 'https://theacademist.herokuapp.com/services/reward/{user_id}',
+        get_majors: 'https://theacademist.herokuapp.com/services/get-majors',
+        get_countries: 'https://theacademist.herokuapp.com/services/get-country',
     }
 };

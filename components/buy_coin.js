@@ -435,37 +435,48 @@ class Step1 extends Component {
 
         this.state = this.props.getStore();
     }
-    /*componentDidMount(){
-        this.fetchUserProfile
-        .then(search(data.applicantCountry, countryCurrency));
-    }*/
-    /*search(nameKey, myArray){
-        for (var i=0; i < myArray.length; i++) {
-            if (myArray[i].country === nameKey) {
-                this.setState({finalCurrency: myArray[i].currency_code})
-                return myArray[i].currency_code;
-            }
-        }
-        
-    }*/
-    
-    /*fetchUserProfile(token, user_id) {
+    componentWillMount(){
+        //this.onOpenModal()
+        this.getCurrency()
+    }
+    getCurrency(){
         this.setState({isloading: true});
-        if (token && user_id) {
-            fetch(settings.urls.get_user.replace('{user_id}', user_id ), {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json', 'Authorization': token},
-                mode: 'cors',
-            })
-            .then(
-                response => response.json()
-            )
-            .then(
-                data => this.setState({isloading: false, user: data.applicantCountry})
-                //search(data.applicantCountry, countryCurrency);
-            )
-        }
-    }*/
+        return fetch(settings.urls.get_currency, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
+            mode: 'cors',
+        })
+        .then( 
+            response => response.json() 
+        )
+        .then(
+            data => {
+                this.setState({isloading: false, currencyCode: data.geoplugin_currencyCode, currencySymbol: data.geoplugin_currencySymbol_UTF8}, ()=>{
+                    this.apiRequest(data.geoplugin_currencyCode);
+                    console.log(this.state.currencySymbol);
+                })
+            }
+        )
+    }
+    apiRequest(currency){
+        this.setState({isloading: true});
+        return fetch(`https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=USD&to_currency=${currency}&apikey=O6V1VXTCO92BKKL1`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json'},
+        })
+        .then( 
+            response => response.json() 
+        )
+        .then(
+            data => {
+                console.log(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
+                this.setState({isloading: false, exchangeRate: data['Realtime Currency Exchange Rate']['5. Exchange Rate']}, ()=> {
+                    console.log(this.state.exchangeRate)
+                })
+            }
+        )
+    }
+    
     clickNext() {
         this.refs.body.className = "modal-body body-get-started is-showing animate-out";
         setTimeout(()=>this.props.onNext(), 500);
@@ -491,13 +502,22 @@ class Step1 extends Component {
         setTimeout(()=>this.props.onNext(), 500);
     }
     render () {
-        //const {finalCurrency} = this.state
+        const {currencySymbol, exchangeRate} = this.state
+        const oneCoinPrice = Math.round((1.99 * this.state.exchangeRate)*100) / 100;
+        const twoCoinPrice = Math.round((3 * this.state.exchangeRate)*100) / 100;
+        const threeCoinPrice = Math.round((5.99 * this.state.exchangeRate)*100) / 100;
+        console.log("Step 1")
+        console.log(this.state.currencySymbol);
+        console.log(this.state.exchangeRate);
+        console.log(oneCoinPrice);
+        console.log(twoCoinPrice);
+        console.log(threeCoinPrice);
         return (
             <div ref="body" className="pricing-table">
     <ul className="pricing-cards monthly-pricing-cards clearfix">
         <li className="col-xs-12 col-md-4 pricing-card basic">
           <div className="pricing-card-inner pricing-match-height">
-            <h3>$1.99</h3>
+            <h3>{currencySymbol}{oneCoinPrice}</h3>
             <span className="monthly">
               <p className="pricing-number">1</p>
               <h4>coin</h4>
@@ -508,7 +528,7 @@ class Step1 extends Component {
         </li>
         <li className="col-xs-12 col-md-4 pricing-card professional">
           <div className="pricing-card-inner pricing-match-height">
-            <h3>$3.00</h3>
+            <h3>{currencySymbol}{twoCoinPrice}</h3>
             <span className="monthly">
               <p className="pricing-number">2</p>
               <h4>coins</h4>
@@ -519,7 +539,7 @@ class Step1 extends Component {
         </li>
         <li className="col-xs-12 col-md-4 pricing-card high-volume">
           <div className="pricing-card-inner pricing-match-height">
-            <h3>$5.99</h3>
+            <h3>{currencySymbol}{threeCoinPrice}</h3>
             <span className="monthly">
               <p className="pricing-number">3</p>
               <h4>coins</h4>
@@ -717,16 +737,7 @@ class StepsHeader extends Component{
 
     render () {
         const {step, total_steps} = this.props;
-        /*
-        const steps = new Array(total_steps)
-                        .fill('')
-                        .map(function (val, index) {
-                            if ((index+1) == step) return 'active';
-                            if ((index+1) < step) return 'is-done';
-                            return '';
-                        });
-        */
-
+       
         return (
             this.props.total_steps<=0 ? null :
             <div className="row">
@@ -766,10 +777,13 @@ export class BuyCoin extends Component {
             step: 1,
             open: false,
             fetching: false,
+            isloading: false,
             created: false,
             showCloseIcon: false,
             currencyUser: 'USD',
             finalCurrency: '',
+            currencySymbol: '',
+            currencyCode: '',
             symbol: '',
             coinNumber: 0,
             coinPrice: 0,
@@ -777,14 +791,24 @@ export class BuyCoin extends Component {
             elementFontSize: window.innerWidth < 450 ? '14px' : '18px',
             paymentID: '',
             userid: 0,
+            exchangeRate: 0,
         };
     }
 
 
     componentWillMount(){
-        this.onOpenModal()
-    }
+        //this.onOpenModal()
+        //this.getCurrency()
+        this.setUser(localStorage.token, this.props.user_id);
 
+    }
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.user_id && !!nextProps.user_id) {
+             this.setUser(localStorage.token, nextProps.user_id);
+             console.log("next props")
+        console.log(this.props.user_id)
+         } 
+     }
     redirectFunc(){
         const query = parse(location.search);
         console.log(query);

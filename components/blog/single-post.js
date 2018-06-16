@@ -25,16 +25,13 @@ export class SinglePost extends React.Component{
         this.updateComment = this.updateComment.bind(this);
     }
     
-    componentDidMount() {        
-        let {id} = this.state        
+    componentDidMount() {
+        let {id} = this.state
+        this.getBlog(id);
         this.moreComments(id);
-        window.scrollTo(0, 0)
+        window.scrollTo(0, 0);
     }
     componentWillReceiveProps(nextProps) {
-        // if (!this.state.id && !!nextProps.id && nextProps.isCreated) {
-        //     console.log('nextPropsID', nextProps.id)
-        //     this.getBlog(nextProps.id);
-        // }
         console.log('willreceiveprops', nextProps.isCreated)
         if(nextProps.isCreated != this.props.isCreated){
             this.getBlog(this.state.id)
@@ -48,9 +45,9 @@ export class SinglePost extends React.Component{
               console.log(val);
           });
     }
-    loadPoster = (poster_id) =>{
-        this.setState({isloading: true});            
-            fetch(settings.urls.show_info.replace('{user_id}', poster_id.by ), {
+    loadPoster(poster_id){
+        this.setState({isloading: true});
+            fetch(settings.urls.show_info.replace('{user_id}', poster_id ), {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
@@ -63,10 +60,6 @@ export class SinglePost extends React.Component{
                     console.log(data);
                 })
             )
-            // .then((data) => {
-            //     console.log('here is loadPoster', data)
-            //     this.setState({firstName: data.firstName, lastName: data.lastName})
-            // })
     }
     getBlog = (blogid) => {                
         this.setState({isloading: true});
@@ -86,13 +79,6 @@ export class SinglePost extends React.Component{
                     this.loadPoster(data.by);
                 })
             )
-        //     .then((data) => {
-        //         console.log(data)
-        //         console.log('----------------------------------')
-        //         this.loadPoster(data)
-        //         this.setState({ thing: data})
-        //     })
-        // console.log("aabbvc|")
     }
     moreComments = (blogid) => {   
         let {commentNo} = this.state             
@@ -280,7 +266,10 @@ export class SinglePost extends React.Component{
     </div>
  </div>
     <BlogComments reply={comments}/>
-    <div className='view-more-button-wrapper'><button onClick={() => this.moreComments(this.state.id)} className="view-more-button">View More</button></div>
+    { comments.length > 4 ?
+    <div className='blog-view-more-button-wrapper'><button onClick={() => this.moreComments(this.state.id)} className="blog-view-more-button">View More</button></div>
+    : null
+    }
     <NewBlogComment parentBlog={this.state.id} getblog = {this.getBlog} />
 <Footer />
 </div>

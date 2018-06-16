@@ -8,6 +8,7 @@ import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import {Search, BookOpen} from 'react-feather'
 import Dropzone from 'react-dropzone'
+import {toastr} from 'react-redux-toastr'
 const BlogSuccess = () =>
 <React.Fragment> 
 <div className="row">
@@ -115,6 +116,8 @@ export class NewBlog extends Component{
         console.log("Content" + editorState);
         let content = editorState;
         let by = this.props.user_id
+        console.log("BY")
+        console.log(by)
         //start
         if(this.fileUpload.files[0] != null) {
             // Upload image to S3
@@ -170,7 +173,11 @@ export class NewBlog extends Component{
                         .then(json=>{
                             if (json.error)
                                 throw Error(json.error.message || 'Unknown fetch error');
-                            this.setState({fetching: false, error: undefined, created: true});
+                            this.setState({fetching: false, error: undefined, created: true}, ()=>{
+                                setTimeout(()=> {
+                                    toastr.success('Created!', 'Blog Post created successfully')
+                                }, 10);
+                            });
                         })
                         .catch(error=>this.setState({isloading: false, error: error.message}));
                         }, 4000)

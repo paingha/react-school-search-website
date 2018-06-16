@@ -46,7 +46,7 @@ export class ProfileSettings extends Component{
                               <div className="col-spaced box profile-box">
                               <div className="profile-img">
                                 <div className="profile-img-tag">
-                                <img src="https://www.biography.com/.image/t_share/MTE4MDAzNDEwNzQzMTY2NDc4/will-smith-9542165-1-402.jpg" className="profile-image"/>
+                                <img src="/img/user-img.png" className="profile-image"/>
                                 </div>
                               </div>
                               <div className="profile-sub-box">

@@ -46,7 +46,7 @@ export class NewComment extends Component{
         }
     }
     postComment(){
-        const {isloading, error, content} = this.state;
+        const {isloading, error, content, firstName, lastName} = this.state;
         let by = this.state.idUser;
         let forumId = this.props.parentForum;
         this.setState({isloading: true, error: undefined});
@@ -57,17 +57,17 @@ export class NewComment extends Component{
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
             mode: 'cors',
-            body: JSON.stringify({content, by, forumId})
+            body: JSON.stringify({content, by, forumId, firstName, lastName})
         })
         .then(
             response => response.json()
         )
         .then(json=>{
+            this.props.getforum(forumId);
             if (json.error)
                 throw Error(json.error.message || 'Unknown fetch error');
-            this.setState({isloading: false, error: undefined, created: true}, ()=>{
-                //this.props.callback(this.state.created);
-            });
+            this.setState({isloading: false, error: undefined, content: ''})    
+        
         })
         .catch(error=>this.setState({isloading: false, error: error.message}));
     }

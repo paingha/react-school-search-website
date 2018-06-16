@@ -46,18 +46,20 @@ export class NewBlogComment extends Component{
         }
     }
     postComment(){
-        const {isloading, error, content, created} = this.state;
+        const {isloading, error, content, created, firstName, lastName} = this.state;
         let by = this.state.idUser;
         let blogId = this.props.parentBlog;        
         this.setState({isloading: true, error: undefined});
         console.log(content);
         console.log(by);
         console.log(blogId)
+        console.log(firstName)
+        console.log(lastName)
         return fetch(settings.urls.new_comment, {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
             mode: 'cors',
-            body: JSON.stringify({content, by, blogId})
+            body: JSON.stringify({content, by, blogId, firstName, lastName})
         })
         .then(
             response => response.json()

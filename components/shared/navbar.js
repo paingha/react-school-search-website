@@ -61,8 +61,8 @@ export default class Navbar extends Component{
             dropdownBlock = (
                 <ul id="dropDown" className="account_dropdown">
                     <li><a href="/profile">My Profile</a></li>
-                    <li><a href="#">Saved</a></li>
-                    <li><a href="#">Settings</a></li>
+                    <li><a href="/profile/saved">Saved</a></li>
+                    <li><a href="/profile/settings">Settings</a></li>
                     <li><a href="/logout">Logout</a></li>
                 </ul>
             )
@@ -80,8 +80,8 @@ export default class Navbar extends Component{
         }
         moreBlock = (
             <ul id="dropDown" className="account_dropdown">
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">Forum</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/forum">Forum</a></li>
             </ul>
         )
         return(
@@ -96,8 +96,8 @@ export default class Navbar extends Component{
                    <li>
                       <a href="/" className="white">Home</a>
                    </li>
-                   <li><a href="#" className="white">About US</a></li>
-                   <li><a href="#" className="white">GPA Calculator</a></li>
+                   <li><a href="/about_us" className="white">About US</a></li>
+                   <li><a href="/gpa-calculator" className="white">GPA Calculator</a></li>
                    <li><a href="/school-search" className="white">School Search</a></li>
                    <li><a href="/scholarship-search" className="white">Scholarship Search</a></li>
                    <li><a href="/blog" className="white">Blog</a></li>

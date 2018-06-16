@@ -3,6 +3,7 @@ import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import {connect} from 'react-redux';
 import _ from 'lodash'
+import Idle from 'react-idle'
 import settings from '../../settings'
 import LoadingResult from './loading-result'
 import NoResult from './no-result'
@@ -16,30 +17,6 @@ import 'react-select/dist/react-select.css';
 import Modal from 'react-responsive-modal'
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import ScholarshipResult from './scholarship-result'
-const MAJORS = [
-	{ label: 'Business', value: 'Business' },
-	{ label: 'Nursing', value: 'Nursing' },
-	{ label: 'Computer Science', value: 'Computer Science' },
-	{ label: 'Computer Engineering', value: 'Computer Engineering' },
-	{ label: 'Liberal Art', value: 'Liberal Art' },
-    { label: 'Criminal Justice', value: 'Criminal Justice' },
-    { label: 'Electrical Engineering', value: 'Electrical Engineering' },
-    { label: 'Environmental Engineering', value: 'Environmental Engineering' },
-    { label: 'Anthropology', value: 'Anthropology' },
-    { label: 'English Language', value: 'English Language' },
-    { label: 'History', value: 'History' },
-    { label: 'Sociology', value: 'Sociology' },
-    { label: 'Information Technology', value: 'Information Technology' },
-    { label: 'Communication', value: 'Communication' },
-    { label: 'Accounting', value: 'Accounting' },
-    { label: 'Business Administration', value: 'Business Administration' },
-    { label: 'Economics', value: 'Economics' },
-    { label: 'Mathematics', value: 'Mathematics' },
-    { label: 'Business and Advertisement', value: 'Business and Advertisement' },
-    { label: 'Marketing', value: 'Marketing' },
-    { label: 'Science', value: 'Science' },
-    { label: 'Real Estate', value: 'Real Estate'}
-];
 const GPAS = [
     { label: '2.0', value: '2.0' },
     { label: '2.1', value: '2.1' },
@@ -83,11 +60,6 @@ const CRITERIAS = [
     { label: 'Need', value: 'Need' },
     { label: 'Other', value: 'Other' }
 ];
-const APPLICANTCOUNTRIES = [
-    { label: 'Ghana', value: 'Ghana' },
-    { label: 'Nigeria', value: 'Nigeria' },
-    { label: 'South Africa', value: 'South Africa' }
-];
 export class ScholarshipSearch extends Component{
 
     constructor(props) {
@@ -109,8 +81,9 @@ export class ScholarshipSearch extends Component{
             results: [],
             resultCount: 0,
             offset: 0,
-            open: false,
+            open: true,
             opened: false,
+            searchYet: false,
           showCloseIcon: false,
           CloseIcon: true,
           activePage: 1,
@@ -119,6 +92,8 @@ export class ScholarshipSearch extends Component{
           noCoin: false,
           resultObj: {},
           stuffs: null,
+          majors: null,
+          countries: null
         };
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
@@ -218,6 +193,38 @@ export class ScholarshipSearch extends Component{
             )
         }
     }
+    fetchMajors(token) {
+        this.setState({isloading: true});
+        if (token) {
+            fetch(settings.urls.get_majors, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, majors: data})
+            )
+        }
+    }
+    fetchCountries(token) {
+        this.setState({isloading: true});
+        if (token) {
+            fetch(settings.urls.get_countries, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, countries: data})
+            )
+        }
+    }
     handleGpaChange (gpa) {
 		console.log('You\'ve selected:', gpa);
 		this.setState({ gpa }, ()=>{
@@ -265,12 +272,16 @@ export class ScholarshipSearch extends Component{
     componentWillReceiveProps(nextProps) {
         if (!this.props.user_id && !!nextProps.user_id && !this.state.user) {
             this.fetchUser(localStorage.token, nextProps.user_id);
+            this.fetchMajors(localStorage.token);
+            this.fetchCountries(localStorage.token);
         }
     }
 
     componentDidUpdate(previousProps, previousState) {
         if(previousState.results !== this.state.results) {
             this.fetchUser(localStorage.token, this.props.user_id);
+            this.fetchMajors(localStorage.token);
+            this.fetchCountries(localStorage.token);
           }
           if(previousState.offset !== this.state.offset) {
             this.Search();
@@ -304,10 +315,10 @@ export class ScholarshipSearch extends Component{
     Search() {
         let {offset} = this.state;
         let {id,coin} = this.state.user;
-        // if(coin < 1 && offset < 15){
-        //     this.noCoin();
-        // }
-        // else{
+        if(coin < 1 && offset < 15){
+            this.noCoin();
+         }
+         else{
         const {applicantCountry, resultCount, amount, gpa, criteria, level, country, isloading, results, error, Majors} = this.state;
         let user_id = id;
         let major = [];
@@ -325,7 +336,7 @@ export class ScholarshipSearch extends Component{
         .then(
             data => {
                 if(data.length != 0){
-                this.setState({isloading: false, results: data.rows, resultCount: data.count}, ()=>{
+                this.setState({isloading: false, results: data.rows, resultCount: data.count, searchYet: true}, ()=>{
                     //show share modal
                     console.log('results', this.state.results)
         let savedItems = _.map(this.state.results, function(currentObject) {
@@ -336,18 +347,19 @@ export class ScholarshipSearch extends Component{
           this.setState({stuffs: result},()=>{
               console.log('stuff',this.state.stuffs)
           })
+                if (this.state.activePage == 1){
                     this.OpenModal();
+                }
                 })
         }else{
-            this.setState({isloading: false, noneResult: true})
+            this.setState({isloading: false, noneResult: true, searchYet: true})
         }
         }
         )
-    // }
     }
-
+    }
+    
     render(){
-
         if(!this.state.user){
             return <React.Fragment> 
             <div className="row">
@@ -410,13 +422,13 @@ export class ScholarshipSearch extends Component{
                 );
             
         }
-        const options = MAJORS;
+        const options = this.state.majors;
         const amounts = AMOUNTS;
         const gpas = GPAS;
         const levels = LEVELS;
         const criterias = CRITERIAS;
         const countries = COUNTRIES;
-        const applicantCountries = APPLICANTCOUNTRIES;
+        const applicantCountries = this.state.countries;
         const {pathname} = this.props.location;
         const {referralCode} = this.state.user
             return <div> 
@@ -456,7 +468,7 @@ export class ScholarshipSearch extends Component{
                                             clearable={true}
                                             onChange={this.handleApplicantCountryChange}
                                             options={applicantCountries}
-                                            searchable={false}
+                                            searchable={true}
                                         />
                                         </div>
                                         <div className="col-md-4">
@@ -559,6 +571,36 @@ export class ScholarshipSearch extends Component{
                 </section>
                 
             </div> 
+            { this.state.results.length > 0 ?
+            <Idle
+                    timeout={65000}  
+                    defaultIdle={false}
+                    onChange={({ idle}) => {
+                        if (!idle) {
+                                this.setState({results: []})
+                    }
+                }
+            }
+                    render={({ idle }) =>
+      <h1>
+        {idle
+          ? <Modal className="video-modal coin-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
+          <h1>You have been Inactive for a while</h1>
+          <p>Click the button below to extend your session</p>
+          <div className="row">
+          <div className="col-md-4"></div>
+          <div className="col-md-4"><button onClick={this.onCloseModal} className="navbar-btn aligner"><span className="user-info">I'm still Here!</span></button></div>
+          <div className="col-md-4"></div>
+          </div>
+      </Modal>
+          : null
+        }
+      </h1>
+    }
+                />
+                : null
+}
+            
             {noResult}
             {resultsBlock}
             {results.length > 0 ?
@@ -579,15 +621,6 @@ export class ScholarshipSearch extends Component{
             
              <Footer />
            
-            <Modal className="video-modal coin-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
-                <h1>Your Search cannot be completed because you do not have enough coins</h1>
-                <p>Buy Coin to continue search</p>
-                <div className="row">
-                <div className="col-md-4"></div>
-                <div className="col-md-4"><a href={urlParams} className="navbar-btn aligner"><span className="user-info">Buy Coin</span></a></div>
-                <div className="col-md-4"></div>
-                </div>
-            </Modal>
             { noneModal == 0 ?
             <Modal className="video-modal share-modal" open={opened} onClose={this.CloseShareModal} showCloseIcon={CloseIcon} little>
                 <h3 className="result-count">{resultCount} results Found</h3>

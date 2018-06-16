@@ -7,6 +7,7 @@ import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import {Search, BookOpen} from 'react-feather'
+import {toastr} from 'react-redux-toastr'
 const ForumSuccess = () =>
 <React.Fragment> 
 <div className="row">
@@ -121,7 +122,11 @@ export class NewForum extends Component{
         .then(json=>{
             if (json.error)
                 throw Error(json.error.message || 'Unknown fetch error');
-            this.setState({fetching: false, error: undefined, created: true});
+            this.setState({fetching: false, error: undefined, created: true}, ()=>{
+                setTimeout(()=> {
+                    toastr.success('Created!', 'Forum Post created successfully')
+                }, 10);
+            });
         })
         .catch(error=>this.setState({isloading: false, error: error.message}));
     }

@@ -57,6 +57,7 @@ export default class ProfileBox extends Component{
             isAdmin,
             isDisabled,
             lastName,
+            referralToken,
             level,
             major,
             saved,
@@ -66,11 +67,17 @@ export default class ProfileBox extends Component{
         return <div className="col-spaced box profile-box">
                 <div className="profile-img">
                 <div className="profile-img-tag">
-                    <img src="https://www.biography.com/.image/t_share/MTE4MDAzNDEwNzQzMTY2NDc4/will-smith-9542165-1-402.jpg" className="profile-image"/>
+                    <img src="/img/user-img.png" className="profile-image"/>
                 </div>
                 </div>
                 <div className="profile-sub-box">
                     <p className="story-paragraph">
+                    You have {referralToken} referral Points
+                    <br/>
+                    { referralToken < 3 ?
+                        <a href="/get_reward">Redeem Points</a>
+                        : null
+                    }
                         <br/>
                         You have {coin} coins
                         <br/>

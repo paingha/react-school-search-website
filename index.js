@@ -6,7 +6,7 @@ import jwtDecode from 'jwt-decode'
 import {prepareStore} from './store';
 import settings from './settings';
 import {Router} from './router';
-
+import ReduxToastr from 'react-redux-toastr'
 import {errorLogin, receiveUser, requestUser} from './actions/user';
 
 
@@ -40,7 +40,10 @@ if (token) {
 
 render(
     <Provider store={store}>
+        <React.Fragment>
         <Router/>
+        <ReduxToastr/>
+        </React.Fragment>
     </Provider>,
     document.getElementById('app_home')
 )

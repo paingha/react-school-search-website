@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 
 import {App} from './components/app'
 import {Home} from './components/home'
+import {AboutUs} from './components/about_us'
 import {Pay} from './components/pay'
 import {CheckoutForm} from './components/CheckoutForm'
 import {Register} from './components/accounts/register'
@@ -15,13 +16,16 @@ import ScholarshipSearch from './components/search/scholarship-search'
 import {SchoolSearch} from './components/search/school-search'
 import ByGpa from './components/search/by-gpa'
 import {ProfileSettings} from './components/accounts/settings'
+import SavedScholarship from './components/accounts/saved_scholarship'
 import BuyCoin from './components/buy_coin'
+import RewardMe from './components/get_reward'
 import Login from './components/accounts/login'
 import {Forgot} from './components/accounts/forgot'
 import {Logout} from './components/accounts/logout'
 import {ResetPassword} from './components/accounts/reset_password'
 import {EmailConfirmed} from './components/accounts/email_confirmed'
 import {Forum} from './components/forum/forum'
+import {GpaCalculator} from './components/gpa_calculator'
 import {SingleForum} from './components/forum/single'
 import {Blog} from './components/blog/blog'
 import {SinglePost} from './components/blog/single-post'
@@ -49,6 +53,7 @@ export const Router = props => (
     <BrowserRouter>
         <Switch>
         <Route exact path="/" component={Home}/>
+        <Route path="/about_us" component={AboutUs}/>
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>
         <Route path="/logout" component={Logout}/>
@@ -61,6 +66,7 @@ export const Router = props => (
         <Route path="/forum/:topic/:forum_id" component={SingleForum} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/terms-of-use" component={TOS} />
+        <Route path="/gpa-calculator" component={GpaCalculator} />
         <PrivateArea>
         <Route path="/get-started" component={GetStarted} />
             <App>
@@ -68,11 +74,12 @@ export const Router = props => (
             <Route path="/profile/transactions" component={ProfileTransactions} />
             <Route path="/profile/settings" component={ProfileSettings} />
             <Route path="/profile/referrals" component={ProfileReferrals} />
+            <Route path="/profile/saved" component={SavedScholarship} />
             <Route path="/scholarship-search" component={ScholarshipSearch}/>
             <Route exact path="/school-search" component={SchoolSearch}/>
             <Route path="/school-search/by-gpa" component={ByGpa}/>
-            <Route path="/pay" component={Pay}/>
-            <Route path="/buy_coin" component={BuyCoin}/>
+            <Route exact path="/get_reward" component={RewardMe} />
+            <Route exact path="/buy_coin" component={BuyCoin}/>
             <Route path="/paypal" component={CheckoutForm} />
             <Route path="/new-forum" component={NewForum} />
             <Route path="/new-blog" component={NewBlog} />
