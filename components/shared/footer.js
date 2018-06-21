@@ -38,7 +38,7 @@ export default class Footer extends Component{
             <a href="/about-us">About Us</a>
           </li>
           <li>
-            <a href="/careers">Careers</a>
+            <a href="/">Careers</a>
           </li>
         </ul>
       </div>

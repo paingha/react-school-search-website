@@ -2499,6 +2499,19 @@ min-height: 100vh;
     padding: 1.3em 2em 1em 2em;
     
   }
+  .gpa-box {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 20em;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+    border-radius: 5px;
+    z-index: 50;
+    padding: 1.3em 2em 1em 2em;
+    
+  }
   .more-help-row .help-box{
     height: 15em!important;
   }
@@ -2512,7 +2525,6 @@ min-height: 100vh;
     background-color: #F4F5F7!important;
     height: auto;
     min-height: 100%;
-    
   }
   .new-article-row .help-box {
     margin-top: -13%;
@@ -2527,6 +2539,60 @@ min-height: 100vh;
     border-radius: 5px;
     z-index: 50;
     padding: 1.3em 2em 1em 2em;
+    
+  }
+  .new-article-row .col-spaced .gpa-box{
+    margin-left: 0em;
+    margin-top: 0em!important;
+    position: relative;
+    display: inline-block;
+   padding-top: 1.5em;
+ padding-left: 2em;
+ padding-right: 2em;
+ padding-bottom: 1em;
+}
+  .new-article-row .gpa-box {
+    margin-top: 0%;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-height: 20em;
+    height: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+    border-radius: 5px;
+    z-index: 50;
+    padding: 1.3em 2em 1em 2em;
+    
+  }
+
+  .new-gpa-calc-row .col-gpa-spaced .gpa-instruct-box{
+    margin-left: 0em;
+    margin-top: 0em!important;
+    position: relative;
+   padding-top: 1.5em;
+ padding-left: 2em;
+ padding-right: 2em;
+ padding-bottom: 1em;
+}
+  .new-gpa-calc-row .gpa-instruct-box {
+    display: flex!important;
+  justify-content: center!important; 
+  align-items: center!important;
+  flex-direction: column;
+    margin-top: -25%;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    min-height: 18em;
+    height: auto;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+    border-radius: 5px;
+    z-index: 50;
+    padding: 0em 2em 1em 2em;
     
   }
   .recent-article-row h2{
@@ -3205,6 +3271,14 @@ align-items: center;
   align-items: center;
   flex-direction: column;
 }
+.gpa-result{
+  font-size: 16px;
+  font-weight: bold;
+  display: flex!important;
+  justify-content: center!important; 
+  align-items: center;
+  flex-direction: row;
+}
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,800);
 figure.snip1192 {
@@ -3295,4 +3369,96 @@ figure.snip1192 .author h5 span {
 }
 .testimonial-heading{
   font-weight: bold;
+}
+.new-gpa-row{
+  background-color: #F4F5F7!important;
+  height: auto;
+  min-height: 100%;
+}
+.new-gpa-row .help-box {
+  margin-top: 2%;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 28em;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border-radius: 5px;
+  z-index: 50;
+  padding: 1.3em 2em 1em 2em;
+  
+}
+.new-gpa-row .col-spaced .gpa-box{
+  margin-left: 0em;
+  margin-top: 0em!important;
+  position: relative;
+  display: inline-block;
+ padding-top: 1.5em;
+padding-left: 2em;
+padding-right: 2em;
+padding-bottom: 1em;
+}
+.new-gpa-row .gpa-box {
+  margin-top: 5%;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 20em;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border-radius: 5px;
+  z-index: 50;
+  padding: 1.3em 2em 1em 2em;
+  
+}
+
+.new-gpa-calc-row{
+  background-color: #F4F5F7!important;
+  height: auto;
+  min-height: 100%;
+  margin-top: 7%!important;
+}
+.new-gpa-calc-row .help-box {
+ 
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 28em;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border-radius: 5px;
+  z-index: 50;
+  padding: 1.3em 2em 1em 2em;
+  
+}
+.new-gpa-calc-row .col-spaced .gpa-box{
+  margin-left: 0em;
+  margin-top: 0em!important;
+  position: relative;
+  display: inline-block;
+ padding-top: 1.5em;
+padding-left: 2em;
+padding-right: 2em;
+padding-bottom: 1em;
+}
+.new-gpa-calc-row .gpa-box {
+  margin-top: 0%;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 20em;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border-radius: 5px;
+  z-index: 50;
+  padding: 1.3em 2em 1em 2em;
+  
 }

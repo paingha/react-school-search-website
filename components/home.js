@@ -110,7 +110,7 @@ export class Home extends Component {
                               </div></div>
                               <div className="col-md-4 col-sm-12"><div className="col-spaced box">
                                     <img src="./img/Website_4.png" className="hero-img" />
-                                    <h4 className="hero-heading-3"><a href="#">GPA CALCULATOR</a></h4>
+                                    <h4 className="hero-heading-3"><a href="/gpa-calculator">GPA CALCULATOR</a></h4>
                                     <p className="story-paragraph-3">As an aspiring undergraduate/graduate student, evaluate your GPA to the US and Canada grade system; and it’s eligibility to your school of interest.</p>
                                    
                               </div></div>
