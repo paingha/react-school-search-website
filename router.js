@@ -15,7 +15,7 @@ import ProfileTransactions from './components/accounts/transactions'
 import ScholarshipSearch from './components/search/scholarship-search'
 import {SchoolSearch} from './components/search/school-search'
 import ByGpa from './components/search/by-gpa'
-import {ProfileSettings} from './components/accounts/settings'
+import ProfileSettings from './components/accounts/settings'
 import SavedScholarship from './components/accounts/saved_scholarship'
 import BuyCoin from './components/buy_coin'
 import RewardMe from './components/get_reward'
@@ -26,6 +26,7 @@ import {ResetPassword} from './components/accounts/reset_password'
 import {EmailConfirmed} from './components/accounts/email_confirmed'
 import {Forum} from './components/forum/forum'
 import {GpaCalculator} from './components/gpa_calculator'
+import {Application} from './components/application'
 import {SingleForum} from './components/forum/single'
 import {Blog} from './components/blog/blog'
 import {SinglePost} from './components/blog/single-post'
@@ -44,6 +45,18 @@ const PrivateArea = connect(
         :
         <Redirect to={{
             pathname: '/login',
+            state: { from: props.location }
+        }}/>
+);
+
+const AdminArea = connect(
+    state=>({admin: state.user.data})
+)(
+    props=>props.admin ?
+        props.children
+        :
+        <Redirect to={{
+            pathname: '/',
             state: { from: props.location }
         }}/>
 );
@@ -84,8 +97,10 @@ export const Router = props => (
             <Route path="/new-forum" component={NewForum} />
             <Route path="/new-blog" component={NewBlog} />
             </App>
+            <AdminArea>
+        <Route path="/application" component={Application} />
+        </AdminArea>
         </PrivateArea>
-
         </Switch>
     </BrowserRouter>
 );

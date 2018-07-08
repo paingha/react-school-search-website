@@ -76,9 +76,9 @@ export class ResetPassword extends Component {
                     
                         <div className="forgot-inner-box">
                         <h3 className="forgot-header">Reset Your Password</h3>
-                            <input type="password" placeholder="New Password" className="forgot-input"
-                                value={password} onChange={e=>this.setState({password: e.target.value})}/>
-                            <input type="password" placeholder="Confirm New Password" className="forgot-input"/>
+                        <span className="major-select"><input type="password" placeholder="New Password" className="textInput"
+                                value={password} onChange={e=>this.setState({password: e.target.value})}/></span>
+                        <span className="major-select"><input type="password" placeholder="Confirm New Password" className="textInput"/></span>
                             {error && <div className="forgot-validation-error">{error}</div>}
                             {fetching?
                                 <div className="forgot-button"><img className="forgot-button-puff" src="/img/puff.svg"/></div>

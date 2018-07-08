@@ -60,6 +60,7 @@ const CRITERIAS = [
     { label: 'Need', value: 'Need' },
     { label: 'Other', value: 'Other' }
 ];
+
 export class ScholarshipSearch extends Component{
 
     constructor(props) {

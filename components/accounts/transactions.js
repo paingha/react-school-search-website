@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import ProfileBox from '../shared/profile_box'
+import ReferBox from '../shared/refer_box'
 import {connect} from 'react-redux';
 import settings from '../../settings'
 import {ProfileTabs} from './profile'
@@ -190,6 +191,7 @@ export class ProfileTransactions extends Component{
                 <div className="row">
                 <div className="col-md-4 col-sm-12">
                              <ProfileBox userData={this.state.user}/>
+                             <ReferBox userData={this.state.user} />
                 </div>
                                 <div className="col-md-8 col-sm-12">
                               <div className="col-spaced box">

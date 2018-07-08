@@ -44,7 +44,7 @@ export class Home extends Component {
                             <div className="row">
                             <div className="col-md-6">
                             <div className="col-spacer">
-                            <input type="submit" className="home-button" value="Get Started" />
+                            <a href="/register"><input type="submit" className="home-button" value="Get Started" /></a>
                             </div>
                             </div>
                             <div className="col-md-6">

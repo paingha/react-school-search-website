@@ -2,12 +2,48 @@ import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import ProfileBox from '../shared/profile_box'
+import ReferBox from '../shared/refer_box'
 import {connect} from 'react-redux';
 import {Link, withRouter} from "react-router-dom";
 import settings from '../../settings'
 import {ShoppingCart} from 'react-feather'
-
-
+import Select from 'react-select';
+import {toastr} from 'react-redux-toastr'
+const CRITERIAS = [
+	{ label: 'Merit', value: 'Merit' },
+    { label: 'Need', value: 'Need' }
+];
+const GPAS = [
+    { label: '2.0', value: '2.0' },
+    { label: '2.1', value: '2.1' },
+    { label: '2.2', value: '2.2' },
+    { label: '2.3', value: '2.3' },
+    { label: '2.4', value: '2.4' },
+    { label: '2.5', value: '2.5' },
+    { label: '2.6', value: '2.6' },
+    { label: '2.7', value: '2.7' },
+    { label: '2.8', value: '2.8' },
+    { label: '2.9', value: '2.9' },
+    { label: '3.0', value: '3.0' },
+    { label: '3.1', value: '3.1' },
+    { label: '3.2', value: '3.2' },
+    { label: '3.3', value: '3.3' },
+    { label: '3.4', value: '3.4' },
+    { label: '3.5', value: '3.5' },
+    { label: '3.6', value: '3.6' },
+    { label: '3.7', value: '3.7' },
+    { label: '3.8', value: '3.8' },
+    { label: '3.9', value: '3.9' },
+    { label: '4.0', value: '4.0' }
+];
+const LEVELS = [
+	{ label: 'Graduate', value: 'Graduate' },
+    { label: 'Undergraduate', value: 'Undergraduate' }
+];
+const COUNTRIES = [
+	{ label: 'US', value: 'US' },
+	{ label: 'Canada', value: 'Canada' }
+];
 const ProfileTab = withRouter(function (props) {
     let {name} = props;
     if (props.link == location.pathname)
@@ -37,15 +73,25 @@ export class Profile extends Component{
         this.state = {
             isloading: false,
             user: null,
-            FirstName: '',
-            LastName: '',
-            Criteria: '',
-            Level: '',
-            ApplicantCountry: '',
-            ScholarshipCountry: '',
-            Gpa: '',
+            majors: [],
+            countries: [],
+            firstName: '',
+            lastName: '',
+            criteria: '',
+            level: '',
+            applicantCountry: '',
+            scholarshipCountry: '',
+            gpa: '',
+            major: '',
             error: null,
         };
+        this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
+        this.handleLevelChange = this.handleLevelChange.bind(this);
+        this.handleMajorChange = this.handleMajorChange.bind(this);
+        this.handleCountryChange = this.handleCountryChange.bind(this);
+        this.handleApplicantCountryChange = this.handleApplicantCountryChange.bind(this);
+        this.handleGpaChange = this.handleGpaChange.bind(this);
+        
     }
 
 
@@ -69,6 +115,8 @@ export class Profile extends Component{
 
     componentDidMount() {
         this.fetchUser(localStorage.token, this.props.user_id);
+        this.fetchCountries();
+        this.fetchMajors();
     }
 
 
@@ -78,26 +126,132 @@ export class Profile extends Component{
         }
     }
 
-    /*doUpdate(token, user_id) {
-        const {firstName, lastName, gpa, criteria, level, applicantCountryId, scholarshipCountryId} = this.state;
-        this.setState({fetching: true, error: undefined});
+    doUpdate(token, user_id) {
+        const {firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, isloading} = this.state;
+        const userStuff = this.state.user;
+        if(firstName == '' && lastName == '' && gpa == '' && criteria == '' && level == '' && major == '' && applicantCountry == '' && scholarshipCountry == ''){
+            toastr.error('Error!', 'No Changes made')
+        }
+        else{
+        if(firstName == ''){
+            this.setState({firstName: userStuff.firstName});
+        }
+        if(lastName == ''){
+            this.setState({lastName: userStuff.lastName});
+        }
+        if(gpa == ''){
+            this.setState({gpa: userStuff.gpa});
+        }
+        if(criteria == ''){
+            this.setState({criteria: userStuff.criteria});
+        }
+        if(level == ''){
+            this.setState({level: userStuff.level});
+        }
+        if(major == ''){
+            this.setState({major: userStuff.major});
+        }
+        if(applicantCountry == ''){
+            this.setState({applicantCountry: userStuff.applicantCountry});
+        }
+        if(scholarshipCountry == ''){
+            this.setState({scholarshipCountry: userStuff.scholarshipCountry});
+        }
+        //Bug being called before setState
+        setTimeout(()=>{
+        this.setState({isloading: true}, ()=>{
+            console.log(JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry}))
         return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
             method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json', 'Authorization': token},
             mode: 'cors',
-            body: JSON.stringify({firstName, lastName, gpa, criteria, level, applicantCountryId, scholarshipCountryId})
+            body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry})
         })
             .then(response=>response.json())
             .then(json=>{
-                if (json.error)
+                if (json.error){
                     throw Error(json.error.message || 'Unknown fetch error');
-                this.setState({fetching: false, error: undefined/*, registered: true});
+                    toastr.error('Error!', 'An error occured, please try again')
+                }
+                this.setState({isloading: false}, ()=>{
+                    toastr.success('Success!', 'Profile Updated Successfully')
+                });
             })
-            .catch(error=>this.setState({fetching: false, error: error.message}));
+            .catch(error=>this.setState({isloading: false}));
+        })
+    }, 4000)
+    }
+    }
+    handleCountryChange (country) {
+		console.log('You\'ve selected:', country);
+		this.setState({ country });
+    }
+    handleGpaChange (gpa) {
+		console.log('You\'ve selected:', gpa);
+		this.setState({ gpa }, ()=>{
+            console.log(this.state.gpa)
+        });
+    }
+    handleApplicantCountryChange(applicantCountry){
+        this.setState({ applicantCountry });
+    }
+    handleCriteriaChange (criteria) {
+		console.log('You\'ve selected:', criteria);
+		this.setState({ criteria }, ()=>{
+            console.log(this.state.criteria)
+        });
+    }
+    handleLevelChange (level) {
+        console.log('You\'ve selected:', level);
+        this.setState({ level });
+    }
+    handleMajorChange (major) {
+		console.log('You\'ve selected:', major);
+		this.setState({ major }, ()=>{
+            console.log(this.state.major)
+        });
+    }
+    handleCountryChange (scholarshipCountry) {
+        console.log('You\'ve selected:', scholarshipCountry);
+        this.setState({ scholarshipCountry });
+    }
+    fetchMajors() {
+        this.setState({isloading: true});
+            fetch(settings.urls.get_majors, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, majors: data})
+            )
         
-    }*/
-
+    }
+    fetchCountries() {
+        this.setState({isloading: true});
+            fetch(settings.urls.get_countries, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, countries: data})
+            )
+        
+    }
     render(){
+        const options = this.state.majors;
+        const gpas = GPAS;
+        const levels = LEVELS;
+        const criterias = CRITERIAS;
+        const countries = COUNTRIES;
+        const applicantCountries = this.state.countries;
         if(!this.state.user){
             return <React.Fragment>
             <div className="row">
@@ -201,6 +355,7 @@ export class Profile extends Component{
                         <div className="row">
                         <div className="col-md-4 col-sm-12">
                                     <ProfileBox userData={this.state.user} />
+                                    <ReferBox userData={this.state.user} />
                         </div>
                                     <div className="col-md-8 col-sm-12">
                                     
@@ -208,51 +363,112 @@ export class Profile extends Component{
                                     <ProfileTabs />
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={firstName} className="register-input"
-                                        onChange={e=>this.setState({FirstName: e.target.value})}/>
+                                        <span className="major-select"><input placeholder={firstName} className="textInput" type="text" onChange={e=>this.setState({firstName: e.target.value})}/></span>
+                                    
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={lastName} className="register-input"
-                                        onChange={e=>this.setState({LastName: e.target.value})}/>
+                                        <span className="major-select"><input placeholder={lastName} className="textInput" type="text" onChange={e=>this.setState({lastName: e.target.value})}/></span>
+                 
                                         </div>
                                     </div>
                                     
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={criteria} className="register-input"
-                                        onChange={e=>this.setState({Criteria: e.target.value})}/>
+                                        <Select
+                                            name="form-field-name"
+                                            className="major-select"
+                                            onBlurResetsInput={false}
+                                            onSelectResetsInput={false}
+                                            value={this.state.criteria}
+                                            placeholder={criteria}
+                                            simpleValue
+                                            multi={false}
+                                            clearable={true}
+                                            onChange={this.handleCriteriaChange}
+                                            options={criterias}
+                                            searchable={false}
+                                        />
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={level} className="register-input"
-                                        onChange={e=>this.setState({Level: e.target.value})}/>
+                                        <Select
+                                            name="form-field-name"
+                                            className="major-select"
+                                            value={this.state.level}
+                                            placeholder={level}
+                                            multi={false}
+                                            simpleValue
+                                            onChange={this.handleLevelChange}
+                                            options={levels}
+                                            searchable={false}
+                                        />
                                         </div>
                                     </div>
 
 
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={applicantCountry} className="register-input"
-                                        onChange={e=>this.setState({ApplicantCountry: e.target.value})}/>
+                                        <Select
+                                            name="applicantcountry"
+                                            className="major-select"
+                                            onBlurResetsInput={false}
+                                            onSelectResetsInput={false}
+                                            value={this.state.applicantCountry}
+                                            placeholder={applicantCountry}
+                                            simpleValue
+                                            multi={false}
+                                            clearable={true}
+                                            onChange={this.handleApplicantCountryChange}
+                                            options={applicantCountries}
+                                            searchable={true}
+                                        />
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={scholarshipCountry} className="register-input"
-                                        onChange={e=>this.setState({ScholarshipCountry: e.target.value})}/>
+                                        <Select
+                                            name="form-field-name"
+                                            className="major-select"
+                                            value={this.state.scholarshipCountry}
+                                            placeholder={scholarshipCountry}
+                                            multi={false}
+                                            simpleValue
+                                            onChange={this.handleCountryChange}
+                                            options={countries}
+                                        />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="col-md-6">
-                                        <input type="text" placeholder={gpa} className="register-input"
-                                        onChange={e=>this.setState({Gpa: e.target.value})}/>
+                                        <Select
+                                            name="gpa"
+                                            className="gpa-select"
+                                            value={this.state.gpa}
+                                            placeholder={gpa}
+                                            multi={false}
+                                            simpleValue
+                                            onChange={this.handleGpaChange}
+                                            options={gpas}
+                                            searchable={false}
+                                        />
                                         </div>
                                         <div className="col-md-6">
+                                        <Select
+                                            name="gpa"
+                                            className="gpa-select"
+                                            value={this.state.major}
+                                            placeholder={major}
+                                            multi={false}
+                                            simpleValue
+                                            onChange={this.handleMajorChange}
+                                            options={options}
+                                            searchable={true}
+                                        />
                                         </div>
                                     </div>
                                     <div className="row">
                                     <div className="col-md-6">
-                                    <button className="navbar-btn aligner"><span className="user-info">Update Profile</span></button>
+                                    <button className="navbar-btn aligner" onClick={()=> {this.doUpdate(localStorage.token, this.props.user_id)}}><span className="user-info">Update Profile</span></button>
                                     </div>
                                     <div className="col-md-6">
-                                    <button className="navbar-btn aligner"><span className="user-info">View Matches</span></button>
+                                    
                                     </div>
                                     </div>
                                     </div>

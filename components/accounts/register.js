@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import settings from '../../settings';
-
+import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
+import TiSocialFacebookCircular from 'react-icons/lib/ti/social-facebook-circular';
+import {toastr} from 'react-redux-toastr'
 const RegisterSuccess = () =>
     <div className="container-fluid register-wrapper-background">
         <svg id="successAnimation" className="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
@@ -34,8 +37,75 @@ export class Register extends Component {
             password: '',
             confirmPassword: ''
         };
+        this.componentClicked = this.componentClicked.bind(this);
     }
-
+    responseFacebook(response){
+        const {fetching, error, registered} = this.state;
+        let email = response.email;
+        let firstName = response.first_name;
+        let lastName = response.last_name;
+        let token = response.accessToken;
+        let userId = response.userID;
+        //post to facebook register api
+        this.setState({fetching: true});
+        return fetch(settings.urls.facebook_register, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            mode: 'cors',
+            body: JSON.stringify({firstName, lastName, email, token, userId})
+        })
+            .then(response=>response.json())
+            .then(json=>{
+                if (json.error){
+                    throw Error(json.error.message || 'Unknown fetch error');
+                    toastr.error('Error!', 'An error occured, please try again')
+                }
+                this.setState({fetching: false, registered: true}, ()=>{
+                    //toastr.success('Success!', 'Profile Updated Successfully')
+                });
+            })
+            .catch(error=>this.setState({fetching: false}));
+    
+      }
+      componentClicked(){
+        console.log("Clicked");
+      }
+      failureGoogle(response){
+        toastr.error('Error!', 'An error occured, please try again')
+      }
+      facebookFailure(response){
+        toastr.error('Error!', 'An error occured, please try again')
+      }
+      responseGoogle(response){
+        const {fetching, error, registered} = this.state
+        let userObj = response.profileObj;
+        //post to google register api
+        let email = userObj.email;
+        let firstName = userObj.givenName;
+        let lastName = userObj.familyName;
+        this.setState({fetching: true});
+        return fetch(settings.urls.google_register, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            mode: 'cors',
+            body: JSON.stringify({firstName, lastName, email})
+        })
+            .then(response=>response.json())
+            .then(json=>{
+                if (json.error){
+                    throw Error(json.error.message || 'Unknown fetch error');
+                    toastr.error('Error!', 'An error occured, please try again')
+                }
+                this.setState({fetching: false, registered: true}, ()=>{
+                    //toastr.success('Success!', 'Profile Updated Successfully')
+                });
+            })
+            .catch(error=>this.setState({fetching: false}, ()=> {
+                toastr.error('Error!', 'An error occured, please try again')
+            }));
+    
+      }
+    
     doRegister() {
         const {firstName, lastName, email, password, confirmPassword} = this.state;
         this.setState({fetching: true, error: undefined});
@@ -74,23 +144,51 @@ export class Register extends Component {
                     <div className="col-md-4 register-padding">
                         <div className="register-inner-box">
                         <h3 className="register-header">Register An Account</h3>
-                            <input type="text" placeholder="First Name" className="register-input"
-                                value={firstName} onChange={e=>this.setState({firstName: e.target.value})}/>
-                            <input type="text" placeholder="Last Name" className="register-input"
-                                value={lastName} onChange={e=>this.setState({lastName: e.target.value})}/>
+                        <span className="major-select"><input type="text" placeholder="First Name" className="textInput"
+                                value={firstName} onChange={e=>this.setState({firstName: e.target.value})}/></span>
+                        <span className="major-select"><input type="text" placeholder="Last Name" className="textInput"
+                                value={lastName} onChange={e=>this.setState({lastName: e.target.value})}/></span>
                             {/*<input type="text" placeholder="Username" className="register-input"/>*/}
-                            <input type="email" placeholder="Email" className="register-input"
-                                   value={email} onChange={e=>this.setState({email: e.target.value})}/>
-                            <input type="password" placeholder="Password" className="register-input"
-                                   value={password} onChange={e=>this.setState({password: e.target.value})}/>
-                            <input type="password" placeholder="Confirm Password" className="register-input"
-                                   value={confirmPassword} onChange={e=>this.setState({confirmPassword: e.target.value})}/>
+                        <span className="major-select"><input type="email" placeholder="Email" className="textInput"
+                                   value={email} onChange={e=>this.setState({email: e.target.value})}/></span>
+                        <span className="major-select"><input type="password" placeholder="Password" className="textInput"
+                                   value={password} onChange={e=>this.setState({password: e.target.value})}/></span>
+                        <span className="major-select"><input type="password" placeholder="Confirm Password" className="textInput"
+                                   value={confirmPassword} onChange={e=>this.setState({confirmPassword: e.target.value})}/></span>
                             {error && <div className="register-validation-error">{error}</div>}
                             {fetching?
                                 <div className="register-button"><img className="register-button-puff" src="/img/puff.svg"/></div>
                                 :
                                 <input type="submit" className="register-button" value="Register" onClick={()=>this.doRegister()}/>
                             }
+                            
+                        </div>
+                        <br />
+                        <div className="row">
+                        <div className="col-md-6">
+                            <FacebookLogin
+                            appId="221044735203389"
+                            autoLoad={false}
+                            isMobile={true}
+                            textButton="Facebook"
+                            fields="first_name, last_name ,email"
+                            cssClass="social-button facebook-connect"
+                            //icon={<TiSocialFacebookCircular size={30}/>}
+                            onClick={this.componentClicked}
+                            onFailure={this.facebookFailure.bind(this)}
+                            callback={this.responseFacebook.bind(this)} />
+                        </div>
+                        <div className="col-md-6">
+                        <GoogleLogin 
+                            clientId="607932067834-c7accuf92bvs0m9u8gego87v61d5daoq.apps.googleusercontent.com"
+                            buttonText="Google"
+                            autoLoad={false}
+                            className="social-button google-connect"
+                            //icon={<TiSocialFacebookCircular size={30}/>}
+                            onSuccess={this.responseGoogle.bind(this)}
+                            onFailure={this.failureGoogle.bind(this)}
+                        />
+                        </div>
                         </div>
                     </div>
                     <div className="col-md-4"></div>

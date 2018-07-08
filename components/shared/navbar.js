@@ -47,7 +47,7 @@ export default class Navbar extends Component{
         let { open, more } = this.state
         if(localStorage.token == null){
             navBlock = (
-                <a className="navbar-btn" href="/register">Get Started</a>
+                <a className="navbar-btn aligner" href="/login">Login</a>
             )
         }
         else{
@@ -70,12 +70,12 @@ export default class Navbar extends Component{
        
         if(localStorage.token == null){
             loginBlock = (
-                <li><a href="/login" className="white">Login</a></li>
+                <li><a href="/forum" className="white">Forum</a></li>
             )
         }
         else{
             loginBlock = (
-                <li></li>
+                <li><a href="/forum" className="white">Forum</a></li>
             )
         }
         moreBlock = (
@@ -88,7 +88,7 @@ export default class Navbar extends Component{
             <div className="navbar navbar-transparent">
                                 <div className="container">
                                   <div className="navbar-header">
-                                   
+                                  
                                     <a className="navbar-brand" href="#"><img src="https://theacademist.herokuapp.com/img/logo.svg" className="logoImg"/></a>
                                   </div>
          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -101,7 +101,7 @@ export default class Navbar extends Component{
                    <li><a href="/school-search" className="white">School Search</a></li>
                    <li><a href="/scholarship-search" className="white">Scholarship Search</a></li>
                    <li><a href="/blog" className="white">Blog</a></li>
-                   <li><a href="/forum" className="white">Forum</a></li>
+                   
                    { loginBlock }
                    <li>
                    { navBlock }  

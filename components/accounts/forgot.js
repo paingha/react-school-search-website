@@ -69,8 +69,8 @@ export class Forgot extends Component {
                         <div className="forgot-inner-box">
                         <h3 className="forgot-header">Reset Your Password</h3>
                             
-                            <input type="email" placeholder="Email" className="forgot-input"
-                                   value={email} onChange={e=>this.setState({email: e.target.value})}/>
+                        <span className="major-select"><input type="email" placeholder="Email" className="textInput"
+                                   value={email} onChange={e=>this.setState({email: e.target.value})}/></span>
                             
                             {error && <div className="forgot-validation-error">{error}</div>}
                             {fetching?

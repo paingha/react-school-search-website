@@ -443,7 +443,7 @@ class Step1 extends Component {
         this.setState({isloading: true});
         return fetch(settings.urls.get_currency, {
             method: 'GET',
-            headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
+            headers: {'Content-Type': 'application/json'},
             mode: 'cors',
         })
         .then( 

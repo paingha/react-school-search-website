@@ -87,7 +87,9 @@ export class GetStarted extends Component{
             firstLogin: false,
             profileComplete: false,
             error: null,
-            isloading: false
+            isloading: false,
+            majors:[],
+            countries:[]
         };
         this.handleGpaChange = this.handleGpaChange.bind(this);
         this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
@@ -109,12 +111,29 @@ export class GetStarted extends Component{
             console.log(this.state.gpa)
         });
     }
-
+    componentDidMount(){
+        this.fetchMajors();
+        this.fetchCountries();
+        }
     handleLevelChange (level) {
 		console.log('You\'ve selected:', level);
 		this.setState({ level });
     }
-
+    fetchCountries() {
+        this.setState({isloading: true});
+            fetch(settings.urls.get_countries, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, countries: data})
+            )
+        
+    }
     handleMajorChange (major) {
 		console.log('You\'ve selected:', major);
 		this.setState({ major }, ()=>{
@@ -133,6 +152,21 @@ export class GetStarted extends Component{
     }
     UpdateProfile(){
         this.Started(localStorage.token, this.props.user_id)
+    }
+    fetchMajors() {
+        this.setState({isloading: true});
+            fetch(settings.urls.get_majors, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, majors: data})
+            )
+
     }
     Started(token, user_id) {
         const {major, applicantCountry, scholarshipCountry, gpa, criteria, level, firstLogin, error, isloading, profileComplete} = this.state
@@ -156,8 +190,8 @@ export class GetStarted extends Component{
     }
     render(){
         const {major, applicantCountry, scholarshipCountry, gpa, criteria, level, profileComplete, isloading, error} = this.state
-        const options = MAJORS;
-        const applicantcountry = APPLICANTCOUNTRIES;
+        const options = this.state.majors;
+        const applicantcountry = this.state.countries;
         const levels = LEVELS;
         const gpas = GPAS;
         const criterias = CRITERIAS;

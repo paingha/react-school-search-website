@@ -1,24 +1,56 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
-//import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 import settings from '../../settings'
 import {ProfileTabs} from './profile'
-
+import ProfileBox from '../shared/profile_box'
+import ReferBox from '../shared/refer_box'
+import {ShoppingCart} from 'react-feather'
 export class ProfileSettings extends Component{
     constructor(props) {
         super(props);
         this.state = {
             currentPassword: '',
-            newPassword: ''
+            newPassword: '',
+            user: null,
         };
     }
+    fetchUser(token, user_id) {
+        this.setState({isloading: true});
+        if (token && user_id) {
+            fetch(settings.urls.get_user.replace('{user_id}', user_id ), {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, user: data})
+            )
+        }
+    }
+    
+    componentDidMount() {
+        this.fetchUser(localStorage.token, this.props.user_id);
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.props.user_id && !!nextProps.user_id && !this.state.user) {
+            this.fetchUser(localStorage.token, nextProps.user_id);
+        }
+    }
+
     doChange(){
         
     }
     render(){
         const { currentPassword, newPassword } = this.state
-        return(
-            <div>
+        
+            if(!this.state.user){
+            return <React.Fragment>
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
@@ -26,7 +58,7 @@ export class ProfileSettings extends Component{
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
-                            <h1 className="home-headline">Welcome Joe </h1>
+                            <h1 className="home-headline">Loading </h1>
                              
                             </div>
                         </div>
@@ -42,31 +74,102 @@ export class ProfileSettings extends Component{
                 <section className="profile-section-2">
                 <div className="story-box">
                 <div className="row">
-                              <div className="col-md-4 col-sm-12">
-                              <div className="col-spaced box profile-box">
-                              <div className="profile-img">
-                                <div className="profile-img-tag">
-                                <img src="/img/user-img.png" className="profile-image"/>
-                                </div>
-                              </div>
-                              <div className="profile-sub-box">
-                                    <p className="story-paragraph">
+                <div className="col-md-4 col-sm-12">
+                <div className="col-spaced box profile-box">
+                <div className="profile-img">
+                <div className="profile-img-tag">
+                    <img src="/img/user-img.png" className="profile-image"/>
+                </div>
+                </div>
+                <div className="profile-sub-box">
+                    <p className="story-paragraph">
+                        <br/>
+                        <div className='text-input__loading--line3'></div>
+                        <br/>
+                        </p>
+                        <a href="/buy_coin"><button className="navbar-btn aligner"><ShoppingCart className="user-chevron-down-icon"/><span className="user-info">Buy Coins</span></button></a>
                                     
-                                    Personalize your evaluated GPA to search for schools you might qaspiring to study.</p>
-                                </div>
-                                   </div></div>
-
+                </div>
+                </div>
+                </div>
                                 <div className="col-md-8 col-sm-12">
                               <div className="col-spaced box">
                               <ProfileTabs />
+                              
+                                <div className='text-input__loading--line3'></div>
+                                <div className='text-input__loading--line3'></div>
+                                <div className='text-input__loading--line3'></div>
+                                <div className='text-input__loading--line3'></div>
+                                <div className='text-input__loading--line3'></div>
+                                <div className='text-input__loading--line3'></div>
+                                   </div></div>
+                        </div>
+                        </div>
+                </section>
+                </div>  
+                </React.Fragment>
+        }
+        let {
+            applicantCountry,
+            coin,
+            createdAt,
+            criteria,
+            email,
+            emailVerified,
+            firstName,
+            gpa,
+            id,
+            isActive,
+            isAdmin,
+            isDisabled,
+            lastName,
+            level,
+            major,
+            saved,
+            scholarshipCountry,
+            updatedAt
+        } = this.state.user;
+        let { referrals, resultCount } = this.state;
+        return <div>
+            <div className="row">
+            <section className="profile-section">
+                     <Navbar />  
+                    
+                    <div className="row-fluid hero-box">
+                        <div className="col-md-12">
+                            <div className="headline-box">
+                            <h1 className="home-headline">Welcome {firstName} {lastName} </h1>
+                             
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+
+                            </div>
+                        </div>
+                    
+                </section>
+                
+                </div>
+                <div className="row">
+                <section className="profile-section-2">
+                <div className="story-box">
+                <div className="row">
+                <div className="col-md-4 col-sm-12">
+                             <ProfileBox userData={this.state.user}/>
+                             <ReferBox userData={this.state.user} />
+                </div>
+                                <div className="col-md-8 col-sm-12">
+                              <div className="col-spaced box">
+        
+                              <ProfileTabs />
                               <div className="row">
                                         <div className="col-md-6">
-                                        <input type="password" placeholder="Current Password" className="register-input"
-                                        value={currentPassword} onChange={e=>this.setState({currentPassword: e.target.value})}/>
+                                        <span className="major-select"><input placeholder="Current Password" className="textInput" type="password" value={currentPassword} onChange={e=>this.setState({currentPassword: e.target.value})}/></span>
+          
                                         </div>
                                         <div className="col-md-6">
-                                        <input type="password" placeholder="New Password" className="register-input"
-                                        value={newPassword} onChange={e=>this.setState({newPassword: e.target.value})}/>
+                                        <span className="major-select"><input placeholder="New Password" className="textInput" type="password" value={newPassword} onChange={e=>this.setState({newPassword: e.target.value})}/></span>
+          
                                         </div>
                                     </div>
                                     <button className="navbar-btn aligner" onClick={()=>this.doChange(localStorage.token, this.props.user_id)}><span className="user-info">Change Password</span></button>
@@ -77,14 +180,14 @@ export class ProfileSettings extends Component{
                 </section>
                 </div>  
                 </div>
-        );
+        
     }
 }
 
-/*function mapper(state) {
+function mapper(state) {
     return {
         user_id: state.user.data && state.user.data.id
     }
 }
 
-export default connect(mapper)(ProfileTransactions);*/
+export default connect(mapper)(ProfileSettings);

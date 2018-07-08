@@ -138,9 +138,12 @@ input:-webkit-autofill {
   background: transparent !important;
 }
 
-
-
-
+.appCheckout{
+  margin-top: -2%;
+  max-width: 800px;
+  box-sizing: border-box;
+  padding: 0 5px;
+}
 
 .Checkout {
   margin: 0 auto;
@@ -299,11 +302,29 @@ button:hover {
   border-radius: 4px!important;
   background:#F5F5F5!important;
   border: 2px solid #F5F5F5!important;
+  color: #ccc!important;
 }
 .textInput{
-  width: 100%;
-  padding-left: 5px;
-  padding-right: 5px;
+  display: block!important;
+  width: 100%!important;
+  padding: 5px 7px!important;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px!important;
+  border-radius: 4px!important;
+  background:#ffffff!important;
+  color: #333!important;
+  border: 1px solid #ccc!important;
+}
+.textInput::-webkit-input-placeholder {
+  color: #b3b3b3!important;
+}
+.textInput::-moz-placeholder {
+  color: #b3b3b3!important;
+}
+.textInput:-ms-input-placeholder {
+  color: #b3b3b3!important;
+}
+.textInput:placeholder {
+  color: #b3b3b3!important;
 }
 .search-input-wrapper{
   display: block;
@@ -797,11 +818,15 @@ min-height: 100vh;
   background-color: transparent;
   font-size: 17px;
 }
+.navbar .navbar-right{
+margin-top: 0%!important;
+}
 .home-headline{
   color: white;
   font-weight: bold;
   word-wrap: break-word;
   max-width: 80%;
+  font-size: 30px;
 }
 .home-text{
   font-size: 26px;
@@ -954,7 +979,35 @@ min-height: 100vh;
   background-color: #FFBF71!important;
   color: white;
 }
-
+.application-btn {
+  white-space: nowrap;
+  border: 2px solid #FFBF71;
+  outline: 0;
+  display: inline-block;
+  height: 50px;
+  line-height: 17px;
+  width: 40%!important;
+  padding-top: 0;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  color: #fff;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  background-color: #FFBF71;
+  text-decoration: none;
+  -webkit-transition: all 150ms ease;
+  transition: all 150ms ease;
+  margin-top: -2px;
+}
+.application-btn:hover {
+  white-space: nowrap;
+  border: 2px solid #FFBF71!important;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
+  background-color: #FFBF71!important;
+  color: white;
+}
 .curve-down{
   color:#ffffff;
   margin-top: -2.5em;
@@ -1261,6 +1314,13 @@ min-height: 100vh;
       height: 22em!important;
       padding: 0 0 1em 0!important;
       
+    }
+    .refer-box{
+      height: 6em!important;
+      padding: 0 0 1em 0!important;
+      display: flex!important;
+      align-items: center!important;
+      justify-content: center!important;
     }
     
     .profile-sub-box{
@@ -3279,6 +3339,13 @@ align-items: center;
   align-items: center;
   flex-direction: row;
 }
+.application-or{
+  font-size: 18px;
+  font-weight: bold;
+  display: flex!important;
+  justify-content: center!important; 
+  align-items: center;
+}
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,800);
 figure.snip1192 {
@@ -3461,4 +3528,113 @@ padding-bottom: 1em;
   z-index: 50;
   padding: 1.3em 2em 1em 2em;
   
+}
+.new-application-row{
+  background-color: #F4F5F7!important;
+  height: auto;
+  min-height: 100%;
+}
+.new-application-row .help-box {
+  margin-top: -10%;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 28em;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border-radius: 5px;
+  z-index: 50;
+  padding: 1.3em 2em 1em 2em;
+  
+}
+.new-application-row .col-spaced .gpa-box{
+  margin-left: 0em;
+  margin-top: 0em!important;
+  position: relative;
+  display: inline-block;
+ padding-top: 1.5em;
+padding-left: 2em;
+padding-right: 2em;
+padding-bottom: 1em;
+}
+.new-application-row .gpa-box {
+  margin-top: -10%;
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-height: 20em;
+  height: auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.14902) 0px 1px 3px, rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
+  border-radius: 5px;
+  z-index: 50;
+  padding: 1.3em 2em 1em 2em;
+  
+}
+.center-now{
+  display: flex!important;
+  justify-content: center!important; 
+  align-items: center;
+  flex-direction: row;
+}
+.datePick{
+  width: 100%!important;
+}
+
+.social-button {
+  background-position: 25px 0px;
+  box-sizing: border-box;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  text-align: left;
+  text-decoration: none;
+  text-transform: uppercase;
+  vertical-align: middle;
+  width: 100%;
+  border-radius: 3px;
+  margin: 10px auto;
+  outline: rgb(255, 255, 255) none 0px;
+  padding-left: 20%;
+  transition: all 0.2s cubic-bezier(0.72, 0.01, 0.56, 1) 0s;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
+.facebook-connect {
+  background: rgb(60, 90, 154) url('https://eswarasai.com/projects/social-login/img/facebook-white.svg') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+  border: 1px solid rgb(60, 90, 154);
+}
+
+.facebook-connect:hover {
+  border-color: rgb(60, 90, 154);
+  background: rgb(60, 90, 154) url('https://eswarasai.com/projects/social-login/img/facebook-white.svg') no-repeat scroll 5px 0px / 30px 50px padding-box border-box;
+  -webkit-transition: all .8s ease-out;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease-out;
+}
+.google-connect {
+  background: rgb(220, 74, 61) url('https://eswarasai.com/projects/social-login/img/google-plus-white.png') no-repeat scroll 2px 0px / 40px 50px padding-box border-box;
+  border: 1px solid rgb(220, 74, 61);
+  padding-right: 2em!important;
+}
+
+.google-connect:hover {
+  border-color: rgb(220, 74, 61);
+  background: rgb(220, 74, 61) url('https://eswarasai.com/projects/social-login/img/google-plus-white.png') no-repeat scroll 2px 0px / 40px 50px padding-box border-box;
+  -webkit-transition: all .8s ease-out;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease-out;
 }
