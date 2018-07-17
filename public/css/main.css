@@ -278,7 +278,9 @@ button:hover {
   margin-left: 45%;
   margin-right: 45%;
 }
-
+.popup-button-puff{
+  color: red
+}
 .login-row-height{
   margin-top: 15%;
 }
@@ -3580,6 +3582,12 @@ padding-bottom: 1em;
   align-items: center;
   flex-direction: row;
 }
+.more-modal{
+  display: flex!important;
+  justify-content: center!important; 
+  align-items: center;
+  flex-direction: column;
+}
 .datePick{
   width: 100%!important;
 }
@@ -3637,4 +3645,8 @@ padding-bottom: 1em;
   -ms-transition: all .3s ease;
   -o-transition: all .3s ease;
   transition: all .3s ease-out;
+}
+.scholarship-list{
+  width: 100%;
+  overflow-x: scroll!important;
 }

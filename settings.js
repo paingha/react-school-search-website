@@ -15,6 +15,7 @@ export default {
         paypal_pay: 'https://theacademist.herokuapp.com/services/paypal/{user_id}',
         list_transactions: 'https://theacademist.herokuapp.com/api/v1/transaction/list/{user_id}',
         scholarship_search: 'https://theacademist.herokuapp.com/api/v1/scholarship/search',
+        get_scholarships: 'https://theacademist.herokuapp.com/api/v1/scholarship',
         get_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/{scholarship_id}',
         unsave_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/unsave/{user_id}',
         save_scholarship: 'https://theacademist.herokuapp.com/api/v1/scholarship/save/{user_id}',

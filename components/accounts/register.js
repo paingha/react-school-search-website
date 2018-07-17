@@ -174,7 +174,7 @@ export class Register extends Component {
                             fields="first_name, last_name ,email"
                             cssClass="social-button facebook-connect"
                             //icon={<TiSocialFacebookCircular size={30}/>}
-                            onClick={this.componentClicked}
+                            //onClick={this.componentClicked}
                             onFailure={this.facebookFailure.bind(this)}
                             callback={this.responseFacebook.bind(this)} />
                         </div>

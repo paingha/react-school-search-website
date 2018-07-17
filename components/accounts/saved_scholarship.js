@@ -3,6 +3,7 @@ import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import ProfileBox from '../shared/profile_box'
 import ReferBox from '../shared/refer_box'
+import ScholarshipPopup from '../shared/scholarship_popup'
 import {connect} from 'react-redux';
 import settings from '../../settings'
 import {ProfileTabs} from './profile'
@@ -21,9 +22,21 @@ export class SavedScholarship extends Component{
             offset: 0,
             activePage: 1,
             resultCount: 0,
+            opened: false,
+            id: 0
         };
+        this.OpenModal = this.OpenModal.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
-
+    handleClose(x){
+        this.setState({opened: x})
+    }
+    OpenModal(param) {
+        this.setState({ opened: true, id: param }, ()=>{
+            //this.getMore(param)
+        });
+        
+      };
     fetchUser(token, user_id) {
         this.setState({isloading: true});
         if (token && user_id) {
@@ -231,8 +244,7 @@ export class SavedScholarship extends Component{
                                    
                                     </div>
                                     <div className="col-md-4">
-                                    <button className="search-btn aligner" ><Edit className="user-icon"/> <span className="user-info">View More</span></button>
-                                    
+                                    <button className="search-btn aligner" onClick={this.OpenModal.bind(this, `${save.id}`)}><Edit className="user-icon"/> <span className="user-info">View More</span></button> 
                                     </div>
                                 </div>
                                 
@@ -249,6 +261,7 @@ export class SavedScholarship extends Component{
                 </section>
                 </div>  
                 <Footer />
+                <ScholarshipPopup open={this.state.opened} scholarship_id={this.state.id} getInput={this.handleClose}/>
                 </div>
         
     }

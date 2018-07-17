@@ -8,6 +8,7 @@ import Modal from 'react-responsive-modal'
 import _ from 'lodash'
 import UnBlurred from './unblurred'
 import Blurred from './blurred'
+import ScholarshipPopup from '../shared/scholarship_popup'
 
 export default class ScholarshipResult extends Component{
 
@@ -26,19 +27,58 @@ export default class ScholarshipResult extends Component{
           reply: '',
           stuffs: null,
           visible: true,
-          visibleID: null,        
+          visibleID: null,  
+          id: 0,  
+          warningTime: 1000 * 60 * 1,
+          signoutTime: 1000 * 60 * 2,    
         };
         this.onOpenModal = this.onOpenModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
         //this.OpenModal = this.OpenModal.bind(this);
         this.CloseModal = this.CloseModal.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+    }
+    clearTimeoutFunc = () => {
+        if (this.warnTimeout) clearTimeout(this.warnTimeout);
+  
+        if (this.logoutTimeout) clearTimeout(this.logoutTimeout);
+      };
+  
+      setTimeout = () => {
+        this.warnTimeout = setTimeout(this.warn, this.state.warningTime);
+        this.logoutTimeout = setTimeout(this.logout, this.state.signoutTime);
+      };
+  
+      resetTimeout = () => {
+        this.clearTimeoutFunc();
+        this.setTimeout();
+      };
+  
+      warn = () => {
+        console.log('You will be logged out automatically in 1 minute.');
+      };
+  
+      logout = () => {
+        // Send a logout request to the API
+        console.log('Sending a logout request to the API...');
+        this.destroy();
+      };
+  
+      destroy = () => {
+       //clear the session
+        //browserHistory.push('/');
+        //window.location.assign('/');
+        console.log("Show modal here and end search")
+      };
+    handleClose(x){
+        this.setState({opened: x})
     }
     onOpenModal() {
         this.setState({ open: true })
       };
       OpenModal(param) {
-        this.setState({ opened: true }, ()=>{
-            this.getMore(param)
+        this.setState({ opened: true, id: param }, ()=>{
+            //this.getMore(param)
         });
         
       };
@@ -128,6 +168,20 @@ export default class ScholarshipResult extends Component{
     }
 
     componentDidMount() {
+        this.events = [
+            'load',
+            'mousemove',
+            'mousedown',
+            'click',
+            'scroll',
+            'keypress'
+          ];
+    
+          for (var i in this.events) {
+            window.addEventListener(this.events[i], this.resetTimeout);
+          }
+    
+          this.setTimeout();
     }
     mouseEnter(e){
         this.setState({visibleID: e, visible: false},()=>{
@@ -168,12 +222,12 @@ export default class ScholarshipResult extends Component{
                 <React.Fragment>
                     
                 {searchResults.map((result, id)=>
-                    <div className="row">
+                    <div key={result.id} className="row">
                     <div className="col-md-1">
                     </div>
 
                                 
-                                <div key={id} className="col-md-10 col-sm-12">
+                                <div className="col-md-10 col-sm-12">
                                 <div className="col-spaced box">
                                 { _.includes(savedID, result.id) ? 
                                     <React.Fragment>
@@ -269,9 +323,7 @@ export default class ScholarshipResult extends Component{
                     </div>
                 </section>
             </div> 
-            <Modal className="video-modal single-scholarship-modal" open={opened} onClose={this.CloseModal} showCloseIcon={true} little>
-            
-            </Modal>
+            <ScholarshipPopup open={this.state.opened} scholarship_id={this.state.id} getInput={this.handleClose}/>
             </React.Fragment>
             ); 
          //}

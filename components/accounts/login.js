@@ -38,7 +38,7 @@ class Login extends Component {
             .then(json=>{
                 if (json.error){
                     throw Error(json.error.message || 'Unknown fetch error');
-                    toastr.error('Error!', 'An error occured, please try again')
+                    toastr.error('Error!', 'An error occured, please try again - facebook')
                 }
                 dispatch(receiveLogin(json));
                 localStorage.token = json.token;
@@ -164,7 +164,7 @@ class Login extends Component {
                             fields="first_name, last_name ,email"
                             cssClass="social-button facebook-connect"
                             //icon={<TiSocialFacebookCircular size={30}/>}
-                            onClick={this.componentClicked}
+                            //onClick={this.componentClicked}
                             onFailure={this.facebookFailure.bind(this)}
                             callback={this.responseFacebook.bind(this)} />
                         </div>

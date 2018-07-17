@@ -3,7 +3,6 @@ import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import {connect} from 'react-redux';
 import _ from 'lodash'
-import Idle from 'react-idle'
 import settings from '../../settings'
 import LoadingResult from './loading-result'
 import NoResult from './no-result'
@@ -572,35 +571,7 @@ export class ScholarshipSearch extends Component{
                 </section>
                 
             </div> 
-            { this.state.results.length > 0 ?
-            <Idle
-                    timeout={65000}  
-                    defaultIdle={false}
-                    onChange={({ idle}) => {
-                        if (!idle) {
-                                this.setState({results: []})
-                    }
-                }
-            }
-                    render={({ idle }) =>
-      <h1>
-        {idle
-          ? <Modal className="video-modal coin-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
-          <h1>You have been Inactive for a while</h1>
-          <p>Click the button below to extend your session</p>
-          <div className="row">
-          <div className="col-md-4"></div>
-          <div className="col-md-4"><button onClick={this.onCloseModal} className="navbar-btn aligner"><span className="user-info">I'm still Here!</span></button></div>
-          <div className="col-md-4"></div>
-          </div>
-      </Modal>
-          : null
-        }
-      </h1>
-    }
-                />
-                : null
-}
+     
             
             {noResult}
             {resultsBlock}

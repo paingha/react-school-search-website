@@ -48,6 +48,3 @@ render(
     document.getElementById('app_home')
 )
 
-
-
-

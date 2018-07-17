@@ -49,18 +49,6 @@ const PrivateArea = connect(
         }}/>
 );
 
-const AdminArea = connect(
-    state=>({admin: state.user.data})
-)(
-    props=>props.admin ?
-        props.children
-        :
-        <Redirect to={{
-            pathname: '/',
-            state: { from: props.location }
-        }}/>
-);
-
 
 export const Router = props => (
     <BrowserRouter>
@@ -97,9 +85,6 @@ export const Router = props => (
             <Route path="/new-forum" component={NewForum} />
             <Route path="/new-blog" component={NewBlog} />
             </App>
-            <AdminArea>
-        <Route path="/application" component={Application} />
-        </AdminArea>
         </PrivateArea>
         </Switch>
     </BrowserRouter>
