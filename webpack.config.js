@@ -5,11 +5,11 @@ var nodeEnv = process.env.NODE_ENV || 'development';
 var isProd = nodeEnv === 'production';
 
 module.exports = {
-    mode: 'development',  
+    mode: 'development',
     entry: './index.js',
     output: {
       path: path.resolve(__dirname, 'public/app'),
-      filename: 'bundle.[hash].js',
+      filename: 'bundle.js',
     },
     devtool: 'cheap-module-source-map', // inline-source-map
     optimization: {
@@ -35,15 +35,15 @@ module.exports = {
       ]
     },
     plugins: [
-        
-        new CompressionPlugin({ 
+
+        new CompressionPlugin({
           asset: "[path].gz[query]",
           algorithm: "gzip",
           test: /\.js$|\.css$|\.html$/,
           threshold: 10240,
           minRatio: 0.8
         }),
-      
+
       ],
     module: {
       rules: [
@@ -79,7 +79,7 @@ module.exports = {
         fs: 'empty',
         net: 'empty'
       },
-  };    
+  };
 
 
 

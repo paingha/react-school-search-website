@@ -6,19 +6,19 @@ export default class BlogComments extends Component{
         let comments = this.props.reply
         return(
             <div className="container-fluid">
-                
-                {comments.map((stuff, id)=> 
+
+                {comments.map((stuff, id)=>
             <div key={stuff.id} className="row-fluid forum-comment-row">
-            
-              
+
+
     <div className="col-md-2">
     </div>
-    
+
     <div className="col-md-8">
     <div className="col-spacings help-box">
-   
+
     <div className="row article-sub-row">
-    
+
 
     <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_comment_image.png" /></div>
     <div className="col-md-10">
@@ -28,7 +28,7 @@ export default class BlogComments extends Component{
     <div className="col-md-6">
     <span className="forum-by"><span className="forum-poster-name">{stuff.firstName} {stuff.lastName}</span> said</span>
     <br/>
-    <span className="forum-posted-date">Commented on 
+    <span className="forum-posted-date">Commented on
     &nbsp;
             <Moment format="MMM Do, YYYY">
                 {stuff.createdAt}
@@ -43,20 +43,20 @@ export default class BlogComments extends Component{
 
     <br/>
     <span className="content">{stuff.content}</span>
-    
+
     </div>
     </div>
-    
+
     <div className="col-md-2">
     </div>
     </div>
         </div>
-        
+
         <div className="col-md-2">
     </div>
     <div className="clearfix"></div>
-    </div>  
-    )}    
+    </div>
+    )}
     <div className="clearfix"></div>
     </div>
         );
