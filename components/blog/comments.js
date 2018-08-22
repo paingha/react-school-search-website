@@ -8,7 +8,7 @@ export default class BlogComments extends Component{
             <div className="container-fluid">
                 
                 {comments.map((stuff, id)=> 
-            <div className="row-fluid forum-comment-row">
+            <div key={stuff.id} className="row-fluid forum-comment-row">
             
               
     <div className="col-md-2">

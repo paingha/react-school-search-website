@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import {connect} from 'react-redux';
 import _ from 'lodash'
 import settings from '../../settings'
@@ -93,7 +94,8 @@ export class ScholarshipSearch extends Component{
           resultObj: {},
           stuffs: null,
           majors: null,
-          countries: null
+          countries: null,
+          userID: 0
         };
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
@@ -121,47 +123,37 @@ export class ScholarshipSearch extends Component{
     )
     this.CloseShareModal();
     }
-    handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
-        //(n-1)15
-        let mathStuff = pageNumber - 1;
-        let multiplyStuff = mathStuff * 15;
-        this.setState({activePage: pageNumber, offset: multiplyStuff }, ()=>{
-            this.Search();
-            window.scrollTo(0, 0);
-        });
-         
-    }
+    
 
     handleApplicantCountryChange(applicantCountry){
         this.setState({ applicantCountry });
     }
     handleCriteriaChange (criteria) {
-		console.log('You\'ve selected:', criteria);
+		//console.log('You\'ve selected:', criteria);
 		this.setState({ criteria }, ()=>{
-            console.log(this.state.criteria)
+            //console.log(this.state.criteria)
         });
     }
 
     handleLevelChange (level) {
-		console.log('You\'ve selected:', level);
+		//console.log('You\'ve selected:', level);
 		this.setState({ level });
     }
 
     handleMajorChange (Majors) {
-		console.log('You\'ve selected:', Majors);
+		//console.log('You\'ve selected:', Majors);
 		this.setState({ Majors }, ()=>{
-            console.log(this.state.Majors)
+            //console.log(this.state.Majors)
         });
     }
 
     handleAmountChange (amount) {
-		console.log('You\'ve selected:', amount);
+		//console.log('You\'ve selected:', amount);
 		this.setState({ amount });
     }
     
     handleCountryChange (country) {
-		console.log('You\'ve selected:', country);
+		//console.log('You\'ve selected:', country);
 		this.setState({ country });
     }
     onOpenModal() {
@@ -177,6 +169,17 @@ export class ScholarshipSearch extends Component{
       CloseShareModal(){
         this.setState({ opened: false });
       }
+      handlePageChange(pageNumber) {
+        //console.log(`active page is ${pageNumber}`);
+        //(n-1)15
+        let mathStuff = pageNumber - 1;
+        let multiplyStuff = mathStuff * 15;
+        this.setState({activePage: pageNumber, offset: multiplyStuff }, ()=>{
+            this.Search();
+            window.scrollTo(0, 0);
+        });
+         
+    }
     fetchUser(token, user_id) {
         this.setState({isloading: true});
         if (token && user_id) {
@@ -189,7 +192,9 @@ export class ScholarshipSearch extends Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, user: data})
+                data => this.setState({isloading: false, user: data}, ()=>{
+                    //console.log(data)
+                })
             )
         }
     }
@@ -228,7 +233,7 @@ export class ScholarshipSearch extends Component{
     handleGpaChange (gpa) {
 		console.log('You\'ve selected:', gpa);
 		this.setState({ gpa }, ()=>{
-            console.log(this.state.gpa)
+            //console.log(this.state.gpa)
         });
     }
     refreshResults(){
@@ -236,41 +241,75 @@ export class ScholarshipSearch extends Component{
             this.Search();
         })
     }
+    setUser(user){
+        this.setState({userID: user})
+    }
     componentDidMount() {
         let cookieStuff = cookie.load('noModal') || 0;
         this.setState({ noneModal: cookieStuff})
         this.fetchUser(localStorage.token, this.props.user_id);
-        const query = parse(location.search);
-        if (query.search_callback == "true"){
-            this.setQuery(localStorage.token, this.props.user_id);
-        }
+        this.fetchMajors(localStorage.token);
+        this.fetchCountries(localStorage.token);
     }
 
     setQuery(token, user_id){
+        let {coin} = this.state.user;
+        if(coin < 0.5 ){
+            this.noCoin();
+         }
+         else{
         const query = parse(location.search);
         let editedMajor = query.major.replace(/([-]+)/g,",");
         let majorRay = [];
         majorRay.push(editedMajor);
-        this.setState({isloading: true});
+        let major = majorRay;
+        let criteria = query.criteria;
+        let gpa = query.gpa;
+        let level = query.level;
+        let amount = query.amount;
+        let applicantCountry = query.applicant_country;
+        let country = query.country;
+        let offset = query.offset;
+        this.setState({isloading: true, major: majorRay, criteria: query.criteria, gpa: query.gpa, level: query.level, amount: query.amount, applicantCountry: query.applicant_country, offset: query.offset});
         if (token && user_id) {
-            fetch(settings.urls.get_user.replace('{user_id}', user_id ), {
-                method: 'GET',
+            fetch(settings.urls.scholarship_search, {
+                method: 'POST',
                 headers: {'Content-Type': 'application/json', 'Authorization': token},
                 mode: 'cors',
+                body: JSON.stringify({applicantCountry, major, country, gpa, criteria, level, amount, user_id, offset})
             })
             .then(
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, user: data, major: majorRay, criteria: query.criteria, level: query.level, gpa: query.gpa, applicantCountry: query.applicant_country, country: query.country, amount: query.amount, offset: query.offset}, ()=>{
-                    this.Search();
-                })
+                data => {
+                    if(data.length != 0){
+                        this.setState({isloading: false, results: data.rows, resultCount: data.count, searchYet: true}, ()=>{
+                            //show share modal
+                            //console.log('results', this.state.results)
+                let savedItems = _.map(this.state.results, function(currentObject) {
+                    return _.pick(currentObject, "id");
+                });
+                //console.log('savedItems',savedItems)
+                let result = savedItems.map(v => v.visible = true)
+                  this.setState({stuffs: result},()=>{
+                     // console.log('stuff',this.state.stuffs)
+                  })
+                        if (this.state.activePage == 1){
+                            this.OpenModal();
+                        }
+                        })
+                }else{
+                    this.setState({isloading: false, noneResult: true, searchYet: true})
+                }
+                }
             )
         }
-        
     }
+    } 
     componentWillReceiveProps(nextProps) {
         if (!this.props.user_id && !!nextProps.user_id && !this.state.user) {
+            this.setUser(this.props.user_id);
             this.fetchUser(localStorage.token, nextProps.user_id);
             this.fetchMajors(localStorage.token);
             this.fetchCountries(localStorage.token);
@@ -307,7 +346,7 @@ export class ScholarshipSearch extends Component{
         .then(
             data => {
                 this.setState({isloading: false, resultObj: data, noCoin: true},()=>{
-                    console.log('coin', data)
+                    //console.log('coin', data)
                 })
         
         })
@@ -315,7 +354,7 @@ export class ScholarshipSearch extends Component{
     Search() {
         let {offset} = this.state;
         let {id,coin} = this.state.user;
-        if(coin < 1 && offset < 15){
+        if(coin < 0.5 && offset < 15){
             this.noCoin();
          }
          else{
@@ -338,14 +377,14 @@ export class ScholarshipSearch extends Component{
                 if(data.length != 0){
                 this.setState({isloading: false, results: data.rows, resultCount: data.count, searchYet: true}, ()=>{
                     //show share modal
-                    console.log('results', this.state.results)
+                    //console.log('results', this.state.results)
         let savedItems = _.map(this.state.results, function(currentObject) {
             return _.pick(currentObject, "id");
         });
-        console.log('savedItems',savedItems)
+        //console.log('savedItems',savedItems)
         let result = savedItems.map(v => v.visible = true)
           this.setState({stuffs: result},()=>{
-              console.log('stuff',this.state.stuffs)
+              //console.log('stuff',this.state.stuffs)
           })
                 if (this.state.activePage == 1){
                     this.OpenModal();
@@ -365,6 +404,7 @@ export class ScholarshipSearch extends Component{
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -418,7 +458,7 @@ export class ScholarshipSearch extends Component{
         }
         else{
             resultsBlock = (
-                <ScholarshipResult visibility={stuffs} noCoinObj={resultObj} coin={noCoin} refresh={this.refreshResults} currentUser={this.state.user}/*none={noneResult}*/search={results}/>
+                <ScholarshipResult buyCoin={urlParams} visibility={stuffs} noCoinObj={resultObj} coin={noCoin} refresh={this.refreshResults} currentUser={this.state.user}/*none={noneResult}*/search={results}/>
                 );
             
         }
@@ -431,10 +471,12 @@ export class ScholarshipSearch extends Component{
         const applicantCountries = this.state.countries;
         const {pathname} = this.props.location;
         const {referralCode} = this.state.user
-            return <div> 
+            return <React.Fragment>
+            <div className="container-fluid">
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -446,7 +488,7 @@ export class ScholarshipSearch extends Component{
                 </section>
             </div>
             <div className="row">
-                <section className="search-section-2">
+                <section className="search-section-2 margin-bottom">
                     <div className="story-box">
                         <div className="row">
                         <div className="col-md-1">
@@ -462,7 +504,7 @@ export class ScholarshipSearch extends Component{
                                             value={applicantCountry}
                                             onBlurResetsInput={false}
 					                        onSelectResetsInput={false}
-                                            placeholder="Applicant Country"
+                                            placeholder="Applicant's Country"
                                             simpleValue
                                             multi={false}
                                             clearable={true}
@@ -521,7 +563,7 @@ export class ScholarshipSearch extends Component{
                                             name="form-field-name"
                                             className="major-select"
                                             value={country}
-                                            placeholder="Country"
+                                            placeholder="Country of Scholarship"
                                             multi={false}
                                             simpleValue
                                             onChange={this.handleCountryChange}
@@ -591,7 +633,6 @@ export class ScholarshipSearch extends Component{
             </div>
              : null }
             
-             <Footer />
            
             { noneModal == 0 ?
             <Modal className="video-modal share-modal" open={opened} onClose={this.CloseShareModal} showCloseIcon={CloseIcon} little>
@@ -602,7 +643,7 @@ export class ScholarshipSearch extends Component{
                 <div className="col-md-2"></div>
                 <div className="col-md-8">
                 <a className="btn-facebook" href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com/register?ref=${referralCode}`}>Share on Facebook</a><br/>
-                <a className="btn-twitter" href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com/register?ref=${referralCode}&via=TWITTER_HANDLE_HERE&text="I just found ${resultCount} scholarships on The Academist"`}>Share on Twitter</a><br/>
+                <a className="btn-twitter" href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com/register?ref=${referralCode}&via=the_academist&text="I just found ${resultCount} scholarships on The Academist"`}>Share on Twitter</a><br/>
                 <a className="btn-linkedin" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com/register?ref=${referralCode}&title="I just found ${resultCount} scholarships on The Academist"&source="The Academist"`}>Share on LinkedIn</a>
                 <br/>
                 <a onClick={this.createCookie} className="hide-modal">Don't Show Again</a>
@@ -611,15 +652,16 @@ export class ScholarshipSearch extends Component{
                 </div>
             </Modal> :
             null
-            }
-        </div>   
-        
+            }  
+            </div>
+        <Footer />
+        </React.Fragment>
     }
 }
 
 function mapper(state) {
     return {
-        user_id: state.user.data && state.user.data.id
+        user_id: state.user.data && state.user.data.id,
     }
 }
 

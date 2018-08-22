@@ -7,6 +7,7 @@ import {User, Share} from 'react-feather'
 import Select from 'react-select';
 import _ from 'lodash';
 import {toastr} from 'react-redux-toastr'
+import {MobileSidebar} from './shared/mobile_sidebar'
 const COUNTRIES = [
     { label: 'Algeria', value: 'Algeria' },
     { label: 'Angola', value: 'Angola' },
@@ -17,7 +18,7 @@ const COUNTRIES = [
     { label: 'Central African Republic', value: 'Central African Republic' },
     { label: 'Chad', value: 'Chad' },
     { label: 'Congo', value: 'Congo' },
-    { label: 'Cote dIvoire', value: 'Cote dIvoire' },
+    { label: 'Cote d\'Ivoire', value: 'Cote dIvoire' },
     { label: 'Democratic Republic of Congo', value: 'Democratic Republic of Congo' },
     { label: 'Egypt', value: 'Egypt' },
     { label: 'Eritrea', value: 'Eritrea' },
@@ -46,11 +47,11 @@ const COUNTRIES = [
     { label: 'Zimbabwe', value: 'Zimbabwe' },
 ];
 const NIGERIA_OPTIONS = [
-    { label: 'Waec', value: 'Waec' },
+    { label: 'WAEC/NECO', value: 'Waec' },
     { label: 'University', value: 'University' },
 ]
 const GHANA_OPTIONS = [
-    { label: 'Waec', value: 'Waec' },
+    { label: 'WAEC', value: 'Waec' },
     { label: 'University', value: 'University' },
 ]
 const EGYPT_OPTIONS = [
@@ -65,7 +66,7 @@ const KENYA_OPTIONS = [
     { label: 'Secondary Level', value: 'Secondary Level' },
 ]
 const LIBERIA_OPTIONS = [
-    { label: 'Wassce', value: 'Wassce' },
+    { label: 'WASSCE', value: 'Wassce' },
     { label: 'Most Common', value: 'Most Common' },
 ]
 const NAMIBIA_OPTIONS = [
@@ -87,7 +88,7 @@ const ZAMBIA_OPTIONS = [
 const CAMEROON_OPTIONS = [
     { label: 'French System', value: 'French System' },
     { label: 'University of Buea', value: 'University of Buea' },
-    { label: 'Gce A Level', value: 'Gce A Level' },
+    { label: 'Gce \'A\' Level', value: 'Gce A Level' },
 ]
 export class GpaCalculator extends Component{
     constructor(props){
@@ -126,6 +127,9 @@ export class GpaCalculator extends Component{
         this.addRow = this.addRow.bind(this);   
         //this.calculateFunc = this.calculateFunc.bind(this);
     }
+    refreshPage(){ 
+      window.location.reload(); 
+    }
     addRow(){
       let {rows, rowNumber} = this.state;
       let addNum = rowNumber + 1;
@@ -136,7 +140,7 @@ export class GpaCalculator extends Component{
       this.setState({rows: updatedRow, rowNumber: addNum})
     }
     handleOptionChange(option){
-        console.log('You\'ve selected:', option);
+        //console.log('You\'ve selected:', option);
 		this.setState({ option })
     }
     calcGpa(){
@@ -264,7 +268,7 @@ export class GpaCalculator extends Component{
         "course": f
       };
     });
-    console.log(result)
+    //console.log(result)
     this.setState({resultOverview: result})
     }
     handleCountryChange (country) {
@@ -276,15 +280,19 @@ export class GpaCalculator extends Component{
         this.inputCourse.value = "";
         this.inputCredit.value = "";
         this.inputGpa.value = "";
+        //empty right here
+        if(this.state.result){
+        this.refreshPage()
+        }
       })
-      console.log(this.state.country)
+      //console.log(this.state.country)
             if (country == "Egypt"){
                 this.setState({isHidden: false}, ()=>{
                     let emptyArray = []
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(EGYPT_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -295,7 +303,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(NIGERIA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -306,7 +314,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(GHANA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -317,7 +325,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(ETHIOPIA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -328,7 +336,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(KENYA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -339,7 +347,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(LIBERIA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -350,7 +358,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(NAMIBIA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -361,7 +369,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(RWANDA_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -372,7 +380,7 @@ export class GpaCalculator extends Component{
                     this.setState({countryOptions: emptyArray}, ()=> {
                     let work = _.merge(CAMEROON_OPTIONS, this.state.countryOptions)
                     this.setState({countryOptions: work}, ()=>{
-                        console.log(this.state.countryOptions)
+                        //console.log(this.state.countryOptions)
                     })
                 })
                 })
@@ -383,7 +391,7 @@ export class GpaCalculator extends Component{
                   this.setState({countryOptions: emptyArray}, ()=> {
                   let work = _.merge(ZAMBIA_OPTIONS, this.state.countryOptions)
                   this.setState({countryOptions: work}, ()=>{
-                      console.log(this.state.countryOptions)
+                      //console.log(this.state.countryOptions)
                   })
               })
               })
@@ -398,8 +406,8 @@ export class GpaCalculator extends Component{
         window.scrollTo(0, 0)
     }
     handleCredit(e){
-      console.log(e.target.value);
-      console.log(e.target.name);
+      //console.log(e.target.value);
+      //console.log(e.target.name);
       let currentCredit = this.state.credit;
       let creditObj = {
         "id": e.target.name,
@@ -421,8 +429,8 @@ export class GpaCalculator extends Component{
       }
     }
     handleChange(e){
-      console.log(e.target.value);
-      console.log(e.target.name);
+      //console.log(e.target.value);
+      //console.log(e.target.name);
       let country = this.state.country;
       let type = this.state.option;
       let uppercaseGrade = e.target.value
@@ -446,8 +454,8 @@ export class GpaCalculator extends Component{
       let yourGrades = _.concat(currentGrade, currentGradeObj);
       this.setState({pureGrade: yourGrades});
     }
-      console.log(country);
-      console.log(type);
+      //console.log(country);
+      //console.log(type);
       let result = (country, type, grade) => {
         switch(country) {
           case "Nigeria":
@@ -805,7 +813,7 @@ export class GpaCalculator extends Component{
                     return null
                   }
               break;
-          case "Cote D'ivoire":
+          case "Cote dIvoire":
 
                   if ((20 >= grade) && (grade >= 14)) {
                     return "A"
@@ -1887,7 +1895,7 @@ export class GpaCalculator extends Component{
         });
         let yourGpa = _.concat(newGpa, gpaObj);
       this.setState({gpa: yourGpa}, ()=> {
-        console.log(result(country, type,grade));
+        //console.log(result(country, type,grade));
         //console.log(this.state.gpa);
       });
 
@@ -1896,7 +1904,7 @@ export class GpaCalculator extends Component{
       let newGpa = _.concat(currentGpa, gpaObj);
       this.setState({gpa: newGpa});
       }
-      if (this.state.country == "Nigeria" && this.state.option == "Waec"){
+      if ((this.state.country == "Nigeria" && this.state.option == "Waec") || (this.state.country == "Ghana" && this.state.option == "Waec") || (this.state.country == "Liberia" && this.state.option == "Wassce")){
         //console.log(e.target.name);
         let currentCredit = this.state.credit;
         let creditObj = {
@@ -1920,8 +1928,8 @@ export class GpaCalculator extends Component{
       }
     }
     handleCourse(e){
-      console.log(e.target.value);
-      console.log(e.target.name);
+      //console.log(e.target.value);
+      //console.log(e.target.name);
       let currentCourse = this.state.currentCourse;
       let courseObj = {
         "id": e.target.name,
@@ -1946,15 +1954,17 @@ export class GpaCalculator extends Component{
         let {country, option} = this.state;
         const countries = COUNTRIES;
         let options = this.state.countryOptions;
-        return <div className="container-fluid"> 
+        return <React.Fragment>
+        <div className="container-fluid"> 
 <div className="row">
     <section className="help-center-section">
         <Navbar />  
+        <MobileSidebar />
         <div className="row-fluid hero-box">
         <div className="col-md-12">
             <div className="headline-box">
             
-            <h1 className="home-headline">Gpa Calculator</h1>
+            <h1 className="home-headline">GPA Calculator</h1>
             
             </div>
         </div>
@@ -2027,10 +2037,10 @@ export class GpaCalculator extends Component{
         <tr>
         <th>#</th>
         <th>Class (optional)</th>
-        {this.state.country == "Nigeria" && this.state.option == "Waec" ?
+        {(this.state.country == "Nigeria" && this.state.option == "Waec") ||  (this.state.country == "Ghana" && this.state.option == "Waec") || (this.state.country == "Liberia" && this.state.option == "Wassce")?
                 null
                 :
-        <th>Credits</th>
+        <th>Credits/Units</th>
           }
         <th>Grade/Scale</th>
         </tr>
@@ -2040,12 +2050,12 @@ export class GpaCalculator extends Component{
             <tr key={row.id}>
                 <td>{row.id}</td>
                 <td><span className="major-select"><input name={`${row.id}`} ref={el => this.inputCourse = el} className="textInput" type="text" onBlur={this.handleCourse.bind(this)} /></span></td>
-                {this.state.country == "Nigeria" && this.state.option == "Waec" ?
+                {(this.state.country == "Nigeria" && this.state.option == "Waec") || (this.state.country == "Ghana" && this.state.option == "Waec") || (this.state.country == "Liberia" && this.state.option == "Wassce")?
                 null
                 :
                 <td><span className="major-select"><input name={`${row.id}`} ref={el => this.inputCredit = el} className="textInput" type="text" onBlur={this.handleCredit.bind(this)} /></span></td>
                 }
-                <td><span className="major-select"><input name={`${row.id}`} ref={el => this.inputGpa = el} className="textInput" type="text" onBlur={this.handleChange.bind(this)} /></span></td>
+                <td><span className="major-select"><input name={`${row.id}`} ref={el => this.inputGpa = el} style={{textTransform: 'uppercase'}} className="textInput" type="text" onBlur={this.handleChange.bind(this)} /></span></td>
               
             </tr>
         )}
@@ -2056,7 +2066,7 @@ export class GpaCalculator extends Component{
     <button className="gpa-btn aligner" onClick={this.calcGpa.bind(this)}><span className="user-info">Calculate Gpa</span></button>
     </div>
     <div className="col-md-6">
-    <button className="gpa-btn aligner" onClick={this.addRow}><span className="user-info">Add Row</span></button>
+    <button className="gpa-btn aligner top-space" onClick={this.addRow}><span className="user-info">Add Row</span></button>
     </div>
     </div>
     <br/>
@@ -2123,8 +2133,9 @@ export class GpaCalculator extends Component{
     <div className="clearfix">
     </div>
  </div>
-<Footer />
 </div>
+<Footer />
+</React.Fragment>
         
     }
 }

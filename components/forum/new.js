@@ -3,6 +3,7 @@ import Navbar from '../shared/navbar'
 import {connect} from 'react-redux';
 import settings from '../../settings'
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
@@ -13,6 +14,7 @@ const ForumSuccess = () =>
 <div className="row">
     <section className="help-center-section">
         <Navbar />  
+        <MobileSidebar />
         <div className="row-fluid hero-box">
         <div className="col-md-12">
             <div className="headline-box">

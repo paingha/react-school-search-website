@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { render } from "react-dom";
 import Navbar from './shared/navbar'
 import Footer from './shared/footer'
+import {MobileSidebar} from './shared/mobile_sidebar'
 import {Play} from 'react-feather'
 import Modal from 'react-responsive-modal'
 import Plyr from 'react-plyr';
@@ -9,10 +10,12 @@ import Plyr from 'react-plyr';
 export class AboutUs extends Component {
     render(){
         return(
+            <React.Fragment>
             <div className="container-fluid"> 
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -57,8 +60,10 @@ export class AboutUs extends Component {
                     </div>
                 </section>
             </div> 
-            <Footer />
-        </div>   
+            
+        </div>  
+        <Footer />
+        </React.Fragment> 
         );
     }
 }

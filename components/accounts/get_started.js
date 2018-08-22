@@ -100,23 +100,23 @@ export class GetStarted extends Component{
         this.handleGpaChange = this.handleGpaChange.bind(this);
     }
     handleCriteriaChange (criteria) {
-		console.log('You\'ve selected:', criteria);
 		this.setState({ criteria }, ()=>{
-            console.log(this.state.criteria)
         });
     }
     handleGpaChange (gpa) {
-		console.log('You\'ve selected:', gpa);
 		this.setState({ gpa }, ()=>{
-            console.log(this.state.gpa)
         });
     }
     componentDidMount(){
+        const {history, location} = this.props;
         this.fetchMajors();
         this.fetchCountries();
+        if(this.props.userLogin != true){
+            history.push(location.state? location.state.from : {pathname: '/'});
+        }
+        
         }
     handleLevelChange (level) {
-		console.log('You\'ve selected:', level);
 		this.setState({ level });
     }
     fetchCountries() {
@@ -135,19 +135,15 @@ export class GetStarted extends Component{
         
     }
     handleMajorChange (major) {
-		console.log('You\'ve selected:', major);
 		this.setState({ major }, ()=>{
-            console.log(this.state.major)
         });
     }
 
     handleScholarshipCountryChange (scholarshipCountry) {
-		console.log('You\'ve selected:', scholarshipCountry);
 		this.setState({ scholarshipCountry });
     }
     
     handleApplicantCountryChange (applicantCountry) {
-		console.log('You\'ve selected:', applicantCountry);
 		this.setState({ applicantCountry });
     }
     UpdateProfile(){
@@ -170,9 +166,10 @@ export class GetStarted extends Component{
     }
     Started(token, user_id) {
         const {major, applicantCountry, scholarshipCountry, gpa, criteria, level, firstLogin, error, isloading, profileComplete} = this.state
+        const {history, location} = this.props;
         this.setState({isloading: true, error: undefined});
-        return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
-            method: 'PATCH',
+        return fetch(settings.urls.get_started.replace('{user_id}', user_id ), {
+            method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': token},
             mode: 'cors',
             body: JSON.stringify({major, applicantCountry, scholarshipCountry, gpa, criteria, level, firstLogin})
@@ -183,7 +180,9 @@ export class GetStarted extends Component{
         .then(json=>{
             if (json.error)
                 throw Error(json.error.message || 'Unknown fetch error');
-            this.setState({fetching: false, error: undefined, profileComplete: true});
+            this.setState({fetching: false, error: undefined, profileComplete: true}, ()=>{
+                history.push(location.state? location.state.from : {pathname: '/'});  
+            });
         })
         .catch(error=>this.setState({isloading: false, error: error.message}));
     
@@ -238,7 +237,7 @@ export class GetStarted extends Component{
                                             name="form-field-name"
                                             className="major-select"
                                             value={gpa}
-                                            placeholder="Your Gpa"
+                                            placeholder="Your GPA"
                                             multi={false}
                                             simpleValue
                                             onChange={this.handleGpaChange}
@@ -293,7 +292,8 @@ export class GetStarted extends Component{
 
 function mapper(state) {
     return {
-        user_id: state.user.data && state.user.data.id
+        user_id: state.user.data && state.user.data.id,
+        userLogin: state.user.data && state.user.data.firstLogin
     }
 }
 

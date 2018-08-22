@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Navbar from '../shared/navbar';
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import settings from '../../settings'
 import Footer from '../shared/footer'
 import { Match, Link } from 'react-router-dom'
@@ -8,6 +9,7 @@ import Moment from 'react-moment';
 import {Helmet} from "react-helmet";
 import CommentList from './comments'
 import NewComment from './comment'
+import NotLoggedin from './not-loggedin'
 export class SingleForum extends Component{
     constructor(props){
         super(props)
@@ -16,6 +18,7 @@ export class SingleForum extends Component{
             thing: null,
             firstName: '',
             lastName: '',
+            image: '',
             isloading: false,
             update: false,
             commentNo: 5
@@ -54,8 +57,8 @@ export class SingleForum extends Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, firstName: data.firstName, lastName: data.lastName}, ()=>{
-                    console.log(data);
+                data => this.setState({isloading: false, firstName: data.firstName, lastName: data.lastName, image: data.image}, ()=>{
+                    //console.log(data);
                 })
             )
     }
@@ -103,7 +106,8 @@ export class SingleForum extends Component{
             return <div className="container-fluid"> 
             <div className="row">
                 <section className="help-center-section">
-                    <Navbar />  
+                    <Navbar /> 
+                    <MobileSidebar /> 
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -123,7 +127,7 @@ export class SingleForum extends Component{
                 <div className="col-spaced help-box">
                
                 <div className="row article-sub-row">
-                <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_image.png" /></div>
+                <div className="col-md-2"></div>
                 <div className="col-md-10">
                 <div className="row">
                 <div className="col-md-4">
@@ -180,7 +184,7 @@ export class SingleForum extends Component{
             </div>
         }
         let {topic, content, by, replies, createdAt, id} = this.state.thing;
-        let {firstName, lastName} = this.state;
+        let {firstName, lastName, image} = this.state;
         const {pathname} = this.props.location;
         return <div className="container-fluid"> 
         <Helmet>
@@ -207,6 +211,7 @@ export class SingleForum extends Component{
 <div className="row">
     <section className="help-center-section">
         <Navbar />  
+        <MobileSidebar />
         <div className="row-fluid hero-box">
         <div className="col-md-12">
             <div className="headline-box">
@@ -225,7 +230,7 @@ export class SingleForum extends Component{
     <div className="col-spaced help-box">
    
     <div className="row article-sub-row">
-    <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_image.png" /></div>
+    <div className="col-md-2"><img className="forum-poster-img" src={image} /></div>
     <div className="col-md-10">
     <div className="row">
     <div className="col-md-4">
@@ -254,7 +259,11 @@ export class SingleForum extends Component{
     <div className='blog-view-more-button-wrapper'><button onClick={() => this.moreComments(this.state.id)} className="blog-view-more-button">View More</button></div>
     : null
     }
+    {!localStorage.token ?
+    <NotLoggedin />
+    :
     <NewComment parentForum={this.state.id} getforum = {this.getForum}/>
+    }
 <Footer />
 </div>
         

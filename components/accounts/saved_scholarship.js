@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import ProfileBox from '../shared/profile_box'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import ReferBox from '../shared/refer_box'
 import ScholarshipPopup from '../shared/scholarship_popup'
 import {connect} from 'react-redux';
@@ -92,7 +93,7 @@ export class SavedScholarship extends Component{
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -167,11 +168,12 @@ export class SavedScholarship extends Component{
             scholarshipCountry,
             updatedAt
         } = this.state.user;
-        return <div>
-            <div className="row">
+        return <React.Fragment>
+        <div className="container-fluid">
+        <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -260,10 +262,10 @@ export class SavedScholarship extends Component{
                         </div>
                 </section>
                 </div>  
-                <Footer />
                 <ScholarshipPopup open={this.state.opened} scholarship_id={this.state.id} getInput={this.handleClose}/>
                 </div>
-        
+                <Footer />
+        </React.Fragment>
     }
 }
 

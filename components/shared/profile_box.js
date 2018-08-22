@@ -62,12 +62,13 @@ export default class ProfileBox extends Component{
             major,
             saved,
             scholarshipCountry,
+            image,
             updatedAt
         } = this.props.userData;
         return <div className="col-spaced box profile-box">
                 <div className="profile-img">
                 <div className="profile-img-tag">
-                    <img src="/img/user-img.png" className="profile-image"/>
+                    <img src={image} className="profile-image"/>
                 </div>
                 </div>
                 <div className="profile-sub-box">

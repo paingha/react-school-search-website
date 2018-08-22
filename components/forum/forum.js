@@ -4,7 +4,11 @@ import Navbar from '../shared/navbar'
 import settings from '../../settings'
 import Footer from '../shared/footer'
 import {Search, BookOpen} from 'react-feather'
+import ContactPopup from '../shared/contact-popup';
+import ForumPopup from '../shared/forum_popup';
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import {Link} from 'react-router-dom';
+import Pagination from "react-js-pagination";
 export class Forum extends Component{
 
     constructor(props) {
@@ -16,12 +20,46 @@ export class Forum extends Component{
             noneResult: false,
             things: [],
             offset: 0,
+            activePage: 1,
+            offset: 0,
+            resultCount: 0,
+            q: '',
+            searchResult: null,
+            searchCount: 0,
+            opened: false,
+            open: false
         };
+        this.handlePageChange = this.handlePageChange.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.handleClosed = this.handleClosed.bind(this);
+        this.OpenModal = this.OpenModal.bind(this);
     }
-
+    OpenModal() {
+        this.setState({ opened: true}, ()=>{
+            //this.getMore(param)
+        });
+        
+      };
+    handleClose(x){
+        this.setState({opened: x})
+    }
+    handleClosed(x){
+        this.setState({open: x})
+    }
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        //(n-1)15
+        let mathStuff = pageNumber - 1;
+        let multiplyStuff = mathStuff * 20;
+        this.setState({activePage: pageNumber, offset: multiplyStuff }, ()=>{
+            this.fetchForum();
+            window.scrollTo(0, 0);
+        });
+         
+    }
     fetchForum() {
         this.setState({isloading: true});
-            fetch(settings.urls.get_forum, {
+            fetch(settings.urls.get_forum.replace("{off}", this.state.offset), {
                 method: 'GET',
                 headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
@@ -30,14 +68,33 @@ export class Forum extends Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, things: data}, ()=>{
-                    console.log(data);
-                    console.log("----------------------------------------------------");
-                    console.log(this.state.things);
+                data => this.setState({isloading: false, things: data.rows, resultCount: data.count}, ()=>{
                 })
             )
     } 
-    
+    searchNow(e) {
+        e.preventDefault();
+        const {q} = this.state
+        if(q !== ''){
+        this.setState({isloading: true});
+            fetch(settings.urls.forum_search, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+                body: JSON.stringify({q})
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, searchResult: data.rows, searchCount: data.count}, ()=>{
+                    this.setState({open: true}, ()=>{
+                        //console.log(this.state.searchResult)
+                    })
+                })
+            )
+        }
+    } 
 
     componentDidMount() {
         this.fetchForum();
@@ -59,7 +116,7 @@ export class Forum extends Component{
     }
     render(){
         
-        let { thingss, isloading } = this.state;
+        let { things, isloading, resultCount } = this.state;
      /*   if(!this.state.user){
             return <React.Fragment> 
             <div className="row">
@@ -121,10 +178,12 @@ export class Forum extends Component{
             
         } */
         
-            return <div className="container-fluid"> 
+            return <React.Fragment>
+            <div className="container-fluid"> 
             <div className="row">
                 <section className="help-center-section">
-                    <Navbar />  
+                    <Navbar /> 
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -136,8 +195,8 @@ export class Forum extends Component{
                     <div className="col-md-12">
                     <div className="headline-box">
                     <form className="help-center-search">
-                        <input type="text" className="help-center-search-input" placeholder="Need Help?"/>
-                        <button className="help-center-search-btn">Search</button>
+                    <input type="text" className="help-center-search-input" placeholder="Need Help?" onChange={e=>this.setState({q: e.target.value})}/>
+                        <button className="help-center-search-btn" onClick={this.searchNow.bind(this)}>Search</button>
                         </form>
                         </div>
                     </div>
@@ -152,10 +211,10 @@ export class Forum extends Component{
                 <div className="col-md-8">
                 <div className="col-spaced help-box">
                 <h2>Recent Articles</h2>
-                
+                <a href="/new-forum"><h4 className="new-forum-link">New Forum Post</h4></a>
                 <div className="row article-sub-row">
-                {this.state.things.map((stuff, id)=> 
-                    <div className="col-md-6">
+                {things.map((stuff, id)=> 
+                    <div className="col-md-6" key={stuff.id}>
                     <span className="word-wrap">
                     <BookOpen className="book-align" />&nbsp;<Link to={`/forum/${stuff.urlParam}/${stuff.id}`}>{stuff.topic}</Link>
                     </span>
@@ -163,7 +222,21 @@ export class Forum extends Component{
                     )}
                 </div>
                
-                <h4 className="view-more">View More</h4>
+                {things.length > 0 ?
+            <div className="row pagination-row">
+            <div className="col-md-4"></div>
+            <div className="col-md-4 pagination-col">
+            <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={20}
+            totalItemsCount={resultCount}
+            pageRangeDisplayed={10}
+            onChange={this.handlePageChange}
+            />
+            </div>
+            <div className="col-md-4"></div>
+            </div>
+             : null }
                 </div>
                 </div>
                 <div className="col-md-2">
@@ -176,16 +249,28 @@ export class Forum extends Component{
                 <div className="col-md-10">
                 <div className="row-fluid">
                 <div className="col-md-4">
-                <div className="col-spaced help-box">
+                <div className="col-spaced help-box center-align">
+                <a target="_blank" rel="noopener noreferrer" className="social-icon" href="https://www.facebook.com/TheAcademistCommunity">
+                <img src="/img/facebook_icon.svg" className="footerImg" width="70px"/><br/><br/>
+                <strong className="align-Text">FACEBOOK</strong>
+                </a>
                 </div>
                 </div>
                 <div className="col-md-4">
-                <div className="col-spaced help-box">
+                <div className="col-spaced help-box center-align">
+                <a target="_blank" rel="noopener noreferrer" className="social-icon" href="https://twitter.com/the_academist">
+                <img src="/img/twitter_icon.svg" className="footerImg" width="70px"/><br/><br/>
+                <strong className="align-Text">TWITTER</strong>
+                </a>
                 </div>
                 </div>
 
                 <div className="col-md-4">
-                <div className="col-spaced help-box">
+                <div className="col-spaced help-box center-align">
+                <span className="social-icon pointer" onClick={this.OpenModal}>
+                <img src="/img/mail_icon.svg" className="footerImg" width="70px"/><br/><br/>
+                <strong className="align-Text">EMAIL</strong>
+                </span>
                 </div>
                 </div>
                 </div>
@@ -193,9 +278,11 @@ export class Forum extends Component{
                 <div className="col-md-1">
                 </div>
             </div>
-
-            <Footer />
-        </div>   
-        
+            
+            <ContactPopup open={this.state.opened} getInput={this.handleClose}/>
+            <ForumPopup open={this.state.open} getInput={this.handleClosed} results={this.state.searchResult}/>
+        </div>
+        <Footer />   
+        </React.Fragment>
     }
 }

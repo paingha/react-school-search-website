@@ -313,8 +313,8 @@ import {
       render(){
         
           return(
-      <div className="container-fluid">
-      <div className="row">
+            <React.Fragment>
+            <div className="row">
       <div className="align-success">
       <svg id="createdAnimation" className="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
       <path id="createdAnimationResult" fill="#D8D8D8" d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z"/>
@@ -326,8 +326,8 @@ import {
         <h1 className="grey move-center">Coin added Successfully!</h1>
        
       </div>
-      
-    </div>
+      <br />
+    </React.Fragment>
           );
       }
   }
@@ -513,6 +513,9 @@ class Step1 extends Component {
         console.log(twoCoinPrice);
         console.log(threeCoinPrice);
         return (
+            <React.Fragment>
+            <div className="container-fluid">
+            <div className="row">
             <div ref="body" className="pricing-table">
     <ul className="pricing-cards monthly-pricing-cards clearfix">
         <li className="col-xs-12 col-md-4 pricing-card basic">
@@ -550,6 +553,9 @@ class Step1 extends Component {
         </li>
     </ul>
     </div>
+    </div>
+    </div>
+    </React.Fragment>
         );
     }
 }
@@ -710,7 +716,7 @@ class Step3 extends Component {
             </div>
             <div className="col-md-4 col-sm-12">
                 <div className="col-spaced box">
-                <div className="align-success">
+                <div className="align-success aligned">
             <svg id="createdAnimation" className="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
             <path id="createdAnimationResult" fill="#D8D8D8" d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z"/>
             <circle id="createdAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" strokeWidth="2" strokeLinecap="round" fill="transparent"/>
@@ -726,6 +732,8 @@ class Step3 extends Component {
             </div>
             <div className="col-md-4">
             </div>
+            <br />
+            <br />
             </div>
         );
     }
@@ -820,7 +828,7 @@ export class BuyCoin extends Component {
         if (query.search_callback == "true"){
             console.log("works here")
             //return <Redirect to='/'/>
-            this.props.history.push(`/scholarship-search?search_callback=true&criteria=${query.criteria}&level=${query.level}&amount=${amount}&gpa=${query.gpa}&applicant_country=${query.applicant_country}&country=${query.country}&major=${query.major}&offset=${query.offset}`);
+            this.props.history.push(`/scholarship-search?search_callback=true&criteria=${query.criteria}&level=${query.level}&amount=${query.amount}&gpa=${query.gpa}&applicant_country=${query.applicant_country}&country=${query.country}&major=${query.major}&offset=${query.offset}`);
         }
         return
       }
@@ -865,6 +873,8 @@ export class BuyCoin extends Component {
         if (step>3) return null; // show nothing 
 
         return (
+            <React.Fragment>
+            <div className="container-fluid">
             <div ref="wrapper" className="buy_coin">
                 <Section1 title=""/>
                 <StepsHeader step={step} total_steps={3}/>
@@ -889,22 +899,13 @@ export class BuyCoin extends Component {
                         step===3 && <Step3 onNext={() => this.redirectFunc()}/>
                     } 
                 </div>
-                <Footer />
-                <Modal className="country-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
-                    
-                    <div className="country-wrapper">
-                    <p>Set your currency</p>
-                    
-                    <select className="country-dropdown" onChange={e=>this.setState({currencyUser: e.target.value})}>
-                    <option value="default">Pick Country</option>
-                    { countryCurrency.map((stuff, i) => <option key={i} value={stuff.currency_code}>{stuff.country}</option>) }
-                    </select>
-                    <br/>
-                    <button className="navbar-btn aligner move-down" onClick={()=>this.setCurrency()}>Next</button>
-                    
-                    </div>
-                </Modal>
+                
             </div> 
+            </div>
+            <br />
+            <br />
+            <Footer />
+            </React.Fragment>
        );
     }
 }

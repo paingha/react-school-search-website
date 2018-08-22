@@ -50,11 +50,6 @@ export class NewBlogComment extends Component{
         let by = this.state.idUser;
         let blogId = this.props.parentBlog;        
         this.setState({isloading: true, error: undefined});
-        console.log(content);
-        console.log(by);
-        console.log(blogId)
-        console.log(firstName)
-        console.log(lastName)
         return fetch(settings.urls.new_comment, {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},

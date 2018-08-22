@@ -4,7 +4,7 @@ import settings from '../../settings';
 import { parse } from 'query-string';
 
 const ChangeSuccess = () =>
-<div class="container-fluid register-wrapper-background">
+<div class="container-fluid register-wrapper-background  aligned">
 	<svg id="successAnimation" class="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
   <path id="successAnimationResult" fill="#D8D8D8" d="M35,60 C21.1928813,60 10,48.8071187 10,35 C10,21.1928813 21.1928813,10 35,10 C48.8071187,10 60,21.1928813 60,35 C60,48.8071187 48.8071187,60 35,60 Z M23.6332378,33.2260427 L22.3667622,34.7739573 L34.1433655,44.40936 L47.776114,27.6305926 L46.223886,26.3694074 L33.8566345,41.59064 L23.6332378,33.2260427 Z"/>
   <circle id="successAnimationCircle" cx="35" cy="35" r="24" stroke="#979797" stroke-width="2" stroke-linecap="round" fill="transparent"/>
@@ -20,9 +20,9 @@ const ChangeSuccess = () =>
 
  							<h1 class="grey move-center">Your New Password has been saved successfully!</h1>
  							
- 							<div class="col-md-4 col-sm-4"></div>
- 							<div class="col-md-4 col-sm-4"><p class="bottom-pad"><Link to="/login"><div class="button"> Login </div></Link></p></div>
- 							<div class="col-md-4 col-sm-4"></div>
+ 							
+ 							<Link to="/login"><button className="res-button">Login </button></Link>
+ 							
  							
   						</div>
 
@@ -69,8 +69,8 @@ export class ResetPassword extends Component {
         if (changePassword)
             return <ChangeSuccess/>;
         return (
-            <div className="container-fluid forgot-wrapper-background">
-                <div className="row row-height">
+            <div className="container-fluid forgot-wrapper-background ">
+                <div className="row row-height-reset">
                     <div className="col-md-4"></div>
                     <div className="col-md-4 forgot-padding">
                     

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Navbar from '../shared/navbar';
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import { Match, Link } from 'react-router-dom'
 import {User, Share} from 'react-feather'
 export class TOS extends Component{
@@ -14,10 +15,12 @@ export class TOS extends Component{
     }
     render(){
         
-        return <div className="container-fluid"> 
+        return <React.Fragment>
+        <div className="container-fluid"> 
 <div className="row">
     <section className="help-center-section">
         <Navbar />  
+        <MobileSidebar />
         <div className="row-fluid hero-box">
         <div className="col-md-12">
             <div className="headline-box">
@@ -51,8 +54,8 @@ export class TOS extends Component{
     <div className="col-md-2">
     </div>
  </div>
-<Footer />
 </div>
-        
+<Footer />
+   </React.Fragment>     
     }
 }

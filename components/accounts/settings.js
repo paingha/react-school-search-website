@@ -1,18 +1,22 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
+import Footer from '../shared/footer'
 import {connect} from 'react-redux';
 import settings from '../../settings'
 import {ProfileTabs} from './profile'
 import ProfileBox from '../shared/profile_box'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import ReferBox from '../shared/refer_box'
 import {ShoppingCart} from 'react-feather'
+import {toastr} from 'react-redux-toastr'
 export class ProfileSettings extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            currentPassword: '',
+            oldPassword: '',
             newPassword: '',
             user: null,
+            isloading: false,
         };
     }
     fetchUser(token, user_id) {
@@ -44,17 +48,39 @@ export class ProfileSettings extends Component{
     }
 
     doChange(){
-        
+        const {oldPassword, newPassword, isloading} = this.state;
+        this.setState({isloading: true}, ()=>{
+            
+            //console.log(JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry}))
+        return fetch(settings.urls.change_password.replace('{user_id}', this.props.user_id ), {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
+            mode: 'cors',
+            body: JSON.stringify({oldPassword, newPassword})
+        })
+            .then(response=>response.json())
+            .then(json=>{
+                if (json.error){
+                    throw Error(json.error.message || 'Unknown fetch error');
+                    toastr.error('Error!', 'An error occured, please try again')
+                }
+                this.setState({isloading: false}, ()=>{
+                    toastr.success('Success!', 'Password Updated Successfully')
+                });
+            })
+            .catch(error=>this.setState({isloading: false}));
+        })
+    
     }
     render(){
-        const { currentPassword, newPassword } = this.state
+        const { oldPassword, newPassword } = this.state
         
             if(!this.state.user){
             return <React.Fragment>
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -130,11 +156,12 @@ export class ProfileSettings extends Component{
             updatedAt
         } = this.state.user;
         let { referrals, resultCount } = this.state;
-        return <div>
-            <div className="row">
+        return <React.Fragment>
+        <div className="container-fluid">
+        <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -164,7 +191,7 @@ export class ProfileSettings extends Component{
                               <ProfileTabs />
                               <div className="row">
                                         <div className="col-md-6">
-                                        <span className="major-select"><input placeholder="Current Password" className="textInput" type="password" value={currentPassword} onChange={e=>this.setState({currentPassword: e.target.value})}/></span>
+                                        <span className="major-select"><input placeholder="Current Password" className="textInput" type="password" value={oldPassword} onChange={e=>this.setState({oldPassword: e.target.value})}/></span>
           
                                         </div>
                                         <div className="col-md-6">
@@ -172,15 +199,16 @@ export class ProfileSettings extends Component{
           
                                         </div>
                                     </div>
-                                    <button className="navbar-btn aligner" onClick={()=>this.doChange(localStorage.token, this.props.user_id)}><span className="user-info">Change Password</span></button>
+                                    <button className="navbar-btn aligner" onClick={()=>this.doChange()}><span className="user-info">Change Password</span></button>
                                     
                                    </div></div>
                         </div>
                         </div>
                 </section>
-                </div>  
+                </div> 
                 </div>
-        
+                <Footer />
+        </React.Fragment>
     }
 }
 

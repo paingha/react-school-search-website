@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Navbar from './navbar'
+import {MobileSidebar} from './mobile_sidebar'
 export default class Section1 extends Component{
     constructor(props){
         super(props)
@@ -10,7 +11,7 @@ export default class Section1 extends Component{
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">

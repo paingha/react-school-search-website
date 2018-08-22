@@ -212,8 +212,8 @@ export default class ScholarshipResult extends Component{
         if (userCoin == true){
             noCoinBlock = (
                 <React.Fragment>
-                  <UnBlurred BlurredArray={this.props.noCoinObj} />
-                  <Blurred BlurredArray={this.props.noCoinObj} /> 
+                  <UnBlurred buyUrl={this.props.buyCoin} BlurredArray={this.props.noCoinObj} />
+                  <Blurred buyUrl={this.props.buyCoin} BlurredArray={this.props.noCoinObj} /> 
                     </React.Fragment>           
             )
         }

@@ -34,6 +34,7 @@ import NewForum from './components/forum/new'
 import NewBlog from './components/blog/new-blog'
 import {PrivacyPolicy} from './components/legal/privacy-policy'
 import {TOS} from './components/legal/terms-of-use'
+import {Disclaimer} from './components/legal/disclaimer'
 import ProfileReferrals from './components/accounts/referrals'
 const EmptyComponent = () => <div>Empty yet</div>;
 
@@ -67,7 +68,11 @@ export const Router = props => (
         <Route path="/forum/:topic/:forum_id" component={SingleForum} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route exact path="/terms-of-use" component={TOS} />
+        <Route exact path="/disclaimer" component={Disclaimer} />
         <Route path="/gpa-calculator" component={GpaCalculator} />
+        <Route path="/admission-processing" component={Application} />
+        <Route exact path="/school-search" component={SchoolSearch}/>
+        <Route path="/school-search/by-gpa" component={ByGpa}/>
         <PrivateArea>
         <Route path="/get-started" component={GetStarted} />
             <App>
@@ -77,8 +82,6 @@ export const Router = props => (
             <Route path="/profile/referrals" component={ProfileReferrals} />
             <Route path="/profile/saved" component={SavedScholarship} />
             <Route path="/scholarship-search" component={ScholarshipSearch}/>
-            <Route exact path="/school-search" component={SchoolSearch}/>
-            <Route path="/school-search/by-gpa" component={ByGpa}/>
             <Route exact path="/get_reward" component={RewardMe} />
             <Route exact path="/buy_coin" component={BuyCoin}/>
             <Route path="/paypal" component={CheckoutForm} />

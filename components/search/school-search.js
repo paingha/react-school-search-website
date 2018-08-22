@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import settings from '../../settings'
 import LoadingResult from './loading-result'
 import SchoolResult from './school-result'
@@ -191,10 +192,12 @@ export class SchoolSearch extends Component{
                 />
             )
         }
-            return <div> 
+            return <React.Fragment>
+            <div className="container-fluid">
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -284,8 +287,9 @@ export class SchoolSearch extends Component{
                 
             </div> 
             {resultBlock}
-            <Footer />
-        </div>   
-        
+            
+          </div>
+        <Footer />
+        </React.Fragment>
     }
 }

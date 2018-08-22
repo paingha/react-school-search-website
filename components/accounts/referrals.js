@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import ProfileBox from '../shared/profile_box'
 import ReferBox from '../shared/refer_box'
 import {connect} from 'react-redux';
@@ -24,7 +25,7 @@ export class ProfileReferrals extends Component{
         this.handlePageChange = this.handlePageChange.bind(this);
     }
     handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
+        //console.log(`active page is ${pageNumber}`);
         //(n-1)15
         let mathStuff = pageNumber - 1;
         let multiplyStuff = mathStuff * 7;
@@ -89,7 +90,7 @@ export class ProfileReferrals extends Component{
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -165,11 +166,12 @@ export class ProfileReferrals extends Component{
             updatedAt
         } = this.state.user;
         let { referrals, resultCount } = this.state;
-        return <div>
-            <div className="row">
+        return <React.Fragment>
+        <div className="container-fluid">
+        <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -239,9 +241,9 @@ export class ProfileReferrals extends Component{
                         </div>
                 </section>
                 </div> 
-                <Footer /> 
                 </div>
-        
+                <Footer />
+        </React.Fragment>
     }
 }
 

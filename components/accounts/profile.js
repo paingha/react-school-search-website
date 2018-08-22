@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import ProfileBox from '../shared/profile_box'
 import ReferBox from '../shared/refer_box'
 import {connect} from 'react-redux';
@@ -73,6 +74,9 @@ export class Profile extends Component{
         this.state = {
             isloading: false,
             user: null,
+            key: '',
+            signedRequest: null,
+            awsURL: '',
             majors: [],
             countries: [],
             firstName: '',
@@ -127,45 +131,63 @@ export class Profile extends Component{
     }
 
     doUpdate(token, user_id) {
-        const {firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, isloading} = this.state;
+        const {firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, isloading, awsURL} = this.state;
         const userStuff = this.state.user;
-        if(firstName == '' && lastName == '' && gpa == '' && criteria == '' && level == '' && major == '' && applicantCountry == '' && scholarshipCountry == ''){
+        if(firstName == '' && lastName == '' && gpa == '' && criteria == '' && level == '' && major == '' && applicantCountry == '' && scholarshipCountry == '' && this.fileUpload.files[0] == null){
             toastr.error('Error!', 'No Changes made')
         }
         else{
-        if(firstName == ''){
-            this.setState({firstName: userStuff.firstName});
-        }
-        if(lastName == ''){
-            this.setState({lastName: userStuff.lastName});
-        }
-        if(gpa == ''){
-            this.setState({gpa: userStuff.gpa});
-        }
-        if(criteria == ''){
-            this.setState({criteria: userStuff.criteria});
-        }
-        if(level == ''){
-            this.setState({level: userStuff.level});
-        }
-        if(major == ''){
-            this.setState({major: userStuff.major});
-        }
-        if(applicantCountry == ''){
-            this.setState({applicantCountry: userStuff.applicantCountry});
-        }
-        if(scholarshipCountry == ''){
-            this.setState({scholarshipCountry: userStuff.scholarshipCountry});
-        }
+        //async validate
         //Bug being called before setState
-        setTimeout(()=>{
+        
         this.setState({isloading: true}, ()=>{
-            console.log(JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry}))
+            if(this.fileUpload.files[0] != null) {
+                // Upload image to S3
+                const file = this.fileUpload.files[0];
+                const fileKey = Date.now() + file.name;
+                const contentType = file.type;
+                const extension = file.type
+            //const {key, signedRequest, featuredImage} = this.state;
+            this.setState({isloading: true});
+            //change to put
+                fetch(settings.urls.upload, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
+                    mode: 'cors',
+                    body: JSON.stringify({contentType, extension, fileKey})
+                })
+                .then(
+                    response => response.json()
+                )
+                .then(
+                    data => this.setState({isloading: false, key: data.key, signedRequest: data.signedRequest}, ()=>{
+                       
+                        //console.log(data.url);
+                        ///then
+                        let thingy = this.fileUpload.files[0];
+                        let uri = data.url;
+                        const contentType = thingy.type
+            const {signedRequest} = this.state;
+            this.setState({isloading: true}, ()=>{
+                //console.log("2nd");
+            });
+            //change to put
+                fetch(signedRequest, {
+                    method: 'PUT',
+                    headers: {'Content-Type': contentType},
+                    body: thingy
+                })   ////////////
+                
+                    .then(response=>{
+                        
+                            
+                                let image = uri;
+                                  //console.log(JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry}))
         return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json', 'Authorization': token},
             mode: 'cors',
-            body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry})
+            body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, image})
         })
             .then(response=>response.json())
             .then(json=>{
@@ -174,45 +196,70 @@ export class Profile extends Component{
                     toastr.error('Error!', 'An error occured, please try again')
                 }
                 this.setState({isloading: false}, ()=>{
-                    toastr.success('Success!', 'Profile Updated Successfully')
+                    toastr.success('Success!', 'Profile Updated Successfully');
+                    this.fetchUser(localStorage.token, this.props.user_id);
                 });
             })
             .catch(error=>this.setState({isloading: false}));
+                    })
+                }))
+            }
+        ///end here    
+        else{
+            let {image} = this.state.user;
+            return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                mode: 'cors',
+                body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, image})
+            })
+                .then(response=>response.json())
+                .then(json=>{
+                    if (json.error){
+                        throw Error(json.error.message || 'Unknown fetch error');
+                        toastr.error('Error!', 'An error occured, please try again')
+                    }
+                    this.setState({isloading: false}, ()=>{
+                        toastr.success('Success!', 'Profile Updated Successfully')
+                    });
+                })
+                .catch(error=>this.setState({isloading: false}));
+        }       
+          
         })
-    }, 4000)
     }
     }
     handleCountryChange (country) {
-		console.log('You\'ve selected:', country);
+		//console.log('You\'ve selected:', country);
 		this.setState({ country });
     }
     handleGpaChange (gpa) {
-		console.log('You\'ve selected:', gpa);
+		//console.log('You\'ve selected:', gpa);
 		this.setState({ gpa }, ()=>{
-            console.log(this.state.gpa)
+            //console.log(this.state.gpa)
         });
     }
     handleApplicantCountryChange(applicantCountry){
         this.setState({ applicantCountry });
     }
     handleCriteriaChange (criteria) {
-		console.log('You\'ve selected:', criteria);
+		//console.log('You\'ve selected:', criteria);
 		this.setState({ criteria }, ()=>{
-            console.log(this.state.criteria)
+            //console.log(this.state.criteria)
         });
     }
     handleLevelChange (level) {
-        console.log('You\'ve selected:', level);
+        //console.log('You\'ve selected:', level);
         this.setState({ level });
     }
     handleMajorChange (major) {
-		console.log('You\'ve selected:', major);
+		//console.log('You\'ve selected:', major);
 		this.setState({ major }, ()=>{
-            console.log(this.state.major)
+            //console.log(this.state.major)
         });
     }
     handleCountryChange (scholarshipCountry) {
-        console.log('You\'ve selected:', scholarshipCountry);
+        //console.log('You\'ve selected:', scholarshipCountry);
         this.setState({ scholarshipCountry });
     }
     fetchMajors() {
@@ -257,7 +304,7 @@ export class Profile extends Component{
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -281,7 +328,6 @@ export class Profile extends Component{
                 <div className="col-spaced box profile-box">
                 <div className="profile-img">
                 <div className="profile-img-tag">
-                    <img src="/img/user-img.png" className="profile-image"/>
                 </div>
                 </div>
                 <div className="profile-sub-box">
@@ -330,15 +376,18 @@ export class Profile extends Component{
             level,
             major,
             saved,
+            image,
             scholarshipCountry,
             updatedAt
         } = this.state.user;
 
         
-            return <div> 
+            return <React.Fragment>
+            <div className="container-fluid">
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -359,7 +408,7 @@ export class Profile extends Component{
                         </div>
                                     <div className="col-md-8 col-sm-12">
                                     
-                                    <div className="col-spaced box">
+                                    <div className="col-spaced box box-set">
                                     <ProfileTabs />
                                     <div className="row">
                                         <div className="col-md-6">
@@ -465,6 +514,11 @@ export class Profile extends Component{
                                     </div>
                                     <div className="row">
                                     <div className="col-md-6">
+                                    <span className="major-select">
+                                    <input type="file" className="image-upload" accept="image/*" ref={ref => this.fileUpload = ref}/>
+                                    </span>
+                                    </div>
+                                    <div className="col-md-6">
                                     <button className="navbar-btn aligner" onClick={()=> {this.doUpdate(localStorage.token, this.props.user_id)}}><span className="user-info">Update Profile</span></button>
                                     </div>
                                     <div className="col-md-6">
@@ -478,9 +532,9 @@ export class Profile extends Component{
                     </div>
                 </section>
             </div> 
-            <Footer />
-        </div>   
-        
+        </div> 
+        <Footer />  
+        </React.Fragment>
     }
 }
 

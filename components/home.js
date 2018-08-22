@@ -6,6 +6,7 @@ import {Play} from 'react-feather'
 import Modal from 'react-responsive-modal'
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import Plyr from 'react-plyr';
+import {MobileSidebar} from './shared/mobile_sidebar'
 
 export class Home extends Component {
     //svg background color #FFB770
@@ -29,22 +30,34 @@ export class Home extends Component {
       };
           render () {
         const { open, showCloseIcon } = this.state;
+        let getStart;
+        if (localStorage.token == null){
+            getStart = (
+                <a href="/register"><input type="submit" className="home-button" value="Get Started" /></a>
+            )
+        }else{
+            getStart = (
+            <a href="/scholarship-search"><input type="submit" className="home-button" value="Get Started" /></a>
+            )
+        }
         return (
+            <React.Fragment>
             <div className="container-fluid">
             <div className="row">
             <section className="section1">
-                     <Navbar />  
                     
+                     <Navbar />  
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
-                        <div className="col-md-6">
-                            <div className="headline-box">
-                            <h1 className="home-headline">Welcome to The Academist </h1>
+                        <div className="col-md-7 col-sm-6">
+                            <div className="home-box">
+                            <h1 className="home-headline"><span>Welcome to</span> <span className="brand-effects">"The Academist"</span></h1>
                             <p className="home-text">Where Education Transcends Borders</p>
                             <p className="home-text-paragraph">A reliable host where students are empowered with adequate information that helps shape their academic careers outstandingly.</p>
                             <div className="row">
                             <div className="col-md-6">
                             <div className="col-spacer">
-                            <a href="/register"><input type="submit" className="home-button" value="Get Started" /></a>
+                            {getStart}
                             </div>
                             </div>
                             <div className="col-md-6">
@@ -63,7 +76,7 @@ export class Home extends Component {
                             </div>
                             </div>
                         </div>
-                        <div className="col-md-6">
+                        <div className="col-md-5 col-sm-6">
                             <img className="featured-img" src="/img/Website_0_main-illustration.png" />
                             </div>
                         </div>
@@ -99,7 +112,7 @@ export class Home extends Component {
                               <div className="col-spaced box">
                                     <img src="./img/Website_2.png" className="hero-img" />
                                     <h4 className="hero-heading-1"><a href="/school-search/by-gpa">SEARCH SCHOOL BY GPA</a></h4>
-                                    <p className="story-paragraph-1">Personalize your evaluated GPA to search for schools you might qaspiring to study thereualify for and the opportunities abound. Search schools based on your GPA</p>
+                                    <p className="story-paragraph-1">Personalize your evaluated GPA to search for schools you might qualify for and the opportunities abound. Search schools based by your GPA.</p>
                                    
                                    </div></div>
                               <div className="col-md-4 col-sm-12"><div className="col-spaced box">
@@ -122,7 +135,7 @@ export class Home extends Component {
                 <section className="section4">
                 <div className="row-fluid full-height">
                     <div className="col-md-6 stands-for">
-                    <h2>WHAT THE ACADEMIST STANDS FOR?</h2>
+                    <h2 className="stands-for-head">WHAT <span className="brand-effects">"THE ACADEMIST"</span> STANDS FOR?</h2>
                     <ul>
                         <li>Source of college scholarship opportunities for international students, both at the graduate and undergraduate level</li>
                         <li>Admission information to over 50 million students around the world</li>
@@ -181,8 +194,10 @@ export class Home extends Component {
                 </div>
                 </section>
                 </div>
-                <Footer />
+                
             </div>
+            <Footer />
+            </React.Fragment>
         );
     }
 }

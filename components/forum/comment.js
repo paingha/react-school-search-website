@@ -14,6 +14,7 @@ export class NewComment extends Component{
             idUser: '',
             lastName: '',
             firstName: '',
+            image: '',
             content: '',
             created: false,
         }
@@ -41,7 +42,7 @@ export class NewComment extends Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, idUser: data.id, firstName: data.firstName, lastName: data.lastName})
+                data => this.setState({isloading: false, idUser: data.id, firstName: data.firstName, lastName: data.lastName, image: data.image})
             )
         }
     }
@@ -50,9 +51,6 @@ export class NewComment extends Component{
         let by = this.state.idUser;
         let forumId = this.props.parentForum;
         this.setState({isloading: true, error: undefined});
-        console.log(content);
-        console.log(by);
-        console.log(forumId);
         return fetch(settings.urls.new_reply, {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
@@ -72,7 +70,7 @@ export class NewComment extends Component{
         .catch(error=>this.setState({isloading: false, error: error.message}));
     }
     render(){
-        let {firstName, lastName, content} = this.state
+        let {firstName, lastName, image, content} = this.state
         return(
             <div className="container-fluid">
                 
@@ -89,7 +87,7 @@ export class NewComment extends Component{
     <div className="row article-sub-row">
     
 
-    <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_comment_image.png" /></div>
+    <div className="col-md-2"><img className="forum-poster-img" src={image} /></div>
     <div className="col-md-10">
 
     <span className="content">

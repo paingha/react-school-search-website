@@ -1,14 +1,44 @@
 import React, {Component} from 'react';
 import {User, EyeOff} from 'react-feather'
 import Moment from 'react-moment';
+import settings from '../../settings'
 export default class CommentList extends Component{
+constructor(props){
+    super(props)
+    this.state = {
+        image: ''
+    }
+}
+        fetchInfo(id){
+            fetch(settings.urls.show_info.replace('{user_id}', id ), {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => {
+                    this.setState({image: data.image}, ()=>{
+                        return (
+                        <React.Fragment>
+                        <img className="forum-poster-img" src={this.state.image} />
+                        </React.Fragment>
+                        )
+                    }) 
+                }
+            )
+            
+    }
     render(){
         let comments = this.props.reply
         return(
             <div className="container-fluid">
                 
                 {comments.map((stuff, id)=> 
-            <div className="row-fluid forum-comment-row">
+                
+            <div key={stuff.id} className="row-fluid forum-comment-row">
             
               
     <div className="col-md-2">
@@ -20,7 +50,7 @@ export default class CommentList extends Component{
     <div className="row article-sub-row">
     
 
-    <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_comment_image.png" /></div>
+    <div className="col-md-2">{this.fetchInfo(this, stuff.by)}</div>
     <div className="col-md-10">
 
     <div className="row">

@@ -17,6 +17,13 @@ class Login extends Component {
             error: undefined,
         };
     }
+    componentDidMount(){
+        const {history, location} = this.props;
+        if(this.props.user_id){
+            history.push(location.state? location.state.from : {pathname: '/'});
+        }
+        
+    }
     responseFacebook(response){
         const {fetching, error} = this.state;
         const {dispatch, history, location} = this.props;
@@ -108,7 +115,7 @@ class Login extends Component {
       }
     doLogin(login, password) {
         const {dispatch, history, location} = this.props;
-        console.log('location', location)
+        //console.log('location', location)
         dispatch(requestLogin());
         return fetch(settings.urls.login, {
                          method: 'POST',
@@ -122,11 +129,11 @@ class Login extends Component {
                     throw new Error(json.error.message);
                 dispatch(receiveLogin(json));
                 localStorage.token = json.token;
-                if (!json.user.firstLogin){
-                history.push(location.state? location.state.from : {pathname: '/'});
+                if (json.user.firstLogin !== false){
+                history.push(location.state? location.state.from : {pathname: '/get-started'});
                 }
                 else{
-                    history.push(location.state? location.state.from : {pathname: '/get-started'});  
+                    history.push(location.state? location.state.from : {pathname: '/'});  
                 }
             })
             .catch(error=>dispatch(errorLogin(error.message)));
@@ -180,8 +187,12 @@ class Login extends Component {
                         />
                         </div>
                         </div>
+                        <span className="register-link">Need an Account? &nbsp;<a href="/register"><strong>Register</strong></a>
+                        <br />Forgot your Password? &nbsp;<a href="/forgot"><strong>Reset Here</strong></a>
+                        </span>
                     </div>
                     <div className="col-md-4"></div>
+                    
                 </div>
             </div>
         );
@@ -191,7 +202,8 @@ class Login extends Component {
 function mapper(state) {
     return {
         is_fetching: state.user.is_fetching,
-        error: state.user.error
+        error: state.user.error,
+        user_id: state.user.data && state.user.data.id,
     }
 }
 

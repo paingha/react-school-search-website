@@ -4,6 +4,7 @@ import {Provider} from 'react-redux'
 import jwtDecode from 'jwt-decode'
 
 import {prepareStore} from './store';
+import 'babel-polyfill';
 import settings from './settings';
 import {Router} from './router';
 import ReduxToastr from 'react-redux-toastr'

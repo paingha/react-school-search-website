@@ -82,14 +82,47 @@ export default class ScholarshipPopup extends Component{
         :   <React.Fragment>
             <div className="more-modal">
             <p><strong>Scholarship Name:</strong> {name}</p>
+            { description !== null ?
             <p><strong>Scholarship Description:</strong> {description}</p>
-            <p><strong>Scholarship Gpa:</strong> {gpa}</p>
+            :
+            <p><strong>Scholarship Description:</strong> N/A</p>
+            }
+            { gpa !== null ?
+            <p><strong>Scholarship GPA:</strong> {gpa}</p>
+            :
+            <p><strong>Scholarship GPA:</strong> N/A</p>
+            }
+            { level !== null ?
             <p><strong>Scholarship Level:</strong> {level}</p>
+            :
+            <p><strong>Scholarship Level:</strong> N/A</p>
+            }
+            { applicantCountry !== null ?
             <p><strong>Scholarship Applicant Country:</strong> {applicantCountry}</p>
+            :
+            <p><strong>Scholarship Applicant Country:</strong> N/A</p>
+            }
+            { institution !== null ?
             <p><strong>Scholarship Institution:</strong> {institution}</p>
+            :
+            <p><strong>Scholarship Institution:</strong> N/A</p>
+            }
+            { criteria !== null ?
             <p><strong>Scholarship Criteria:</strong> {criteria}</p>
+            :
+            <p><strong>Scholarship Criteria:</strong> N/A</p>
+            }
+            { country !== null ?
             <p><strong>Scholarship Country:</strong> {country}</p>
-            <p><strong>Scholarship Deadline:</strong> {deadline}</p>
+            :
+            <p><strong>Scholarship Country:</strong> N/A</p>
+            }
+            
+            { deadline !== null ?
+             <p><strong>Scholarship Deadline:</strong> {deadline}</p>
+             :
+             <p><strong>Scholarship Deadline:</strong> N/A</p>
+            }
             </div>
             <br/>
             <div className="more-modal"><a href={`${url}`} target="_blank"><button className="search-btn aligner"><Link2 className="user-icon"/> <span className="user-info">Apply</span></button></a></div>

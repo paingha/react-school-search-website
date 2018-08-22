@@ -3,6 +3,7 @@ import Navbar from '../shared/navbar'
 import Footer from '../shared/footer'
 import ProfileBox from '../shared/profile_box'
 import ReferBox from '../shared/refer_box'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import {connect} from 'react-redux';
 import settings from '../../settings'
 import {ProfileTabs} from './profile'
@@ -24,7 +25,7 @@ export class ProfileTransactions extends Component{
     }
 
     handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
+        //console.log(`active page is ${pageNumber}`);
         //(n-1)15
         let mathStuff = pageNumber - 1;
         let multiplyStuff = mathStuff * 7;
@@ -89,7 +90,7 @@ export class ProfileTransactions extends Component{
             <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -165,11 +166,12 @@ export class ProfileTransactions extends Component{
             updatedAt
         } = this.state.user;
         let { transactions, resultCount } = this.state;
-        return <div>
-            <div className="row">
+        return <React.Fragment>
+        <div className="container-fluid">
+        <div className="row">
             <section className="profile-section">
                      <Navbar />  
-                    
+                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                         <div className="col-md-12">
                             <div className="headline-box">
@@ -240,9 +242,9 @@ export class ProfileTransactions extends Component{
                         </div>
                 </section>
                 </div>  
-                <Footer />
                 </div>
-        
+                <Footer />
+        </React.Fragment>
     }
 }
 

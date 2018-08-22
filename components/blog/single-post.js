@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import Navbar from '../shared/navbar';
 import settings from '../../settings'
 import Footer from '../shared/footer'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 import { Match, Link } from 'react-router-dom'
-import {User, Share} from 'react-feather'
+import {User, Share, Share2} from 'react-feather'
 import Moment from 'react-moment';
 import {Helmet} from "react-helmet";
 import BlogComments from './comments'
 import NewBlogComment from './new-comment'
-
+import NotLoggedin from './not-loggedin'
 
 export class SinglePost extends React.Component{
     constructor(props){
@@ -18,6 +19,7 @@ export class SinglePost extends React.Component{
             thing: null,
             firstName: '',
             lastName: '',
+            image: '',
             isloading: false,
             update: false,
             commentNo: 5
@@ -41,8 +43,6 @@ export class SinglePost extends React.Component{
         this.setState(prevState => ({
             update: !prevState.update
           }), ()=>{
-              console.log(this.state.update)
-              console.log(val);
           });
     }
     loadPoster(poster_id){
@@ -56,7 +56,7 @@ export class SinglePost extends React.Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, firstName: data.firstName, lastName: data.lastName}, ()=>{
+                data => this.setState({isloading: false, firstName: data.firstName, lastName: data.lastName, image: data.image}, ()=>{
                     console.log(data);
                 })
             )
@@ -73,9 +73,6 @@ export class SinglePost extends React.Component{
             )
             .then(
                 data => this.setState({isloading: false, thing: data}, ()=>{
-                    console.log(data);
-                    console.log("----------------------------------------------------");
-                    console.log(this.state.things);
                     this.loadPoster(data.by);
                 })
             )
@@ -93,9 +90,6 @@ export class SinglePost extends React.Component{
             )
             .then(
                 data => this.setState({isloading: false, thing: data}, ()=>{
-                    console.log(data);
-                    console.log("----------------------------------------------------");
-                    console.log(this.state.thing);
                     this.loadPoster(data.by);
                 })
             )
@@ -106,6 +100,7 @@ export class SinglePost extends React.Component{
             <div className="row">
                 <section className="help-center-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -125,7 +120,7 @@ export class SinglePost extends React.Component{
                 <div className="col-spaced help-box">
                
                 <div className="row article-sub-row">
-                <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_image.png" /></div>
+                <div className="col-md-2"></div>
                 <div className="col-md-10">
                 <div className="row">
                 <div className="col-md-4">
@@ -135,6 +130,7 @@ export class SinglePost extends React.Component{
                 </div>
                 <div className="col-md-4"></div>
                 <div className="col-md-4 forum-report">
+                <Share2 />
                 <a href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com${pathname}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
                 <a href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com${pathname}&via=TWITTER_HANDLE_HERE&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
                 <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
@@ -186,9 +182,10 @@ export class SinglePost extends React.Component{
             </div>
         }
         let {topic, content, by, comments, createdAt, id, featuredImage} = this.state.thing;
-        let {firstName, lastName} = this.state;
+        let {firstName, lastName, image} = this.state;
         const {pathname} = this.props.location;
-        return <div className="container-fluid"> 
+        return <React.Fragment>
+        <div className="container-fluid"> 
         <Helmet>
                 <meta charSet="utf-8" />
                 <title>{topic} | The Academist</title>
@@ -216,6 +213,7 @@ export class SinglePost extends React.Component{
 <div className="row">
     <section className="help-center-section">
         <Navbar />  
+        <MobileSidebar />
         <div className="row-fluid hero-box">
         <div className="col-md-12">
             <div className="headline-box">
@@ -235,7 +233,7 @@ export class SinglePost extends React.Component{
     <div className="col-spaced help-box">
    
     <div className="row article-sub-row">
-    <div className="col-md-2"><img className="forum-poster-img" src="https://api.adorable.io/avatars/260/forum_image.png" /></div>
+    <div className="col-md-2"><img className="forum-poster-img" src={image} /></div>
     <div className="col-md-10">
     <div className="row">
     <div className="col-md-4">
@@ -248,6 +246,7 @@ export class SinglePost extends React.Component{
     </div>
     <div className="col-md-4"></div>
     <div className="col-md-4 forum-report">
+    <Share2 />&nbsp;&nbsp;
     <a href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com${pathname}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
     <a href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com${pathname}&via=TWITTER_HANDLE_HERE&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
     <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
@@ -265,14 +264,10 @@ export class SinglePost extends React.Component{
     <div className="col-md-2">
     </div>
  </div>
-    <BlogComments reply={comments}/>
-    { comments.length > 4 ?
-    <div className='blog-view-more-button-wrapper'><button onClick={() => this.moreComments(this.state.id)} className="blog-view-more-button">View More</button></div>
-    : null
-    }
-    <NewBlogComment parentBlog={this.state.id} getblog = {this.getBlog} />
-<Footer />
+    
+
 </div>
-        
+      <Footer />
+      </React.Fragment>  
     }
 }

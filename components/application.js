@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Navbar from './shared/navbar';
 import Footer from './shared/footer'
+import {MobileSidebar} from './shared/mobile_sidebar'
 import { Match, Link } from 'react-router-dom'
 import {User, Share} from 'react-feather'
 import Select from 'react-select';
@@ -125,6 +126,10 @@ const BOOLEAN = [
 	{ label: 'Yes', value: 'Yes' },
     { label: 'No', value: 'No' }
 ];
+const COMMUNICATION = [
+    { label: 'Email', value: 'Email' },
+    { label: 'Phone', value: 'Phone' }
+]
 const GPAS = [
     { label: '2.0', value: '2.0' },
     { label: '2.1', value: '2.1' },
@@ -231,6 +236,7 @@ class _CardForm extends Component {
                 className="StripeElement"
                 {...createOptions(this.props.fontSize)}
             />
+            <img className="card-align" src="https://theacademist.herokuapp.com/img/cards.png" />
             <button className="navbar-btn aligner" >Pay</button>
         </form>
         );
@@ -275,6 +281,7 @@ export class Application extends Component{
             seekingScholarship: '',
             gpa: '',
             time: '',
+            comm: '',
             stripeToken: '',
             currencyUser: 'USD',
             fetching: false,
@@ -293,6 +300,7 @@ export class Application extends Component{
     this.handleSemesterChange = this.handleSemesterChange.bind(this);
     this.handleScholarshipChange = this.handleScholarshipChange.bind(this);
     this.handleTimeChange = this.handleTimeChange.bind(this);
+    this.handleCommChange = this.handleCommChange.bind(this);
 }
 componentDidMount(){
     //this.onOpenModal()
@@ -302,54 +310,45 @@ componentDidMount(){
 }
 
 handleGenderChange (gender) {
-    console.log('You\'ve selected:', gender);
     this.setState({ gender }, ()=>{
-        console.log(this.state.gender)
+    });
+}
+handleCommChange (comm) {
+    this.setState({ comm }, ()=>{
     });
 }
 handleLevelChange (level) {
-    console.log('You\'ve selected:', level);
     this.setState({ level });
 }
 handleCountryChange (country) {
-    console.log('You\'ve selected:', country);
     this.setState({ country });
 }
 handleSchoolCountryChange(schoolCountry){
-    console.log('You\'ve selected:', schoolCountry);
     this.setState({ schoolCountry });
 }
 handleFirstMajorChange(firstChoiceMajor){
-    console.log('You\'ve selected:', firstChoiceMajor);
     this.setState({ firstChoiceMajor });
 }
 handleSecondMajorChange(secondChoiceMajor){
-    console.log('You\'ve selected:', secondChoiceMajor);
     this.setState({ secondChoiceMajor });
 }
 handleSemesterChange(expectedSemesterEntry){
-    console.log('You\'ve selected:', expectedSemesterEntry);
     this.setState({ expectedSemesterEntry });
 }
 handleScholarshipChange(seekingScholarship){
-    console.log('You\'ve selected:', seekingScholarship);
     this.setState({ seekingScholarship });
 }
 handleGpaChange (gpa) {
-    console.log('You\'ve selected:', gpa);
     this.setState({ gpa }, ()=>{
         console.log(this.state.gpa)
     });
 }
 handleTimeChange(time){
-    console.log('You\'ve selected:', time);
     this.setState({ time }, ()=>{
-        console.log(this.state.time)
     });
 }
 setDate(date){
     this.setState({date}, ()=> {
-        console.log(this.state.date)
     })
 }
 fetchMajors() {
@@ -396,7 +395,7 @@ getCurrency(){
         data => {
             this.setState({isloading: false, currencyCode: data.geoplugin_currencyCode, currencySymbol: data.geoplugin_currencySymbol_UTF8}, ()=>{
                 this.apiRequest(data.geoplugin_currencyCode);
-                console.log(this.state.currencySymbol);
+                //console.log(this.state.currencySymbol);
             })
         }
     )
@@ -412,15 +411,15 @@ apiRequest(currency){
     )
     .then(
         data => {
-            console.log(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
+            //console.log(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
             this.setState({isloading: false, exchangeRate: data['Realtime Currency Exchange Rate']['5. Exchange Rate']}, ()=> {
-                console.log(this.state.exchangeRate)
+                //console.log(this.state.exchangeRate)
             })
         }
     )
 }
 submitApplication(){
-    const { paymentStatus, ieltsScore,paymentID, satScore, toeflScore, greScore, gmatScore, actScore,expectedSemesterEntry, country, seekingScholarship, gpa, time, date,firstName, lastName, email, dateOfBirth, phone, gender, level, schoolCountry, firstChoiceMajor,currencyUser, stripeToken, fetching} = this.state;
+    const { paymentStatus, comm, ieltsScore,paymentID, satScore, toeflScore, greScore, gmatScore, actScore,expectedSemesterEntry, country, seekingScholarship, gpa, time, date,firstName, lastName, email, dateOfBirth, phone, gender, level, schoolCountry, firstChoiceMajor,currencyUser, stripeToken, fetching} = this.state;
     if(firstName == ''){
         toastr.error('Error!', 'First Name is REQUIRED')
     }
@@ -479,7 +478,7 @@ submitApplication(){
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             mode: 'cors',
-            body: JSON.stringify({paymentStatus, ieltsScore, satScore, toeflScore, greScore, gmatScore, actScore, expectedSemesterEntry, country, seekingScholarship, gpa, time, date,firstName, lastName, email, dateOfBirth, phone, gender, level, schoolCountry, firstChoiceMajor})
+            body: JSON.stringify({paymentStatus, comm, ieltsScore, satScore, toeflScore, greScore, gmatScore, actScore, expectedSemesterEntry, country, seekingScholarship, gpa, time, date,firstName, lastName, email, dateOfBirth, phone, gender, level, schoolCountry, firstChoiceMajor, secondChoiceMajor})
         })
         .then(
             response => response.json()
@@ -496,12 +495,13 @@ submitApplication(){
 }
 }
     render(){
-        let {country, option, open, elementFontSize, seekingScholarship, gpa, expectedSemesterEntry, secondChoiceMajor, firstChoiceMajor, time, gender, schoolCountry, date, ieltsScore, satScore, greScore, gmatScore, toeflScore, actScore, phone, firstName, lastName, dateOfBirth, email, level} = this.state;
+        let {country, option, open, comm, elementFontSize, seekingScholarship, gpa, expectedSemesterEntry, secondChoiceMajor, firstChoiceMajor, time, gender, schoolCountry, date, ieltsScore, satScore, greScore, gmatScore, toeflScore, actScore, phone, firstName, lastName, dateOfBirth, email, level} = this.state;
         const countries = COUNTRIES;
         let options = this.state.countryOptions;
         const major = this.state.majors;
         const school_country = SCHOOL_COUNTRIES;
         const levels = LEVELS;
+        const communication = COMMUNICATION;
         const genders = GENDERS;
         const semester = SEMESTERS;
         const scholar = BOOLEAN;
@@ -535,7 +535,7 @@ submitApplication(){
 		let shipping = 1;	
 		let env = 'sandbox'; // you can set here to 'production' for production
 		let currency = 'USD'; // or you can set this value from your props or state  
-		let total = 25*100; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
+		let total = 25; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
 		// Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
 		let style = {
             size: 'responsive',
@@ -548,15 +548,17 @@ submitApplication(){
 			production: 'YOUR-PRODUCTION-APP-ID',
 		}
 
-        return <div className="container-fluid"> 
+        return <React.Fragment>
+        <div className="container-fluid"> 
 <div className="row">
     <section className="help-center-section">
         <Navbar />  
+        <MobileSidebar />
         <div className="row-fluid hero-box">
         <div className="col-md-12">
             <div className="headline-box">
             
-            <h1 className="home-headline">Application</h1>
+            <h1 className="home-headline">Admission Processing</h1>
             
             </div>
         </div>
@@ -959,6 +961,35 @@ submitApplication(){
     </Tooltip>
     </div>
     </div>
+    <div className="row">
+    <div className="col-md-6">
+    <Tooltip
+    interactive
+    position="left"
+    arrow={true}
+    hideOnClick={true}
+    title="Perferred Means of Communication (required)"
+    trigger="click"
+    >
+    <Select
+        name="form-field-name"
+        className="major-select"
+        value={comm}
+        onBlurResetsInput={false}
+		onSelectResetsInput={false}
+        placeholder="Perferred Means of Communication"
+        simpleValue
+        multi={false}
+        clearable={true}
+        onChange={this.handleCommChange}
+        options={communication}
+        searchable={false}
+        />
+    </Tooltip>
+    </div>
+    <div className="col-md-6">
+    </div>
+    </div>
     <br />
     <p className="gpa-result">Book An Appointment</p>
     <br />
@@ -1042,8 +1073,8 @@ submitApplication(){
     <div className="clearfix">
     </div>
  </div>
-<Footer />
 </div>
-        
+<Footer />
+</React.Fragment>    
     }
 }

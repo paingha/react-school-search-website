@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
 //import {connect} from 'react-redux';
 import settings from '../../settings'
-import {Search, DollarSign, Calendar, Edit, Link} from 'react-feather'
+import {Search, DollarSign, Calendar, Edit, Link, Eye, Share2} from 'react-feather'
 import TextTruncate from 'react-text-truncate';
 import NumberFormat from 'react-number-format';
+import GpaPopup from '../shared/gpa_popup';
 export default class GpaResult extends Component{
 
     constructor(props) {
@@ -14,17 +15,26 @@ export default class GpaResult extends Component{
             school: '',
             criteria: '',
             level: '',
-            saved: false
+            saved: false,
+            opened: false,
+            id: 0
         };
+        this.showMore = this.showMore.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.OpenModal = this.OpenModal.bind(this);
     }
-    clickSave() {
-        document.getElementById('save').classList.replace("heart", "is_animating");
-        this.setState({
-            saved: true
-        })
+    OpenModal(param) {
+        this.setState({ opened: true, id: param }, ()=>{
+            //this.getMore(param)
+        });
+        
+      };
+    handleClose(x){
+        this.setState({opened: x})
     }
-
-
+    showMore(){
+        this.props.getInput(true);
+    }
     componentDidMount() {
         
     }
@@ -71,18 +81,18 @@ export default class GpaResult extends Component{
                 <section className="search-result-section-2">
                     <div className="story-box">
                     {schoolResults.map((school, id)=>
-                        <div className="row">
+                        <div key={school.id}  className="row">
                         <div className="col-md-1">
                         </div>
 
                                     
-                                    <div key={id} className="col-md-10 col-sm-12">
+                                    <div className="col-md-10 col-sm-12">
                                     <div className="col-spaced box">
-                                    <div className="ribbon-wrapper-green"><div className="ribbon-green">NEW</div></div>
+                                    <div   onClick={this.showMore} className="ribbon-wrapper-saved"><div className="ribbon-saved"><Share2 className="user-icon"/>&nbsp;&nbsp;Share</div></div>
                                     <div className="row">
                                         <div className="col-md-4">
                                         <h3 className="word-wrap"><TextTruncate
-                                            line={2}
+                                            line={3}
                                             truncateText="…"
                                             text={school.name} /></h3>
                                         </div>
@@ -101,7 +111,7 @@ export default class GpaResult extends Component{
                                     
                                     <div className="row search-push-down">
                                         <div className="col-md-2">
-                                        <h4>GPA: 
+                                 <h4>GPA:&nbsp; 
                                         <NumberFormat value={school.gpa} displayType={'text'} decimalScale={1} decimalSeparator={'.'} fixedDecimalScale={true}/>
                                         </h4>
                                         </div>
@@ -114,7 +124,7 @@ export default class GpaResult extends Component{
                                         
                                         </div>
                                         <div className="col-md-4">
-                                        <a href={school.website} target="_blank" className="search-btn aligner"><Link className="user-icon"/> <span className="user-info">Visit</span></a>
+                                        <button className="search-btn aligner" onClick={this.OpenModal.bind(this, `${school.id}`)}><Eye className="user-icon"/> <span className="user-info">View More</span></button>
                                         
                                         </div>
                                     </div>
@@ -129,6 +139,7 @@ export default class GpaResult extends Component{
                     </div>
                 </section>
             </div> 
+            <GpaPopup open={this.state.opened} school_id={this.state.id} getInput={this.handleClose}/>
             </div> 
         
     }

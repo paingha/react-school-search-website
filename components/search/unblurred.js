@@ -55,7 +55,7 @@ export default class UnBlurred extends Component{
                                     
                                     </div>
                                     <div className="col-md-4">
-                                    <a href="/buy_coin"><button disabled className="search-btn aligner"><Lock className="user-icon"/> <span className="user-info">Buy Coin</span></button></a>
+                                    <a href={`${this.props.buyUrl}`}><button disabled className="search-btn aligner"><Lock className="user-icon"/> <span className="user-info">Buy Coin</span></button></a>
                                     
                                     </div>
                                 </div>

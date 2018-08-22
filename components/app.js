@@ -4,9 +4,9 @@ import Footer from './shared/footer'
 export class App extends Component {
     render () {
         return (
-            <div className="container-fluid">
+            <React.Fragment>
                 {this.props.children}
-            </div>
+            </React.Fragment>
             
         );
     }

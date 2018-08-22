@@ -9,15 +9,15 @@ import {Search} from 'react-feather'
 import {connect} from 'react-redux';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import Pagination from "react-js-pagination";
+import Modal from 'react-responsive-modal'
+import 'react-responsive-modal/lib/react-responsive-modal.css';
+import {MobileSidebar} from '../shared/mobile_sidebar';
 //import ScholarshipResult from './scholarship-result'
 
 const LEVELS = [
 	{ label: 'Graduate', value: 'Graduate' },
     { label: 'Undergraduate', value: 'Undergraduate' }
-];
-const COUNTRIES = [
-	{ label: 'US', value: 'US' },
-	{ label: 'Canada', value: 'Canada' }
 ];
 const GPAS = [
     { label: '2.0', value: '2.0' },
@@ -42,26 +42,6 @@ const GPAS = [
     { label: '3.9', value: '3.9' },
     { label: '4.0', value: '4.0' }
 ];
-const USSTATE = [
-	{ label: 'AL', value: 'AL' },
-    { label: 'AK', value: 'AK' },
-    { label: 'AS', value: 'AS' },
-    { label: 'AZ', value: 'AZ' },
-    { label: 'AR', value: 'AR' },
-    { label: 'CA', value: 'CA' },
-    { label: 'CO', value: 'CO' },
-    { label: 'CT', value: 'CT' },
-    { label: 'DE', value: 'DE' },
-    { label: 'DC', value: 'DC' },
-    { label: 'FM', value: 'FM' }
-];
-const CANSTATE = [
-    { label: 'OTTAWA', value: 'OTTAWA' },
-    { label: 'ONTARIO', value: 'ONTARIO' },
-    { label: 'LONDON', value: 'LONDON' },
-]
-
-
 
 export class ByGpa extends Component{
 
@@ -75,12 +55,21 @@ export class ByGpa extends Component{
             gpa: '',
             USstate: true,
             error: null,
-            results: []
+            results: [],
+            states: null,
+            activePage: 1,
+            offset: 0,
+            resultCount: 0,
+            opened: false
         };
         this.handleLevelChange = this.handleLevelChange.bind(this);
         this.handleGpaChange = this.handleGpaChange.bind(this);
         this.handleStateChange = this.handleStateChange.bind(this);
         this.handleCountryChange = this.handleCountryChange.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
+        this.OpenModal = this.OpenModal.bind(this);
+        this.CloseShareModal = this.CloseShareModal.bind(this);
+        this.handleClose = this.handleClose.bind(this);
     }
 
     handleCriteriaChange (criteria) {
@@ -89,7 +78,15 @@ export class ByGpa extends Component{
             console.log(this.state.criteria)
         });
     }
-
+    handleClose(x){
+        this.setState({opened: x})
+    }
+    OpenModal() {
+        this.setState({ opened: true });
+      };
+      CloseShareModal(){
+        this.setState({ opened: false });
+      }
     handleLevelChange (level) {
 		console.log('You\'ve selected:', level);
 		this.setState({ level });
@@ -119,68 +116,68 @@ export class ByGpa extends Component{
     })
     }
 
+    componentDidMount(){
+        this.fetchStates()
+    }
+    handlePageChange(pageNumber) {
+        console.log(`active page is ${pageNumber}`);
+        //(n-1)15
+        let mathStuff = pageNumber - 1;
+        let multiplyStuff = mathStuff * 15;
+        this.setState({activePage: pageNumber, offset: multiplyStuff }, ()=>{
+            this.DoSearch();
+            window.scrollTo(0, 0);
+        });
+         
+    }
     DoSearch(){
         this.Search(localStorage.token, this.props.user_id)
     }
     Search(token, user_id) {
-        const {gpa, state, level, isloading, results, error} = this.state
+        const {gpa, state, level, isloading, results, error, offset} = this.state
         this.setState({isloading: true, error: undefined});
         return fetch(settings.urls.gpa_search, {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': token},
             mode: 'cors',
-            body: JSON.stringify({gpa, state, level})
+            body: JSON.stringify({gpa, state, level, offset})
         })
         .then(
             response => response.json()
         )
         .then(
-            data => this.setState({isloading: false, results: data}, () => {
+            data => this.setState({isloading: false, results: data.rows, resultCount: data.count}, () => {
                 console.log(this.state.results)
             })
         )
         
     }
 
+    fetchStates() {
+        this.setState({isloading: true});
+            fetch(settings.urls.get_states, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({isloading: false, states: data})
+            )
+        
+    }
+
     render(){
 
-        let { state, level, gpa, country, USstate, isloading, results} = this.state;
+        let { opened, state, level, gpa, country, USstate, isloading, results, resultCount} = this.state;
         const gpas = GPAS;
         const levels = LEVELS;
-        const states = USSTATE;
-        const canstate = CANSTATE;
+        const states = this.state.states;
         let SelectBlock;
         let resultsBlock
-        /*if (USstate){
-            SelectBlock = (
-                <Select
-                 name="state"
-                className="gpa-select"
-                value={state}
-                placeholder="Pick a State"
-                multi={false}
-                simpleValue
-                onChange={this.handleStateChange}
-                options={states}
-                searchable={false}
-                />
-            )
-        }
-        else{
-            SelectBlock = (
-                <Select
-                 name="state"
-                className="gpa-select"
-                value={state}
-                placeholder="Pick a State"
-                multi={false}
-                simpleValue
-                onChange={this.handleStateChange}
-                options={canstate}
-                searchable={false}
-                />
-            )
-        }*/
+        
         if (isloading == true){
             resultsBlock = (
                 <LoadingResult />
@@ -189,15 +186,16 @@ export class ByGpa extends Component{
         }
         else{
             resultsBlock = (
-                <GpaResult /*none={noneResult}*/ school={results}/>
+                <GpaResult /*none={noneResult}*/getInput={this.handleClose} school={results}/>
                 );
             
         }
-        const countries = COUNTRIES;
-            return <div> 
+            return <React.Fragment>
+            <div className="container-fluid">
             <div className="row">
                 <section className="profile-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -258,7 +256,7 @@ export class ByGpa extends Component{
                                         simpleValue
                                         onChange={this.handleStateChange}
                                         options={states}
-                                        searchable={false}
+                                        searchable={true}
                                         />
                                         </div>
                                         
@@ -279,9 +277,37 @@ export class ByGpa extends Component{
                 
             </div> 
             {resultsBlock}
-            <Footer />
-        </div>   
-        
+            {results.length > 0 ?
+            <div className="row pagination-row">
+            <div className="col-md-4"></div>
+            <div className="col-md-4 pagination-col">
+            <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={15}
+            totalItemsCount={resultCount}
+            pageRangeDisplayed={10}
+            onChange={this.handlePageChange}
+            />
+            </div>
+            <div className="col-md-4"></div>
+            </div>
+             : null }
+            <Modal className="video-modal share-modal" open={opened} onClose={this.CloseShareModal} showCloseIcon={true} little>
+                <h1>Share School to Friends</h1>
+                <div className="row">
+                <div className="col-md-2"></div>
+                <div className="col-md-8">
+                <a className="btn-facebook" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com/school-search/by-gpa`}>Share on Facebook</a><br/>
+                <a className="btn-twitter" target="_blank" href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com/school-search/by-gpa&via=the_academist&text="I just found schools on The Academist"`}>Share on Twitter</a><br/>
+                <a className="btn-linkedin" target="_blank" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com/school-search/by-gpa&title="I just found schools on The Academist"&source="The Academist"`}>Share on LinkedIn</a>
+                <br/>
+                </div>
+                <div className="col-md-2"></div>
+                </div>
+            </Modal>
+        </div>  
+        <Footer /> 
+        </React.Fragment>
     }
 }
 function mapper(state) {

@@ -1,5 +1,6 @@
 var path = require('path');
-
+var UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var CompressionPlugin = require('compression-webpack-plugin');
 var nodeEnv = process.env.NODE_ENV || 'development';
 var isProd = nodeEnv === 'production';
 
@@ -11,6 +12,39 @@ module.exports = {
       filename: 'bundle.[hash].js',
     },
     devtool: 'cheap-module-source-map', // inline-source-map
+    optimization: {
+      minimizer: [
+        new UglifyJsPlugin({
+          parallel: true,
+          uglifyOptions: {
+          beautify: false,
+          comments: false,
+          sourceMap: true,
+          compress: {
+            warnings: false,
+            drop_console: true,
+        },
+        mangle: {
+            keep_fnames: true
+        },
+        output: {
+            comments: false,
+        }
+        }
+      }),
+      ]
+    },
+    plugins: [
+        
+        new CompressionPlugin({ 
+          asset: "[path].gz[query]",
+          algorithm: "gzip",
+          test: /\.js$|\.css$|\.html$/,
+          threshold: 10240,
+          minRatio: 0.8
+        }),
+      
+      ],
     module: {
       rules: [
         {

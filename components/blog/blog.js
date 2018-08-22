@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Navbar from '../shared/navbar'
+import {MobileSidebar} from '../shared/mobile_sidebar'
 //import {connect} from 'react-redux';
 import settings from '../../settings'
 import Footer from '../shared/footer'
@@ -49,9 +50,6 @@ export class Blog extends Component{
             )
             .then(
                 data => this.setState({isloading: false, things: data.rows, resultCount: data.count}, ()=>{
-                    console.log(data);
-                    console.log("----------------------------------------------------");
-                    console.log(this.state.things);
                 })
             )
     } 
@@ -139,10 +137,12 @@ export class Blog extends Component{
             
         } */
         
-            return <div className="container-fluid"> 
+            return <React.Fragment>
+            <div className="container-fluid"> 
             <div className="row">
                 <section className="blog-section">
                     <Navbar />  
+                    <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
@@ -163,7 +163,7 @@ export class Blog extends Component{
                 <div className="row-fluid">
                 {this.state.things.map((stuff, id)=> 
                 
-                <div className="col-md-6">
+                <div className="col-md-6" key={stuff.id}>
                 <div className="blog-col-spaced help-box">
                 <img className="blog-list-img" src={`${stuff.featuredImage}`} />
                 <div className="blog-spaced">
@@ -212,8 +212,8 @@ export class Blog extends Component{
             <div className="col-md-4"></div>
             </div>
              : null }
-            <Footer />
         </div>   
-        
+        <Footer />
+        </React.Fragment>
     }
 }
