@@ -104,15 +104,14 @@ export class ProfileSettings extends Component{
                 <div className="col-spaced box profile-box">
                 <div className="profile-img">
                 <div className="profile-img-tag">
-                    <img src="/img/user-img.png" className="profile-image"/>
                 </div>
                 </div>
                 <div className="profile-sub-box">
-                    <p className="story-paragraph">
+                    <div className="story-paragraph">
                         <br/>
                         <div className='text-input__loading--line3'></div>
                         <br/>
-                        </p>
+                        </div>
                         <a href="/buy_coin"><button className="navbar-btn aligner"><ShoppingCart className="user-chevron-down-icon"/><span className="user-info">Buy Coins</span></button></a>
                                     
                 </div>

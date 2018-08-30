@@ -27,6 +27,7 @@ const COUNTRIES = [
 	{ label: 'Canada', value: 'Canada' }
 ];
 const USSTATE = [
+    { label: 'All', value: 'All' },
 	{ label: 'AL', value: 'AL' },
     { label: 'AK', value: 'AK' },
     { label: 'AS', value: 'AS' },

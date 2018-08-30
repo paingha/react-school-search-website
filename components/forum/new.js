@@ -4,11 +4,10 @@ import {connect} from 'react-redux';
 import settings from '../../settings'
 import Footer from '../shared/footer'
 import {MobileSidebar} from '../shared/mobile_sidebar'
-import { Editor } from 'react-draft-wysiwyg';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
 import {Search, BookOpen} from 'react-feather'
 import {toastr} from 'react-redux-toastr'
+import CKEditor from "react-ckeditor-component";
 const ForumSuccess = () =>
 <React.Fragment> 
 <div className="row">
@@ -59,9 +58,11 @@ export class NewForum extends Component{
             user: null,
             error: null,
             topic: '',
-            editorState: EditorState.createEmpty(),
+            content: '',
             created: false
         };
+        this.onChange = this. onChange.bind(this);
+        this.updateContent = this.updateContent.bind(this);
     }
 /*
     fetchUser(token, user_id) {
@@ -80,7 +81,19 @@ export class NewForum extends Component{
             )
         }
     } */
-    
+    updateContent(newContent) {
+        this.setState({
+            content: newContent
+        })
+    }
+    onChange(evt){
+        //console.log("onChange fired with event info: ", evt);
+        var newContent = evt.editor.getData();
+        this.setState({
+          content: newContent
+        })
+      }
+   
 
     componentDidMount() {
         //this.fetchUser(localStorage.token, this.props.user_id);
@@ -99,17 +112,9 @@ export class NewForum extends Component{
           } */
         
     }
-    onEditorStateChange: Function = (editorState) => {
-        this.setState({
-          editorState: draftToHtml(convertToRaw(editorState.getCurrentContent()))
-        });
-      };
     
     doPost(){
-        const {isloading, editorState, topic, error} = this.state;
-        console.log("Topic: " + topic);
-        console.log("Content" + editorState);
-        let content = editorState;
+        const {isloading, content, topic, error} = this.state;
         let by = this.props.user_id
         this.setState({isloading: true, error: undefined});
         return fetch(settings.urls.new_forum, {
@@ -133,7 +138,7 @@ export class NewForum extends Component{
         .catch(error=>this.setState({isloading: false, error: error.message}));
     }
     render(){
-        let { isloading, editorState, topic, created } = this.state;
+        let { isloading, content, topic, created } = this.state;
         if (created)
         return <ForumSuccess/>;
      /*   if(!this.state.user){
@@ -222,13 +227,13 @@ export class NewForum extends Component{
                 <div className="row article-sub-row">
                 <input type="text" placeholder="Forum Post Topic" className="register-input"
                                 value={topic} onChange={e=>this.setState({topic: e.target.value})}/>
-                <Editor
-                    initialEditorState={editorState}
-                    wrapperClassName="wrapper-class"
-                    editorClassName="editor-class"
-                    toolbarClassName="toolbar-class"
-                    onEditorStateChange={this.onEditorStateChange}
-                    />
+                <CKEditor 
+              activeClass="p10" 
+              content={content} 
+              events={{
+                "change": this.onChange
+              }}
+             />
                 </div>
                 {isloading?
                                 <div className="register-button"><img className="register-button-puff" src="/img/puff.svg"/></div>

@@ -19,7 +19,7 @@ class Login extends Component {
     }
     componentDidMount(){
         const {history, location} = this.props;
-        if(this.props.user_id){
+        if(localStorage.token){
             history.push(location.state? location.state.from : {pathname: '/'});
         }
         

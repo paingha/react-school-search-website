@@ -33,7 +33,6 @@ export class SingleForum extends Component{
         window.scrollTo(0, 0);
     }
     componentWillReceiveProps(nextProps) {
-        console.log('willreceiveprops', nextProps.isCreated)
         if(nextProps.isCreated != this.props.isCreated){
             this.getForum(this.state.id)
         }
@@ -42,8 +41,6 @@ export class SingleForum extends Component{
         this.setState(prevState => ({
             update: !prevState.update
           }), ()=>{
-              console.log(this.state.update)
-              console.log(val);
           });
     }
     loadPoster(poster_id){
@@ -74,9 +71,6 @@ export class SingleForum extends Component{
             )
             .then(
                 data => this.setState({isloading: false, thing: data}, ()=>{
-                    console.log(data);
-                    console.log("----------------------------------------------------");
-                    console.log(this.state.things);
                     this.loadPoster(data.by);
                 })
             )
@@ -94,16 +88,14 @@ export class SingleForum extends Component{
             )
             .then(
                 data => this.setState({isloading: false, thing: data}, ()=>{
-                    console.log(data);
-                    console.log("----------------------------------------------------");
-                    console.log(this.state.thing);
                     this.loadPoster(data.by);
                 })
             )
     }
     render(){
         if(!this.state.thing){
-            return <div className="container-fluid"> 
+            return <React.Fragment>
+            <div className="container-fluid"> 
             <div className="row">
                 <section className="help-center-section">
                     <Navbar /> 
@@ -180,13 +172,16 @@ export class SingleForum extends Component{
                 <div className="col-md-2">
                 </div>
              </div>
-            <Footer />
+            
             </div>
+            <Footer />
+            </React.Fragment>
         }
         let {topic, content, by, replies, createdAt, id} = this.state.thing;
         let {firstName, lastName, image} = this.state;
         const {pathname} = this.props.location;
-        return <div className="container-fluid"> 
+        return <React.Fragment>
+         <div className="container-fluid"> 
         <Helmet>
                 <meta charSet="utf-8" />
                 <title>{topic} | The Academist</title>
@@ -264,8 +259,9 @@ export class SingleForum extends Component{
     :
     <NewComment parentForum={this.state.id} getforum = {this.getForum}/>
     }
-<Footer />
+
 </div>
-        
+     <Footer />
+     </React.Fragment>   
     }
 }

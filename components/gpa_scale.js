@@ -42,16 +42,31 @@ export default class GpaScale extends Component{
                 </tr>
                 <tr>
                 <td>B3</td>
+                <td>3 - 3.99</td>
+                <td>B</td>
+                </tr>
+                <tr>
+                <td>C4</td>
                 <td>4 - 4.99</td>
                 <td>B</td>
                 </tr>
                 <tr>
                 <td>C5</td>
+                <td>5 - 5.99</td>
+                <td>C</td>
+                </tr>
+                <tr>
+                <td>C6</td>
                 <td>6 - 6.99</td>
                 <td>C</td>
                 </tr>
                 <tr>
                 <td>D7</td>
+                <td>7 - 7.99</td>
+                <td>D</td>
+                </tr>
+                <tr>
+                <td>E8</td>
                 <td>8 - 8.99</td>
                 <td>D</td>
                 </tr>
@@ -884,7 +899,7 @@ export default class GpaScale extends Component{
                 </tr>
                 <tr>
                 <td>C4</td>
-                <td>C</td>
+                <td>B</td>
                 </tr>
                 <tr>
                 <td>C5</td>
@@ -1207,21 +1222,41 @@ export default class GpaScale extends Component{
                 <React.Fragment>
                 <tr>
                 <td>A1</td>
+                <td>1 - 1.99</td>
+                <td>A</td>
+                </tr>
+                <tr>
+                <td>B2</td>
                 <td>2 - 2.99</td>
                 <td>A</td>
                 </tr>
                 <tr>
                 <td>B3</td>    
+                <td>3 - 3.99</td>
+                <td>B</td>
+                </tr>
+                <tr>
+                <td>C4</td>    
                 <td>4 - 4.99</td>
                 <td>B</td>
                 </tr>
                 <tr>
                 <td>C5</td>
+                <td>5 - 5.99</td>
+                <td>C</td>
+                </tr>
+                <tr>
+                <td>C6</td>
                 <td>6 - 6.99</td>
                 <td>C</td>
                 </tr>
                 <tr>
                 <td>C7</td>
+                <td>7 - 7.99</td>
+                <td>D</td>
+                </tr>
+                <tr>
+                <td>E8</td>
                 <td>8 - 8.99</td>
                 <td>D</td>
                 </tr>

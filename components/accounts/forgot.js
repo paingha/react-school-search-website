@@ -34,7 +34,7 @@ export class Forgot extends Component {
     }
     componentDidMount(){
         const {history, location} = this.props;
-        if(localStorage.token !== null){
+        if(localStorage.token){
             history.push(location.state? location.state.from : {pathname: '/'});
         }
         

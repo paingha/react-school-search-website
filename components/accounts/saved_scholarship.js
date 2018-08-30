@@ -117,15 +117,14 @@ export class SavedScholarship extends Component{
                 <div className="col-spaced box profile-box">
                 <div className="profile-img">
                 <div className="profile-img-tag">
-                    <img src="/img/user-img.png" className="profile-image"/>
                 </div>
                 </div>
                 <div className="profile-sub-box">
-                    <p className="story-paragraph">
+                    <div className="story-paragraph">
                         <br/>
                         <div className='text-input__loading--line3'></div>
                         <br/>
-                        </p>
+                        </div>
                         <a href="/buy_coin"><button className="navbar-btn aligner"><ShoppingCart className="user-chevron-down-icon"/><span className="user-info">Buy Coins</span></button></a>
                                     
                 </div>
@@ -202,8 +201,8 @@ export class SavedScholarship extends Component{
                               <ProfileTabs />
                               <React.Fragment>
                                 {saved.map((save, id)=>
-                                <div className="row">
-                                <div key={save.id} className="col-md-12 col-sm-12">
+                                <div key={save.id} className="row">
+                                <div className="col-md-12 col-sm-12">
                                 <div className="col-spaced box-smaller">
                                 <div onClick={this.UnSave.bind(this, `${save.id}`)} className="ribbon-wrapper-unsave"><div className="ribbon-unsave"><X className="heart-icon"/> <span className="unsave-info">UNSAVE</span></div></div>
                                 <div className="row">

@@ -88,7 +88,6 @@ export class ByGpa extends Component{
         this.setState({ opened: false });
       }
     handleLevelChange (level) {
-		console.log('You\'ve selected:', level);
 		this.setState({ level });
     }
 
@@ -154,6 +153,10 @@ export class ByGpa extends Component{
     }
 
     fetchStates() {
+        let firstMajor = {
+            label: 'All',
+            value: 'All'
+        }
         this.setState({isloading: true});
             fetch(settings.urls.get_states, {
                 method: 'GET',
@@ -164,7 +167,7 @@ export class ByGpa extends Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, states: data})
+                data => this.setState({isloading: false, states: [firstMajor, ...data]})
             )
         
     }

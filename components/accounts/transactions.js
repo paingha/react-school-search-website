@@ -77,6 +77,11 @@ export class ProfileTransactions extends Component{
         this.fetchTransactions(localStorage.token, this.props.user_id);
     }
 
+    componentDidCatch(error, info){
+        if(error){
+            window.location.reload();
+        }
+    }
 
     componentWillReceiveProps(nextProps) {
         if (!this.props.user_id && !!nextProps.user_id && !this.state.user) {
@@ -85,7 +90,7 @@ export class ProfileTransactions extends Component{
         }
     }
     render(){
-        if(!this.state.user && this.state.transactions.length == 0){
+        if(!this.state.user || this.state.transactions.length == 0){
             return <React.Fragment>
             <div className="row">
             <section className="profile-section">
@@ -114,15 +119,14 @@ export class ProfileTransactions extends Component{
                 <div className="col-spaced box profile-box">
                 <div className="profile-img">
                 <div className="profile-img-tag">
-                    <img src="/img/user-img.png" className="profile-image"/>
                 </div>
                 </div>
                 <div className="profile-sub-box">
-                    <p className="story-paragraph">
+                    <div className="story-paragraph">
                         <br/>
                         <div className='text-input__loading--line3'></div>
                         <br/>
-                        </p>
+                        </div>
                         <a href="/buy_coin"><button className="navbar-btn aligner"><ShoppingCart className="user-chevron-down-icon"/><span className="user-info">Buy Coins</span></button></a>
                                     
                 </div>
@@ -146,24 +150,8 @@ export class ProfileTransactions extends Component{
                 </React.Fragment>
         }
         let {
-            applicantCountry,
-            coin,
-            createdAt,
-            criteria,
-            email,
-            emailVerified,
             firstName,
-            gpa,
-            id,
-            isActive,
-            isAdmin,
-            isDisabled,
             lastName,
-            level,
-            major,
-            saved,
-            scholarshipCountry,
-            updatedAt
         } = this.state.user;
         let { transactions, resultCount } = this.state;
         return <React.Fragment>
