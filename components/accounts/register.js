@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import settings from '../../settings';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import TiSocialFacebookCircular from 'react-icons/lib/ti/social-facebook-circular';
+import { parse } from 'query-string';
 import {toastr} from 'react-redux-toastr'
 const RegisterSuccess = () =>
     <div className="container-fluid register-wrapper-background aligned">
@@ -41,8 +41,12 @@ export class Register extends Component {
     }
     componentDidMount(){
         const {history, location} = this.props;
+        const query = parse(location.search);
         if(localStorage.token){
             history.push(location.state? location.state.from : {pathname: '/'});
+        }
+        if(query.referrer){
+            toastr.warning('Message', 'Create an Account to search Scholarships');
         }
         
     }

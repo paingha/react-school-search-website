@@ -73,6 +73,7 @@ export const Router = props => (
         <Route path="/admission-processing" component={Application} />
         <Route exact path="/school-search" component={SchoolSearch}/>
         <Route path="/school-search/by-gpa" component={ByGpa}/>
+        <Route path="/scholarship-search" component={ScholarshipSearch}/>
         <PrivateArea>
         <Route path="/get-started" component={GetStarted} />
             <App>
@@ -81,7 +82,6 @@ export const Router = props => (
             <Route path="/profile/settings" component={ProfileSettings} />
             <Route path="/profile/referrals" component={ProfileReferrals} />
             <Route path="/profile/saved" component={SavedScholarship} />
-            <Route path="/scholarship-search" component={ScholarshipSearch}/>
             <Route exact path="/get_reward" component={RewardMe} />
             <Route exact path="/buy_coin" component={BuyCoin}/>
             <Route path="/paypal" component={CheckoutForm} />

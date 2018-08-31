@@ -26,19 +26,19 @@ import {
   import PaypalExpressBtn from 'react-paypal-express-checkout';
 import {toastr} from 'react-redux-toastr'
 const handleBlur = () => {
-    console.log('[blur]');
+    //console.log('[blur]');
   };
   const handleChange = change => {
-    console.log('[change]', change);
+    //console.log('[change]', change);
   };
   const handleClick = () => {
-    console.log('[click]');
+    //console.log('[click]');
   };
   const handleFocus = () => {
-    console.log('[focus]');
+    //console.log('[focus]');
   };
   const handleReady = () => {
-    console.log('[ready]');
+    //console.log('[ready]');
   };
   const createOptions = (fontSize) => {
     return {
@@ -176,8 +176,8 @@ class _CardForm extends Component {
 
         //call stripe submit
         this.stripeCharge(); 
-        console.log(e.token.id)
-        console.log('submitted');
+        //console.log(e.token.id)
+        //console.log('submitted');
          
         //this.refs.body.className = "modal-body body-get-started is-showing animate-out";
 
@@ -190,7 +190,7 @@ class _CardForm extends Component {
         let token = stripeToken;
         let currency = currencyUser;
         //send token to stripe for charge
-        console.log(stripeToken, amount);
+        //console.log(stripeToken, amount);
         fetch(settings.urls.app_stripe_pay, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -339,9 +339,7 @@ handleScholarshipChange(seekingScholarship){
     this.setState({ seekingScholarship });
 }
 handleGpaChange (gpa) {
-    this.setState({ gpa }, ()=>{
-        console.log(this.state.gpa)
-    });
+    this.setState({ gpa });
 }
 handleTimeChange(time){
     this.setState({ time }, ()=>{
@@ -487,7 +485,7 @@ submitApplication(){
             data => {
                 toastr.success('Success!', 'Your Application has been submitted')
                 this.setState({stripeToken: '', paymentID: ''})
-                console.log("Application Submitted")
+                //console.log("Application Submitted")
             })
         }
     
@@ -522,13 +520,15 @@ submitApplication(){
 		const onCancel = (data) => {
             // User pressed "cancel" or close Paypal's popup!
             
-			console.log('The payment was cancelled!', data);
+            //console.log('The payment was cancelled!', data);
+            toastr.warning('Warning', 'You cancelled Paypal payment, select payment method to buy coin');
 			// You can bind the "data" object's value to your state or props or whatever here, please see below for sample returned data
 		}	
 		
 		const onError = (err) => {
 			// The main Paypal's script cannot be loaded or somethings block the loading of that script!
-			console.log("Error!", err);
+            //console.log("Error!", err);
+            toastr.error('Error', 'An error occured please contact customer service');
 			// Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
 			// => sometimes it may take about 0.5 second for everything to get set, or for the button to appear			
 		}			

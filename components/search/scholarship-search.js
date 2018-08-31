@@ -231,7 +231,7 @@ export class ScholarshipSearch extends Component{
         }
     }
     handleGpaChange (gpa) {
-		console.log('You\'ve selected:', gpa);
+		//console.log('You\'ve selected:', gpa);
 		this.setState({ gpa }, ()=>{
             //console.log(this.state.gpa)
         });
@@ -245,6 +245,10 @@ export class ScholarshipSearch extends Component{
         this.setState({userID: user})
     }
     componentDidMount() {
+        if(!localStorage.token){
+            const {history} = this.props;
+            history.push('/register?referrer=scholarship-search')
+        }
         let cookieStuff = cookie.load('noModal') || 0;
         this.setState({ noneModal: cookieStuff})
         this.fetchUser(localStorage.token, this.props.user_id);

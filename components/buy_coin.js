@@ -7,6 +7,7 @@ import { parse } from 'query-string';
 import settings from '../settings';
 import Modal from 'react-responsive-modal'
 import Footer from './shared/footer'
+import {toastr} from 'react-redux-toastr'
 import {
     CardElement,
     CardNumberElement,
@@ -266,19 +267,19 @@ import {
   ]
 
   const handleBlur = () => {
-    console.log('[blur]');
+    //console.log('[blur]');
   };
   const handleChange = change => {
-    console.log('[change]', change);
+    //console.log('[change]', change);
   };
   const handleClick = () => {
-    console.log('[click]');
+    //console.log('[click]');
   };
   const handleFocus = () => {
-    console.log('[focus]');
+    //console.log('[focus]');
   };
   const handleReady = () => {
-    console.log('[ready]');
+    //console.log('[ready]');
   };
 
   let range = (start,end) => {
@@ -347,14 +348,13 @@ import {
         let amount = coinPrice*100;
         let token = stripeToken;
         let currency = currencyUser;
-        let email = "paulj@gmail.com"
         //send token to stripe for charge
-        console.log(currencyUser, stripeToken, coinNumber, coinPrice, userid);
+        //console.log(currencyUser, stripeToken, coinNumber, coinPrice, userid);
         fetch(settings.urls.stripe_pay.replace('{user_id}', userid), {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
             mode: 'cors',
-            body: JSON.stringify({coin, amount, token, currency, email})
+            body: JSON.stringify({coin, amount, token, currency})
         })
             .then(response=>response.json())
             .then(json=>{
@@ -364,7 +364,7 @@ import {
                 this.paidSuccess()
                 
             })
-            .catch(error=>{ console.log(error.message)/*this.setState({fetching: false, error: error.message});*/});
+            .catch(error=>{ toastr.error('Error', 'An error occured please contact customer service');/*this.setState({fetching: false, error: error.message});*/});
     }
     
   
@@ -386,7 +386,7 @@ import {
         //call stripe submit
         this.stripeCharge(); 
 
-        console.log('submitted');
+        //console.log('submitted');
          
         //this.refs.body.className = "modal-body body-get-started is-showing animate-out";
 
@@ -453,7 +453,7 @@ class Step1 extends Component {
             data => {
                 this.setState({isloading: false, currencyCode: data.geoplugin_currencyCode, currencySymbol: data.geoplugin_currencySymbol_UTF8}, ()=>{
                     this.apiRequest(data.geoplugin_currencyCode);
-                    console.log(this.state.currencySymbol);
+                    //console.log(this.state.currencySymbol);
                 })
             }
         )
@@ -469,9 +469,9 @@ class Step1 extends Component {
         )
         .then(
             data => {
-                console.log(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
+                //console.log(data['Realtime Currency Exchange Rate']['5. Exchange Rate']);
                 this.setState({isloading: false, exchangeRate: data['Realtime Currency Exchange Rate']['5. Exchange Rate']}, ()=> {
-                    console.log(this.state.exchangeRate)
+                    //console.log(this.state.exchangeRate)
                 })
             }
         )
@@ -506,12 +506,12 @@ class Step1 extends Component {
         const oneCoinPrice = Math.round((1.99 * this.state.exchangeRate)*100) / 100;
         const twoCoinPrice = Math.round((3 * this.state.exchangeRate)*100) / 100;
         const threeCoinPrice = Math.round((5.99 * this.state.exchangeRate)*100) / 100;
-        console.log("Step 1")
+        /*console.log("Step 1")
         console.log(this.state.currencySymbol);
         console.log(this.state.exchangeRate);
         console.log(oneCoinPrice);
         console.log(twoCoinPrice);
-        console.log(threeCoinPrice);
+        console.log(threeCoinPrice); */
         return (
             <React.Fragment>
             <div className="container-fluid">
@@ -619,7 +619,7 @@ class Step2 extends Component {
         const onSuccess = (payment) => {
             // Congratulation, it came here means everything's fine!
             this.setState({paymentID: payment.paymentID});
-            		console.log("The payment was succeeded!", payment);
+            		//console.log("The payment was succeeded!", payment);
             		// You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
             //verify paypal here
             this.verifyPaypal()
@@ -628,20 +628,22 @@ class Step2 extends Component {
 		const onCancel = (data) => {
             // User pressed "cancel" or close Paypal's popup!
             
-			console.log('The payment was cancelled!', data);
+            //console.log('The payment was cancelled!', data);
+            toastr.warning('Warning', 'You cancelled Paypal payment, select payment method to buy coin');
 			// You can bind the "data" object's value to your state or props or whatever here, please see below for sample returned data
 		}	
 		
 		const onError = (err) => {
 			// The main Paypal's script cannot be loaded or somethings block the loading of that script!
-			console.log("Error!", err);
+            //console.log("Error!", err);
+            toastr.error('Error', 'An error occured please contact customer service');
 			// Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
 			// => sometimes it may take about 0.5 second for everything to get set, or for the button to appear			
 		}			
 		let shipping = 1;	
 		let env = 'sandbox'; // you can set here to 'production' for production
 		let currency = currencyUser; // or you can set this value from your props or state  
-		let total = coinPrice*100; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
+		let total = coinPrice; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
 		// Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
 		let style = {
             size: 'responsive',
