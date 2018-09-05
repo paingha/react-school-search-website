@@ -23,6 +23,15 @@ export class ProfileReferrals extends Component{
             resultCount: 0,
         };
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.refreshImg = this.refreshImg.bind(this);
+        
+    }
+
+    refreshImg(e){
+        //console.log(e)
+        this.setState({update: e}, ()=>{
+        this.fetchUser(localStorage.token, this.props.user_id);
+    })
     }
     handlePageChange(pageNumber) {
         //console.log(`active page is ${pageNumber}`);
@@ -191,7 +200,7 @@ export class ProfileReferrals extends Component{
                 <div className="story-box">
                 <div className="row">
                 <div className="col-md-4 col-sm-12">
-                             <ProfileBox userData={this.state.user}/>
+                             <ProfileBox userData={this.state.user} getUpdateImg={this.refreshImg}/>
                              <ReferBox userData={this.state.user} />
                 </div>
                                 <div className="col-md-8 col-sm-12">

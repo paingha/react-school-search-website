@@ -815,20 +815,20 @@ export class BuyCoin extends Component {
     componentWillReceiveProps(nextProps) {
         if (!this.props.user_id && !!nextProps.user_id) {
              this.setUser(localStorage.token, nextProps.user_id);
-             console.log("next props")
-        console.log(this.props.user_id)
+             //console.log("next props")
+        //console.log(this.props.user_id)
          } 
      }
     redirectFunc(){
         const query = parse(location.search);
-        console.log(query);
+       /* console.log(query);
         console.log(query.search_callback);
         console.log(query.criteria);
         console.log(query.level);
-        console.log(query.gpa);
+        console.log(query.gpa); */
         //bug starts here
         if (query.search_callback == "true"){
-            console.log("works here")
+            //console.log("works here")
             //return <Redirect to='/'/>
             this.props.history.push(`/scholarship-search?search_callback=true&criteria=${query.criteria}&level=${query.level}&amount=${query.amount}&gpa=${query.gpa}&applicant_country=${query.applicant_country}&country=${query.country}&major=${query.major}&offset=${query.offset}`);
         }

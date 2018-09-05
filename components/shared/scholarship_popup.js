@@ -97,6 +97,11 @@ export default class ScholarshipPopup extends Component{
             :
             <p><strong>Scholarship Level:</strong> N/A</p>
             }
+            { amount !== null ?
+            <p><strong>Scholarship Amount:</strong> {amount}</p>
+            :
+            <p><strong>Scholarship Amount:</strong> N/A</p>
+            }
             { applicantCountry !== null ?
             <p><strong>Scholarship Applicant Country:</strong> {applicantCountry}</p>
             :

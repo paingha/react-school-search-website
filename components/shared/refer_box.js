@@ -55,7 +55,7 @@ export default class ReferBox extends Component{
         return <div className="col-spaced box refer-box">
                 
                 <div className="profile-sub-box">
-                <p className="gpa-result">Refer A Friend</p>    
+                <p className="gpa-result">Refer a Friend. Get Rewarded!</p>    
                 <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com/register?ref=${referralCode}`}>
             <img src="/img/facebook_icon.svg" className="footerImg" width="42px"/>
             </a>&nbsp;

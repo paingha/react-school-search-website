@@ -88,7 +88,7 @@ const ZAMBIA_OPTIONS = [
 const CAMEROON_OPTIONS = [
     { label: 'French System', value: 'French System' },
     { label: 'University of Buea', value: 'University of Buea' },
-    { label: 'Gce \'A\' Level', value: 'Gce A Level' },
+    { label: 'GCE \'A\' Level', value: 'Gce A Level' },
 ]
 export class GpaCalculator extends Component{
     constructor(props){
@@ -461,32 +461,32 @@ export class GpaCalculator extends Component{
           case "Nigeria":
               if (type == "Waec"){
                 
-                if ((grade == "A1") || ((1.99 >= grade) && (grade >= 1))){
+                if ((grade == "A1") || grade == "a1" || ((1.99 >= grade) && (grade >= 1))){
                     return "A+"
                     //console.log("A+")
                 }
-                if ((grade == "B2") || ((2.99 >= grade) && (grade >= 2))){
+                if ((grade == "B2") || grade == "b2" || ((2.99 >= grade) && (grade >= 2))){
                     return "A"
                 }
-                if ((grade == "B3") || ((3.99 >= grade) && (grade >= 3))){
+                if ((grade == "B3") || grade == "b3" || ((3.99 >= grade) && (grade >= 3))){
                     return "B"
                 }
-                if ((grade == "C4") || ((4.99 >= grade) && (grade >= 4))){
+                if ((grade == "C4") || grade == "c4" || ((4.99 >= grade) && (grade >= 4))){
                     return "B"
                 }
-                if ((grade == "C5") || ((5.99 >= grade) && (grade >= 5))){
+                if ((grade == "C5") || grade == "c5" || ((5.99 >= grade) && (grade >= 5))){
                     return "C"
                 }
-                if ((grade == "C6") || ((6.99 >= grade) && (grade >= 6))){
+                if ((grade == "C6") || grade == "c6" || ((6.99 >= grade) && (grade >= 6))){
                     return "C"
                 }
-                if ((grade == "D7") || ((7.99 >= grade) && (grade >= 7))){
+                if ((grade == "D7") || grade == "d7" || ((7.99 >= grade) && (grade >= 7))){
                     return "D"
                 }
-                if ((grade == "E8") || ((8.99 >= grade) && (grade >= 8))){
+                if ((grade == "E8") || grade == "e8" || ((8.99 >= grade) && (grade >= 8))){
                     return "D"
                 }
-                if ((grade == "F9") || (grade == 9)){
+                if ((grade == "F9") || grade == "f9" || (grade == 9)){
                     return "F"
                 }
                 else{
@@ -495,22 +495,22 @@ export class GpaCalculator extends Component{
               }
               if (type == "University"){
                 
-                  if ((grade == "A") || ((100 >= grade) && (grade >= 70))){
+                  if ((grade == "A") || grade == "a" || ((100 >= grade) && (grade >= 70))){
                     return "A"
                   }
-                  if ((grade == "B") || ((69.99 >= grade) && (grade >= 60))){
+                  if ((grade == "B") || grade == "b" || ((69.99 >= grade) && (grade >= 60))){
                     return "B+"
                   }
-                  if ((grade == "C") || ((59.99 >= grade) && (grade >= 50))){
+                  if ((grade == "C") || grade == "c" || ((59.99 >= grade) && (grade >= 50))){
                     return "B"
                   }
-                  if ((grade == "D") || ((49.99 >= grade) && (grade >= 45))){
+                  if ((grade == "D") || grade == "d" || ((49.99 >= grade) && (grade >= 45))){
                     return "C+"
                   }
-                  if ((grade == "E") || ((44.99 >= grade) && (grade >= 40))){
+                  if ((grade == "E") || grade == "e" || ((44.99 >= grade) && (grade >= 40))){
                     return "C"
                   }
-                  if ((grade == "F") || ((39.99 >= grade) && (grade >= 0))){
+                  if ((grade == "F") || grade == "f" || ((39.99 >= grade) && (grade >= 0))){
                     return "F"
                   }
                   else{
@@ -522,22 +522,22 @@ export class GpaCalculator extends Component{
           case "Ghana":
               if (type == "University"){
                 
-                  if ((grade == "A") || ((100 >= grade) && (grade >= 80))){
+                  if ((grade == "A") || grade == "a" || ((100 >= grade) && (grade >= 80))){
                     return "A+"
                   }
-                  if ((grade == "A-") || ((79.99 >= grade) && (grade >= 75))){
+                  if ((grade == "A-") || grade == "a-" || ((79.99 >= grade) && (grade >= 75))){
                     return "A"
                   }
-                  if ((grade == "B") || ((74.99 >= grade) && (grade >= 65))){
+                  if ((grade == "B") || grade == "b" || ((74.99 >= grade) && (grade >= 65))){
                     return "B"
                   }
-                  if ((grade == "C") || ((64.99 >= grade) && (grade >= 60))){
+                  if ((grade == "C") || grade == "c" || ((64.99 >= grade) && (grade >= 60))){
                     return "B-"
                   }
-                  if ((grade == "D") || ((59.99 >= grade) && (grade >= 50))){
+                  if ((grade == "D") || grade == "d" || ((59.99 >= grade) && (grade >= 50))){
                     return "C"
                   }
-                  if ((grade == "F") || ((49.99 >= grade) && (grade >= 0))){
+                  if ((grade == "F") || grade == "f" || ((49.99 >= grade) && (grade >= 0))){
                     return "F"
                   }
                   else{
@@ -545,35 +545,34 @@ export class GpaCalculator extends Component{
                   }
               }
               if (type == "Waec"){
-                switch(grade) {
-                  case "A1":
+                if (grade == "A1" || grade == "a1"){
                     return "A+"
-                  break;
-                  case "B2":
+                }
+                else if (grade == "B2" || grade == "b2"){
                     return "A"
-                  break;
-                  case "B3":
+                }
+                else if (grade == "B3" || grade == "b3"){
                     return "B"
-                  break;
-                  case "C4":
+                }
+                else if (grade == "C4" || grade == "c4"){
                     return "B"
-                  break;
-                  case "C5":
+                }
+                else if (grade == "C5" || grade == "c5"){
                     return "C"
-                  break;
-                  case "C6":
+                }
+                else if (grade == "C6" || grade == "c6"){
                     return "C"
-                  break;
-                  case "D7":
+                }
+                else if (grade == "D7" || grade == "d7"){
                     return "D"
-                  break;
-                  case "E8":
+                }
+                else if (grade == "E8" || grade == "e8"){
                     return "D"
-                  break;
-                  case "F9":
+                }
+                else if (grade == "F9" || grade == "f9"){
                     return "F"
-                  break;
-                  default:
+                }
+                else{
                     return null
                   }
               }
@@ -604,37 +603,37 @@ export class GpaCalculator extends Component{
           break;
           case "Benin":
               
-                  if ((grade == "A+") || ((20 >= grade) && (grade >= 16))){
+                  if ((grade == "A+") || grade == "a+" || ((20 >= grade) && (grade >= 16))){
                     return "A+"
                   }
-                  if ((grade == "A") || ((15.99 >= grade) && (grade >= 15))){
+                  if ((grade == "A") || grade == "a" || ((15.99 >= grade) && (grade >= 15))){
                     return "A"
                   }
-                  if ((grade == "A-") || ((14.99 >= grade) && (grade >= 14))){
+                  if ((grade == "A-") || grade == "a-" || ((14.99 >= grade) && (grade >= 14))){
                     return "A-"
                   }
-                  if ((grade == "B+") || ((13.99 >= grade) && (grade >= 13))){
+                  if ((grade == "B+") || grade == "b+" || ((13.99 >= grade) && (grade >= 13))){
                     return "B+"
                   }
-                  if ((grade == "B-") || ((11.99 >= grade) && (grade >= 11))){
+                  if ((grade == "B-") || grade == "b-" || ((11.99 >= grade) && (grade >= 11))){
                     return "B-"
                   }
-                  if ((grade == "B") || ((12.99 >= grade) && (grade >= 12))){
+                  if ((grade == "B") || grade == "b" || ((12.99 >= grade) && (grade >= 12))){
                     return "B"
                   }
-                  if ((grade == "C+") || ((10.99 >= grade) && (grade >= 10))){
+                  if ((grade == "C+") || grade == "c+" || ((10.99 >= grade) && (grade >= 10))){
                     return "C+"
                   }
-                  if ((grade == "C") || ((9.99 >= grade) && (grade >= 9))){
+                  if ((grade == "C") || grade == "c" || ((9.99 >= grade) && (grade >= 9))){
                     return "C"
                   }
-                  if ((grade == "C-") || ((8.99 >= grade) && (grade >= 8))){
+                  if ((grade == "C-") || grade == "c-" || ((8.99 >= grade) && (grade >= 8))){
                     return "C-"
                   }
-                  if ((grade == "D") || ((7.99 >= grade) && (grade >= 7))){
+                  if ((grade == "D") || grade == "d" || ((7.99 >= grade) && (grade >= 7))){
                     return "D"
                   }
-                  if ((grade == "F") || ((6.99 >= grade) && (grade >= 0))){
+                  if ((grade == "F") || grade == "f" || ((6.99 >= grade) && (grade >= 0))){
                     return "F"
                   }
                   else{
@@ -643,22 +642,22 @@ export class GpaCalculator extends Component{
               
           case "Botswana":
               
-                  if (((100 >= grade) && (grade >= 80)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 80)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  if (((79.99 >= grade) && (grade >= 70)) || grade == "B") {
+                  if (((79.99 >= grade) && (grade >= 70)) || grade == "B" || grade == "b") {
                     return "A-"
                   }
-                  if (((69.99 >= grade) && (grade >= 60)) || grade == "C") {
+                  if (((69.99 >= grade) && (grade >= 60)) || grade == "C" || grade == "c") {
                     return "B"
                   }
-                  if (((59.99 >= grade) && (grade >= 50)) || grade == "D") {
+                  if (((59.99 >= grade) && (grade >= 50)) || grade == "D" || grade == "d") {
                     return "C"
                   }
-                  if (((49.99 >= grade) && (grade >= 40)) || grade == "E") {
+                  if (((49.99 >= grade) && (grade >= 40)) || grade == "E" || grade == "e") {
                     return "D"
                   }
-                  if (((39.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  if (((39.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -666,41 +665,39 @@ export class GpaCalculator extends Component{
                   }
               break;
           case "Swaziland":
-              switch(grade) {
-                  case "A":
+              if (grade == "A" || grade == "a"){
                     return "A"
-                  break;
-                  case "B":
+              }
+              else if (grade == "B" || grade == "b"){
                     return "A-"
-                  break;
-                  case "C":
+              }
+              else if (grade == "C" || grade == "c"){
                     return "B"
-                  break;
-                  case "D":
+              }
+              else if (grade == "D" || grade == "d"){
                     return "C"
-                  break;
-                  default:
+              }
+              else{
                     return null
                   }
               break;
           case "Zimbabwe":
-              switch(grade) {
-                  case "A":
+              if(grade == "A" || grade == "a"){
                     return "A"
-                  break;
-                  case "B":
+              }
+              else if (grade == "B" || grade == "b"){
                     return "B"
-                  break;
-                  case "C":
+              }
+              else if (grade == "C" || grade == "c"){
                     return "C"
-                  break;
-                  case "D":
+              }
+              else if (grade == "D" || grade == "d"){
                     return "D"
-                  break;
-                  case "E":
+              }
+              else if (grade == "E" || grade == "e"){
                     return "F"
-                  break;
-                  default:
+              }
+              else{
                     return null
                   }
               break;
@@ -1132,22 +1129,22 @@ export class GpaCalculator extends Component{
           case "Egypt":
               if (type == "University Scale A"){
 
-                  if (((100 >= grade) && (grade >= 90)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 90)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((89.99 >= grade) && (grade >= 80)) || grade == "A-") {
+                  else if (((89.99 >= grade) && (grade >= 80)) || grade == "A-" || grade == "a-") {
                     return "A-"
                   }
-                  else if (((79.99 >= grade) && (grade >= 65)) || grade == "B") {
+                  else if (((79.99 >= grade) && (grade >= 65)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((64.99 >= grade) && (grade >= 50)) || grade == "C") {
+                  else if (((64.99 >= grade) && (grade >= 50)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((49.99 >= grade) && (grade >= 35)) || grade == "D") {
+                  else if (((49.99 >= grade) && (grade >= 35)) || grade == "D" || grade == "d") {
                     return "D"
                   }
-                  else if (((34.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  else if (((34.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -1156,22 +1153,22 @@ export class GpaCalculator extends Component{
               }
               if (type == "University Scale B"){
 
-                  if (((100 >= grade) && (grade >= 85)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 85)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((84.99 >= grade) && (grade >= 80)) || grade == "A-") {
+                  else if (((84.99 >= grade) && (grade >= 80)) || grade == "A-" || grade == "a-") {
                     return "A-"
                   }
-                  else if (((79.99 >= grade) && (grade >= 65)) || grade == "B") {
+                  else if (((79.99 >= grade) && (grade >= 65)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((64.99 >= grade) && (grade >= 50)) || grade == "C") {
+                  else if (((64.99 >= grade) && (grade >= 50)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((49.99 >= grade) && (grade >= 30)) || grade == "D") {
+                  else if (((49.99 >= grade) && (grade >= 30)) || grade == "D" || grade == "d") {
                     return "D"
                   }
-                  else if (((29.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  else if (((29.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -1180,31 +1177,31 @@ export class GpaCalculator extends Component{
               }
               if (type == "University Scale C"){
 
-                  if (((100 >= grade) && (grade >= 85)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 85)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((84.99 >= grade) && (grade >= 80)) || grade == "A-") {
+                  else if (((84.99 >= grade) && (grade >= 80)) || grade == "A-" || grade == "a-") {
                     return "A-"
                   }
-                  else if (((79.99 >= grade) && (grade >= 75)) || grade == "B+") {
+                  else if (((79.99 >= grade) && (grade >= 75)) || grade == "B+" || grade == "b+") {
                     return "B+"
                   }
-                  else if (((74.99 >= grade) && (grade >= 70)) || grade == "B") {
+                  else if (((74.99 >= grade) && (grade >= 70)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "B-") {
+                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "B-" || grade == "b-") {
                     return "B-"
                   }
-                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "C+") {
+                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "C+" || grade == "c+") {
                     return "C+"
                   }
-                  else if (((59.99 >= grade) && (grade >= 55)) || grade == "C") {
+                  else if (((59.99 >= grade) && (grade >= 55)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((54.99 >= grade) && (grade >= 30)) || grade == "D") {
+                  else if (((54.99 >= grade) && (grade >= 30)) || grade == "D" || grade == "d") {
                     return "D"
                   }
-                  else if (((29.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  else if (((29.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -1214,19 +1211,19 @@ export class GpaCalculator extends Component{
               break;
           case "Eritrea":
 
-                  if (((100 >= grade) && (grade >= 75)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 75)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((74.99 >= grade) && (grade >= 65)) || grade == "B") {
+                  else if (((74.99 >= grade) && (grade >= 65)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((64.99 >= grade) && (grade >= 50)) || grade == "C") {
+                  else if (((64.99 >= grade) && (grade >= 50)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((49.99 >= grade) && (grade >= 40)) || grade == "D") {
+                  else if (((49.99 >= grade) && (grade >= 40)) || grade == "D" || grade == "d") {
                     return "D"
                   }
-                  else if (((39.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  else if (((39.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -1235,47 +1232,46 @@ export class GpaCalculator extends Component{
               break;
           case "Ethiopia":
               if (type == "University"){
-                switch(grade) {
-                  case "A":
+                if(grade == "A" || grade == "a") {
                     return "A"
-                  break;
-                  case "B+":
+                }
+                else if (grade == "B+" || grade == "b+"){
                     return "B+"
-                  break;
-                  case "B":
+                }
+                else if (grade == "B" || grade == "b"){
                     return "B"
-                  break;
-                  case "C+":
+                }
+                else if (grade == "C+" || grade == "c+"){
                     return "C+"
-                  break;
-                  case "C":
+                }
+                else if (grade == "C" || grade == "c"){
                     return "C"
-                  break;
-                  case "D":
+                }
+                else if (grade == "D" || grade == "d"){
                     return "D"
-                  break;
-                  case "F":
+                }
+                else if (grade == "F" || grade == "f"){
                     return "F"
-                  break;
-                  default:
+                }
+                else{
                     return null
                   }
               }
           if (type == "Secondary Certificate"){
 
-                  if (((100 >= grade) && (grade >= 90)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 90)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((89.99 >= grade) && (grade >= 80)) || grade == "B") {
+                  else if (((89.99 >= grade) && (grade >= 80)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((79.99 >= grade) && (grade >= 60)) || grade == "C") {
+                  else if (((79.99 >= grade) && (grade >= 60)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "D") {
+                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "D" || grade == "d") {
                     return "D"
                   }
-                  else if (((49.99 >= grade) && (grade >= 0)) || grade == "E") {
+                  else if (((49.99 >= grade) && (grade >= 0)) || grade == "E" || grade == "e") {
                     return "F"
                   }
                   else{
@@ -1286,19 +1282,19 @@ export class GpaCalculator extends Component{
           case "Kenya":
               if (type == "University"){
 
-                  if (((100 >= grade) && (grade >= 70)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 70)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((69 >= grade) && (grade >= 60)) || grade == "B") {
+                  else if (((69 >= grade) && (grade >= 60)) || grade == "B" || grade == "b") {
                     return "A-"
                   }
-                  else if (((59 >= grade) && (grade >= 50)) || grade == "C") {
+                  else if (((59 >= grade) && (grade >= 50)) || grade == "C" || grade == "c") {
                     return "B"
                   }
-                  else if (((49 >= grade) && (grade >= 40)) || grade == "D") {
+                  else if (((49 >= grade) && (grade >= 40)) || grade == "D" || grade == "d") {
                     return "C"
                   }
-                  else if (((39 >= grade) && (grade >= 0)) || grade == "E") {
+                  else if (((39 >= grade) && (grade >= 0)) || grade == "E" || grade == "e") {
                     return "F"
                   }
                   else{
@@ -1307,40 +1303,40 @@ export class GpaCalculator extends Component{
               }
               if (type == "Certificate of Secondary School Education"){
                 
-                  if (((100 >= grade) && (grade >= 80)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 80)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((79.99 >= grade) && (grade >= 75)) || grade == "A-") {
+                  else if (((79.99 >= grade) && (grade >= 75)) || grade == "A-" || grade == "a-") {
                     return "A-"
                   }
-                  else if (((74.99 >= grade) && (grade >= 70)) || grade == "B+") {
+                  else if (((74.99 >= grade) && (grade >= 70)) || grade == "B+" || grade == "b+") {
                     return "B+"
                   }
-                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "B") {
+                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "B-") {
+                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "B-" || grade == "b-") {
                     return "B-"
                   }
-                  else if (((59.99 >= grade) && (grade >= 55)) || grade == "C+") {
+                  else if (((59.99 >= grade) && (grade >= 55)) || grade == "C+" || grade == "c+") {
                     return "C+"
                   }
-                  else if (((54.99 >= grade) && (grade >= 50)) || grade == "C") {
+                  else if (((54.99 >= grade) && (grade >= 50)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((49.99 >= grade) && (grade >= 45)) || grade == "C-") {
+                  else if (((49.99 >= grade) && (grade >= 45)) || grade == "C-" || grade == "c-") {
                     return "C-"
                   }
-                  else if (((44.99 >= grade) && (grade >= 40)) || grade == "D+") {
+                  else if (((44.99 >= grade) && (grade >= 40)) || grade == "D+" || grade == "d+") {
                     return "D+"
                   }
-                  else if (((39.99 >= grade) && (grade >= 35)) || grade == "D") {
+                  else if (((39.99 >= grade) && (grade >= 35)) || grade == "D" || grade == "d") {
                     return "D"
                   }
-                  else if (((34.99 >= grade) && (grade >= 30)) || grade == "D-") {
+                  else if (((34.99 >= grade) && (grade >= 30)) || grade == "D-" || grade == "d-") {
                     return "D-"
                   }
-                  else if (((29.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  else if (((29.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -1349,25 +1345,25 @@ export class GpaCalculator extends Component{
               }
               if (type == "Most Common"){
                 
-                  if (((100 >= grade) && (grade >= 70)) || grade == "A") {
+                  if (((100 >= grade) && (grade >= 70)) || grade == "A" || grade == "a") {
                     return "A"
                   }
-                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "A-") {
+                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "A-" || grade == "a-") {
                     return "A-"
                   }
-                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "B+") {
+                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "B+" || grade == "b+") {
                     return "B+"
                   }
-                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "B") {
+                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "B" || grade == "b") {
                     return "B"
                   }
-                  else if (((49.99 >= grade) && (grade >= 45)) || grade == "C+") {
+                  else if (((49.99 >= grade) && (grade >= 45)) || grade == "C+" || grade == "c+") {
                     return "C+"
                   }
-                  else if (((44.99 >= grade) && (grade >= 40)) || grade == "C") {
+                  else if (((44.99 >= grade) && (grade >= 40)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((39.99 >= grade) && (grade >= 0)) || grade == "F") {
+                  else if (((39.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f") {
                     return "F"
                   }
                   else{
@@ -1376,31 +1372,31 @@ export class GpaCalculator extends Component{
               }
               if (type == "Secondary Level"){
 
-                  if ((grade == 12) || grade == "A") {
+                  if ((grade == 12) || grade == "A" || grade == "a") {
                     return "A+"
                   }
-                  else if (((11.99 >= grade) && (grade >= 11)) || grade == "A-") {
+                  else if (((11.99 >= grade) && (grade >= 11)) || grade == "A-" || grade == "a-") {
                     return "A"
                   }
-                  else if (((10.99 >= grade) && (grade >= 10)) || grade == "B+") {
+                  else if (((10.99 >= grade) && (grade >= 10)) || grade == "B+" || grade == "b+") {
                     return "A-"
                   }
-                  else if (((9.99 >= grade) && (grade >= 9)) || grade == "B") {
+                  else if (((9.99 >= grade) && (grade >= 9)) || grade == "B" || grade == "b") {
                     return "B+"
                   }
-                  else if (((8.99 >= grade) && (grade >= 8)) || grade == "B-") {
+                  else if (((8.99 >= grade) && (grade >= 8)) || grade == "B-" || grade == "b-") {
                     return "B"
                   }
-                  else if (((7.99 >= grade) && (grade >= 7)) || grade == "C+") {
+                  else if (((7.99 >= grade) && (grade >= 7)) || grade == "C+" || grade == "c+") {
                     return "C+"
                   }
-                  else if (((6.99 >= grade) && (grade >= 6)) || grade == "C") {
+                  else if (((6.99 >= grade) && (grade >= 6)) || grade == "C" || grade == "c") {
                     return "C"
                   }
-                  else if (((5.99 >= grade) && (grade >= 2)) || grade == "C-") {
+                  else if (((5.99 >= grade) && (grade >= 2)) || grade == "C-" || grade == "c-") {
                     return "D"
                   }
-                  else if (((1.99 >= grade) && (grade >= 1)) || grade == "D+") {
+                  else if (((1.99 >= grade) && (grade >= 1)) || grade == "D+" || grade == "d+") {
                     return "F"
                   }
                   else {
@@ -1432,31 +1428,31 @@ export class GpaCalculator extends Component{
               }
               if (type == "Wassce"){
                 
-                  if (((1.99 >= grade) && (grade >= 1)) || (grade == "A1")) {
+                  if (((1.99 >= grade) && (grade >= 1)) || (grade == "A1") || grade == "a1") {
                     return "A"
                   }
-                  else if (((2.99 >= grade) && (grade >= 2)) || (grade == "B2")) {
+                  else if (((2.99 >= grade) && (grade >= 2)) || (grade == "B2") || grade == "b2") {
                     return "A"
                   }
-                  else if (((3.99 >= grade) && (grade >= 3)) || (grade == "B3")) {
+                  else if (((3.99 >= grade) && (grade >= 3)) || (grade == "B3") || grade == "b3") {
                     return "B"
                   }
-                  else if (((4.99 >= grade) && (grade >= 4)) || (grade == "C4")){
+                  else if (((4.99 >= grade) && (grade >= 4)) || (grade == "C4") || grade == "c4"){
                     return "B"
                   }
-                  else if (((5.99 >= grade) && (grade >= 5)) || (grade == "C5")){
+                  else if (((5.99 >= grade) && (grade >= 5)) || (grade == "C5") || grade == "c5"){
                     return "C"
                   }
-                  else if (((6.99 >= grade) && (grade >= 6)) || (grade == "C6")) {
+                  else if (((6.99 >= grade) && (grade >= 6)) || (grade == "C6") || grade == "c6") {
                     return "C"
                   }
-                  else if (((7.99 >= grade) && (grade >= 7)) || (grade == "C7")) {
+                  else if (((7.99 >= grade) && (grade >= 7)) || (grade == "C7") || grade == "c7") {
                     return "D"
                   }
-                  else if (((8.99 >= grade) && (grade >= 8)) || (grade == "E8")){
+                  else if (((8.99 >= grade) && (grade >= 8)) || (grade == "E8") || grade == "e8"){
                     return "D"
                   }
-                  else if ((grade == 9) || (grade == "F9")){
+                  else if ((grade == 9) || (grade == "F9") || grade == "f9"){
                     return "F"
                   }
                   else{
@@ -1518,31 +1514,31 @@ export class GpaCalculator extends Component{
           case "Namibia":
               if (type == "IGCSE"){
                 
-                  if (((100 >= grade) && (grade >= 90)) || grade == "A*"){
+                  if (((100 >= grade) && (grade >= 90)) || grade == "A*" || grade == "a*"){
                     return "A+"
                   }
-                  else if (((89.99 >= grade) && (grade >= 80)) || grade == "A"){
+                  else if (((89.99 >= grade) && (grade >= 80)) || grade == "A" || grade == "a"){
                     return "A"
                   }
-                  else if (((79.99 >= grade) && (grade >= 70)) || grade == "B"){
+                  else if (((79.99 >= grade) && (grade >= 70)) || grade == "B" || grade == "b"){
                     return "A-"
                   }
-                  else if (((69.99 >= grade) && (grade >= 60)) || grade == "C"){
+                  else if (((69.99 >= grade) && (grade >= 60)) || grade == "C" || grade == "c"){
                     return "B"
                   }
-                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "D"){
+                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "D" || grade == "d"){
                     return "C+"
                   }
-                  else if (((49.99 >= grade) && (grade >= 40)) || grade == "E"){
+                  else if (((49.99 >= grade) && (grade >= 40)) || grade == "E" || grade == "e"){
                     return "C"
                   }
-                  else if (((39.99 >= grade) && (grade >= 30)) || grade == "F"){
+                  else if (((39.99 >= grade) && (grade >= 30)) || grade == "F" || grade == "f"){
                     return "D+"
                   }
-                  else if (((29.99 >= grade) && (grade >= 20)) || grade == "G"){
+                  else if (((29.99 >= grade) && (grade >= 20)) || grade == "G" || grade == "g"){
                     return "D"
                   }
-                  else if (((19.99 >= grade) && (grade >= 0)) || grade == "U"){
+                  else if (((19.99 >= grade) && (grade >= 0)) || grade == "U" || grade == "u"){
                     return "F"
                   }
                   else{
@@ -1551,19 +1547,19 @@ export class GpaCalculator extends Component{
               }
               if (type == "University"){
                 
-                  if (((100 >= grade) && (grade >= 80)) || grade == "A"){
+                  if (((100 >= grade) && (grade >= 80)) || grade == "A" || grade == "a"){
                     return "A+"
                   }
-                  else if (((79.99 >= grade) && (grade >= 70)) || grade == "B"){
+                  else if (((79.99 >= grade) && (grade >= 70)) || grade == "B" || grade == "b"){
                     return "A"
                   }
-                  else if (((69.99 >= grade) && (grade >= 60)) || grade == "C"){
+                  else if (((69.99 >= grade) && (grade >= 60)) || grade == "C" || grade == "c"){
                     return "B"
                   }
-                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "D"){
+                  else if (((59.99 >= grade) && (grade >= 50)) || grade == "D" || grade == "d"){
                     return "C"
                   }
-                  else if (((49.99 >= grade) && (grade >= 0)) || grade == "F"){
+                  else if (((49.99 >= grade) && (grade >= 0)) || grade == "F" || grade == "f"){
                     return "F"
                   }
                   else{
@@ -1574,31 +1570,31 @@ export class GpaCalculator extends Component{
           case "Rwanda":
               if (type == "Scale 1"){
               
-                  if (((11 >= grade) && (grade >= 10.5)) || grade == "A"){
+                  if (((11 >= grade) && (grade >= 10.5)) || grade == "A" || grade == "a"){
                     return "A"
                   }
-                  else if (((10.49 >= grade) && (grade >= 9.5)) || grade == "A-"){
+                  else if (((10.49 >= grade) && (grade >= 9.5)) || grade == "A-" || grade == "a-"){
                     return "A-"
                   }
-                  else if (((9.49 >= grade) && (grade >= 8.5)) || grade == "B+"){
+                  else if (((9.49 >= grade) && (grade >= 8.5)) || grade == "B+" || grade == "b+"){
                     return "B+"
                   }
-                  else if (((8.49 >= grade) && (grade >= 7.5)) || grade == "B"){
+                  else if (((8.49 >= grade) && (grade >= 7.5)) || grade == "B" || grade == "b"){
                     return "B"
                   }
-                  else if (((7.49 >= grade) && (grade >= 6.5)) || grade == "B-"){
+                  else if (((7.49 >= grade) && (grade >= 6.5)) || grade == "B-" || grade == "b-"){
                     return "B-"
                   }
-                  else if (((6.49 >= grade) && (grade >= 5.5)) || grade == "C+"){
+                  else if (((6.49 >= grade) && (grade >= 5.5)) || grade == "C+" || grade == "c+"){
                     return "C+"
                   }
-                  else if (((5.49 >= grade) && (grade >= 4.5)) || grade == "C"){
+                  else if (((5.49 >= grade) && (grade >= 4.5)) || grade == "C" || grade == "c"){
                     return "C"
                   }
-                  else if (((4.49 >= grade) && (grade >= 3.5)) || grade == "C-"){
+                  else if (((4.49 >= grade) && (grade >= 3.5)) || grade == "C-" || grade == "c-"){
                     return "C-"
                   }
-                  else if (((3.49 >= grade) && (grade >= 1.5)) || grade == "D"){
+                  else if (((3.49 >= grade) && (grade >= 1.5)) || grade == "D" || grade == "d"){
                     return "D"
                   }
                   else{
@@ -1607,31 +1603,31 @@ export class GpaCalculator extends Component{
               }
               if (type == "Scale 2"){
                 
-                  if (((100 >= grade) && (grade >= 85)) || grade == "A"){
+                  if (((100 >= grade) && (grade >= 85)) || grade == "A" || grade == "a"){
                     return "A"
                   }
-                  else if (((84.99 >= grade) && (grade >= 80)) || grade == "A-"){
+                  else if (((84.99 >= grade) && (grade >= 80)) || grade == "A-" || grade == "a-"){
                     return "A-"
                   }
-                  else if (((79.99 >= grade) && (grade >= 75)) || grade == "B+"){
+                  else if (((79.99 >= grade) && (grade >= 75)) || grade == "B+" || grade == "b+"){
                     return "B+"
                   }
-                  else if (((74.99 >= grade) && (grade >= 70)) || grade == "B"){
+                  else if (((74.99 >= grade) && (grade >= 70)) || grade == "B" || grade == "b"){
                     return "B"
                   }
-                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "B-"){
+                  else if (((69.99 >= grade) && (grade >= 65)) || grade == "B-" || grade == "b-"){
                     return "B-"
                   }
-                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "C+"){
+                  else if (((64.99 >= grade) && (grade >= 60)) || grade == "C+" || grade == "c+"){
                     return "C+"
                   }
-                  else if (((59.99 >= grade) && (grade >= 55)) || grade == "C"){
+                  else if (((59.99 >= grade) && (grade >= 55)) || grade == "C" || grade == "c"){
                     return "C"
                   }
-                  else if (((54.99 >= grade) && (grade >= 50)) || grade == "C-"){
+                  else if (((54.99 >= grade) && (grade >= 50)) || grade == "C-" || grade == "c-"){
                     return "C-"
                   }
-                  else if (((49.99 >= grade) && (grade >= 40)) || grade == "D"){
+                  else if (((49.99 >= grade) && (grade >= 40)) || grade == "D" || grade == "d"){
                     return "D"
                   }
                   else{
@@ -1741,28 +1737,28 @@ export class GpaCalculator extends Component{
               }
               if (type == "University of Buea"){
                 
-                  if (((100 >= grade) && (grade >= 80)) || grade == "A"){
+                  if (((100 >= grade) && (grade >= 80)) || grade == "A" || grade == "a"){
                     return "A"
                   }
-                  else if (((79 >= grade) && (grade >= 70)) || grade == "B+"){
+                  else if (((79 >= grade) && (grade >= 70)) || grade == "B+" || grade == "b+"){
                     return "B+"
                   }
-                  else if (((69 >= grade) && (grade >= 60)) || grade == "B"){
+                  else if (((69 >= grade) && (grade >= 60)) || grade == "B" || grade == "b"){
                     return "B"
                   }
-                  else if (((59 >= grade) && (grade >= 55)) || grade == "C+"){
+                  else if (((59 >= grade) && (grade >= 55)) || grade == "C+" || grade == "c+"){
                     return "C+"
                   }
-                  else if (((54 >= grade) && (grade >= 50)) || grade == "C"){
+                  else if (((54 >= grade) && (grade >= 50)) || grade == "C" || grade == "c"){
                     return "C"
                   }
-                  else if (((49 >= grade) && (grade >= 45)) || grade == "D+"){
+                  else if (((49 >= grade) && (grade >= 45)) || grade == "D+" || grade == "d+"){
                     return "F"
                   }
-                  else if (((44 >= grade) && (grade >= 40)) || grade == "D"){
+                  else if (((44 >= grade) && (grade >= 40)) || grade == "D" || grade == "d"){
                     return "F"
                   }
-                  else if (((39 >= grade) && (grade >= 0)) || grade == "F"){
+                  else if (((39 >= grade) && (grade >= 0)) || grade == "F" || grade == "f"){
                     return "F"
                   }
                   else{
@@ -1770,30 +1766,29 @@ export class GpaCalculator extends Component{
                   }
               }
               if (type == "Gce A Level"){
-                switch(grade) {
-                  case grade == "A":
+                if(grade == "A" || grade == "a") {
                     return "A"
-                  break;
-                  case grade == "B":
+                }
+                else if(grade == "B" || grade == "b"){
                     return "B"
-                  break;
-                  case grade == "C":
+                }
+                else if(grade == "C" || grade == "c"){
                     return "B"
-                  break;
-                  case grade == "D":
+                }
+                else if(grade == "D" || grade == "d"){
                     return "C"
-                  break;
-                  case grade == "E":
+                }
+                else if(grade == "E" || grade == "e"){
                     return "C"
-                  break;
-                  case grade == "F":
+                }
+                else if(grade == "F" || grade == "f"){
                     return "F"
-                  break;
-                  default:
+                }
+                else{
                     return null
                   }
               }
-              break;
+            
           case "Zambia":
           if (type == "Secondary"){
                   if ((2 >= grade) && (grade >= 1)){
@@ -1817,34 +1812,34 @@ export class GpaCalculator extends Component{
                 }
                 if (type == "Scale 1"){
                   
-                    if (((100 >= grade) && (grade >= 86)) || grade == "A+"){
+                    if (((100 >= grade) && (grade >= 86)) || grade == "A+" || grade == "a+"){
                       return "A+"
                     }
-                    if (((85.99 >= grade) && (grade >= 76)) || grade == "A"){
+                    if (((85.99 >= grade) && (grade >= 76)) || grade == "A" || grade == "a"){
                       return "A"
                     }
-                    if (((75.99 >= grade) && (grade >= 66)) || grade == "B+"){
+                    if (((75.99 >= grade) && (grade >= 66)) || grade == "B+" || grade == "b+"){
                       return "B+"
                     }
-                    if (((65.99 >= grade) && (grade >= 56)) || grade == "B"){
+                    if (((65.99 >= grade) && (grade >= 56)) || grade == "B" || grade == "b"){
                       return "B"
                     }
-                    if (((55.99 >= grade) && (grade >= 46)) || grade == "C+"){
+                    if (((55.99 >= grade) && (grade >= 46)) || grade == "C+" || grade == "c+"){
                       return "C+"
                     }
-                    if (((39.99 >= grade) && (grade >= 36)) || grade == "C"){
+                    if (((39.99 >= grade) && (grade >= 36)) || grade == "C" || grade == "c"){
                     return "C"
                     }
-                    if (((35.99 >= grade) && (grade >= 30)) || grade == "CP"){
+                    if (((35.99 >= grade) && (grade >= 30)) || grade == "CP" || grade == "cp"){
                     return "C-"
                     }
-                    if (((29.99 >= grade) && (grade >= 0)) || grade == "D+"){
+                    if (((29.99 >= grade) && (grade >= 0)) || grade == "D+" || grade == "d+"){
                     return "F"
                     }
-                    if (((29.99 >= grade) && (grade >= 0)) || grade == "D"){
+                    if (((29.99 >= grade) && (grade >= 0)) || grade == "D" || grade == "d"){
                     return "F"
                     }
-                    if (((29.99 >= grade) && (grade >= 0)) || grade == "E"){
+                    if (((29.99 >= grade) && (grade >= 0)) || grade == "E" || grade == "e"){
                       return "F"
                     }
                     else{

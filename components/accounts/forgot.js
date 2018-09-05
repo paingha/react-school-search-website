@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+import {toastr} from 'react-redux-toastr'
 import settings from '../../settings';
 
 const SentSuccess = () =>
@@ -41,9 +42,11 @@ export class Forgot extends Component {
     }
     doForgot() {
         const {email} = this.state;
+        if ( email == ""){
+            toastr.error('Error!', 'A valid email is required')
+        }
+        else{
         this.setState({fetching: true, error: undefined});
-
-    
         return fetch(settings.urls.forgot, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -57,6 +60,7 @@ export class Forgot extends Component {
                 this.setState({fetching: false, error: undefined, sent: true});
             })
             .catch(error=>this.setState({fetching: false, error: error.message}));
+        }
         }
         
     
@@ -75,9 +79,19 @@ export class Forgot extends Component {
                         <div className="forgot-inner-box">
                         <h3 className="forgot-header">Reset Your Password</h3>
                             
-                        <span className="major-select"><input type="email" placeholder="Email" className="textInput"
-                                   value={email} onChange={e=>this.setState({email: e.target.value})}/></span>
-                            
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doForgot()} >
+                        <input type="email" placeholder="Email" className="textInput"
+                                   value={email} onChange={e=>this.setState({email: e.target.value})}/>
+                        </KeyboardEventHandler>           
+                        </span>
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doForgot()} >
+                        </KeyboardEventHandler>
+
                             {error && <div className="forgot-validation-error">{error}</div>}
                             {fetching?
                                 <div className="forgot-button"><img className="forgot-button-puff" src="/img/puff.svg"/></div>

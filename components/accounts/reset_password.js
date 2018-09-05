@@ -2,6 +2,8 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import settings from '../../settings';
 import { parse } from 'query-string';
+import {toastr} from 'react-redux-toastr'
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 const ChangeSuccess = () =>
 <div class="container-fluid register-wrapper-background  aligned">
@@ -47,6 +49,10 @@ export class ResetPassword extends Component {
 
     resetPass() {
         const {password} = this.state;
+        if ( password == ""){
+            toastr.error('Error!', 'Password cannot be blank')
+        }
+        else{
         this.setState({fetching: true, error: undefined});
         const query = parse(location.search);
         return fetch(settings.urls.update_password, {
@@ -62,6 +68,7 @@ export class ResetPassword extends Component {
                 this.setState({fetching: false, error: undefined, changePassword: true});
             })
             .catch(error=>this.setState({fetching: false, error: error.message}));
+        }
     }
 
     render() {
@@ -76,9 +83,25 @@ export class ResetPassword extends Component {
                     
                         <div className="forgot-inner-box">
                         <h3 className="forgot-header">Reset Your Password</h3>
-                        <span className="major-select"><input type="password" placeholder="New Password" className="textInput"
-                                value={password} onChange={e=>this.setState({password: e.target.value})}/></span>
-                        <span className="major-select"><input type="password" placeholder="Confirm New Password" className="textInput"/></span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.resetPass()} >
+                        <input type="password" placeholder="New Password" className="textInput"
+                                value={password} onChange={e=>this.setState({password: e.target.value})}/>
+                        </KeyboardEventHandler>
+                        </span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.resetPass()} >
+                        <input type="password" placeholder="Confirm New Password" className="textInput"/>
+                        </KeyboardEventHandler>
+                        </span>
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.resetPass()} >
+                        </KeyboardEventHandler>
                             {error && <div className="forgot-validation-error">{error}</div>}
                             {fetching?
                                 <div className="forgot-button"><img className="forgot-button-puff" src="/img/puff.svg"/></div>

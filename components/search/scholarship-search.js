@@ -245,9 +245,11 @@ export class ScholarshipSearch extends Component{
         this.setState({userID: user})
     }
     componentDidMount() {
-        if(!localStorage.token){
-            const {history} = this.props;
-            history.push('/register?referrer=scholarship-search')
+        const query = parse(location.search);
+        
+        if(query.search_callback == "true"){
+            this.setQuery(localStorage.token, this.props.user_id);
+           
         }
         let cookieStuff = cookie.load('noModal') || 0;
         this.setState({ noneModal: cookieStuff})
@@ -257,59 +259,28 @@ export class ScholarshipSearch extends Component{
     }
 
     setQuery(token, user_id){
-        let {coin} = this.state.user;
-        if(coin < 0.5 ){
-            this.noCoin();
-         }
-         else{
-        const query = parse(location.search);
-        let editedMajor = query.major.replace(/([-]+)/g,",");
-        let majorRay = [];
-        majorRay.push(editedMajor);
-        let major = majorRay;
-        let criteria = query.criteria;
-        let gpa = query.gpa;
-        let level = query.level;
-        let amount = query.amount;
-        let applicantCountry = query.applicant_country;
-        let country = query.country;
-        let offset = query.offset;
-        this.setState({isloading: true, major: majorRay, criteria: query.criteria, gpa: query.gpa, level: query.level, amount: query.amount, applicantCountry: query.applicant_country, offset: query.offset});
+        //let {coin} = this.state.user;
+        this.setState({isloading: true});
         if (token && user_id) {
-            fetch(settings.urls.scholarship_search, {
-                method: 'POST',
+            fetch(settings.urls.get_user.replace('{user_id}', user_id ), {
+                method: 'GET',
                 headers: {'Content-Type': 'application/json', 'Authorization': token},
                 mode: 'cors',
-                body: JSON.stringify({applicantCountry, major, country, gpa, criteria, level, amount, user_id, offset})
             })
             .then(
                 response => response.json()
             )
             .then(
-                data => {
-                    if(data.length != 0){
-                        this.setState({isloading: false, results: data.rows, resultCount: data.count, searchYet: true}, ()=>{
-                            //show share modal
-                            //console.log('results', this.state.results)
-                let savedItems = _.map(this.state.results, function(currentObject) {
-                    return _.pick(currentObject, "id");
-                });
-                //console.log('savedItems',savedItems)
-                let result = savedItems.map(v => v.visible = true)
-                  this.setState({stuffs: result},()=>{
-                     // console.log('stuff',this.state.stuffs)
-                  })
-                        if (this.state.activePage == 1){
-                            this.OpenModal();
-                        }
-                        })
-                }else{
-                    this.setState({isloading: false, noneResult: true, searchYet: true})
-                }
-                }
+                data => this.setState({isloading: false, user: data}, ()=>{
+                    //console.log(data)
+                    
+                    const query = parse(location.search);
+                    this.setState({applicantCountry: query.applicant_country, Majors: query.major, country: query.country, gpa: query.gpa, criteria: query.criteria, level: query.level, amount: query.amount, offset: query.offset}, ()=>{
+                    this.Search();
+                })
+                })
             )
         }
-    }
     } 
     componentWillReceiveProps(nextProps) {
         if (!this.props.user_id && !!nextProps.user_id && !this.state.user) {
@@ -318,6 +289,7 @@ export class ScholarshipSearch extends Component{
             this.fetchMajors(localStorage.token);
             this.fetchCountries(localStorage.token);
         }
+        
     }
 
     componentDidUpdate(previousProps, previousState) {
@@ -358,6 +330,8 @@ export class ScholarshipSearch extends Component{
     Search() {
         let {offset} = this.state;
         let {id,coin} = this.state.user;
+        //let cookieStuff = cookie.load('noModal') || 0;
+        //this.setState({ noneModal: cookieStuff});
         if(coin < 0.5 && offset < 15){
             this.noCoin();
          }
@@ -403,6 +377,11 @@ export class ScholarshipSearch extends Component{
     }
     
     render(){
+        if(!localStorage.token){
+            return <Redirect to='/register?referrer=scholarship-search' />
+            //const {history} = this.props;
+            //history.push('/register?referrer=scholarship-search')
+        }
         if(!this.state.user){
             return <React.Fragment> 
             <div className="row">

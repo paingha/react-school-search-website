@@ -74,9 +74,6 @@ export class Profile extends Component{
         this.state = {
             isloading: false,
             user: null,
-            key: '',
-            signedRequest: null,
-            awsURL: '',
             majors: [],
             countries: [],
             firstName: '',
@@ -88,6 +85,7 @@ export class Profile extends Component{
             gpa: '',
             major: '',
             error: null,
+            update: false
         };
         this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
         this.handleLevelChange = this.handleLevelChange.bind(this);
@@ -95,10 +93,16 @@ export class Profile extends Component{
         this.handleCountryChange = this.handleCountryChange.bind(this);
         this.handleApplicantCountryChange = this.handleApplicantCountryChange.bind(this);
         this.handleGpaChange = this.handleGpaChange.bind(this);
+        this.refreshImg = this.refreshImg.bind(this);
         
     }
 
-
+    refreshImg(e){
+        //console.log(e)
+        this.setState({update: e}, ()=>{
+        this.fetchUser(localStorage.token, this.props.user_id);
+    })
+    }
     fetchUser(token, user_id) {
         this.setState({isloading: true});
         if (token && user_id) {
@@ -131,9 +135,9 @@ export class Profile extends Component{
     }
 
     doUpdate(token, user_id) {
-        const {firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, isloading, awsURL} = this.state;
+        const {firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, isloading} = this.state;
         const userStuff = this.state.user;
-        if(firstName == '' && lastName == '' && gpa == '' && criteria == '' && level == '' && major == '' && applicantCountry == '' && scholarshipCountry == '' && this.fileUpload.files[0] == null){
+        if(firstName == '' && lastName == '' && gpa == '' && criteria == '' && level == '' && major == '' && applicantCountry == '' && scholarshipCountry == ''){
             toastr.error('Error!', 'No Changes made')
         }
         else{
@@ -141,53 +145,11 @@ export class Profile extends Component{
         //Bug being called before setState
         
         this.setState({isloading: true}, ()=>{
-            if(this.fileUpload.files[0] != null) {
-                // Upload image to S3
-                const file = this.fileUpload.files[0];
-                const fileKey = Date.now() + file.name;
-                const contentType = file.type;
-                const extension = file.type
-            //const {key, signedRequest, featuredImage} = this.state;
-            this.setState({isloading: true});
-            //change to put
-                fetch(settings.urls.upload, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
-                    mode: 'cors',
-                    body: JSON.stringify({contentType, extension, fileKey})
-                })
-                .then(
-                    response => response.json()
-                )
-                .then(
-                    data => this.setState({isloading: false, key: data.key, signedRequest: data.signedRequest}, ()=>{
-                       
-                        //console.log(data.url);
-                        ///then
-                        let thingy = this.fileUpload.files[0];
-                        let uri = data.url;
-                        const contentType = thingy.type
-            const {signedRequest} = this.state;
-            this.setState({isloading: true}, ()=>{
-                //console.log("2nd");
-            });
-            //change to put
-                fetch(signedRequest, {
-                    method: 'PUT',
-                    headers: {'Content-Type': contentType},
-                    body: thingy
-                })   ////////////
-                
-                    .then(response=>{
-                        
-                            
-                                let image = uri;
-                                  //console.log(JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry}))
-        return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
+            return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
             method: 'PATCH',
             headers: {'Content-Type': 'application/json', 'Authorization': token},
             mode: 'cors',
-            body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, image})
+            body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry})
         })
             .then(response=>response.json())
             .then(json=>{
@@ -201,33 +163,10 @@ export class Profile extends Component{
                 });
             })
             .catch(error=>this.setState({isloading: false}));
-                    })
-                }))
-            }
-        ///end here    
-        else{
-            let {image} = this.state.user;
-            return fetch(settings.urls.update_user.replace('{user_id}', user_id ), {
-                method: 'PATCH',
-                headers: {'Content-Type': 'application/json', 'Authorization': token},
-                mode: 'cors',
-                body: JSON.stringify({firstName, lastName, gpa, criteria, level, major, applicantCountry, scholarshipCountry, image})
-            })
-                .then(response=>response.json())
-                .then(json=>{
-                    if (json.error){
-                        throw Error(json.error.message || 'Unknown fetch error');
-                        toastr.error('Error!', 'An error occured, please try again')
-                    }
-                    this.setState({isloading: false}, ()=>{
-                        toastr.success('Success!', 'Profile Updated Successfully')
-                    });
-                })
-                .catch(error=>this.setState({isloading: false}));
-        }       
-          
+
         })
-    }
+        }
+            
     }
     handleCountryChange (country) {
 		//console.log('You\'ve selected:', country);
@@ -273,7 +212,17 @@ export class Profile extends Component{
                 response => response.json()
             )
             .then(
-                data => this.setState({isloading: false, majors: data})
+                data => this.setState({isloading: false, majors: data}, ()=>{
+                   /* let result = data.sort(function(a, b){
+                        var nameA = a.label.toLowerCase(), nameB = b.label.toLowerCase();
+                        if (nameA < nameB) //sort string ascending
+                         return -1;
+                        if (nameA > nameB)
+                         return 1;
+                        return 0; //default return value (no sorting)
+                       });
+                       console.log(result)*/
+                })
             )
         
     }
@@ -403,7 +352,7 @@ export class Profile extends Component{
                     <div className="story-box">
                         <div className="row">
                         <div className="col-md-4 col-sm-12">
-                                    <ProfileBox userData={this.state.user} />
+                                    <ProfileBox userData={this.state.user} getUpdateImg={this.refreshImg}/>
                                     <ReferBox userData={this.state.user} />
                         </div>
                                     <div className="col-md-8 col-sm-12">
@@ -514,12 +463,10 @@ export class Profile extends Component{
                                     </div>
                                     <div className="row">
                                     <div className="col-md-6">
-                                    <span className="major-select">
-                                    <input type="file" className="image-upload" accept="image/*" ref={ref => this.fileUpload = ref}/>
-                                    </span>
+                                    <button className="navbar-btn aligner" onClick={()=> {this.doUpdate(localStorage.token, this.props.user_id)}}><span className="user-info">Update Profile</span></button>
+                                    
                                     </div>
                                     <div className="col-md-6">
-                                    <button className="navbar-btn aligner" onClick={()=> {this.doUpdate(localStorage.token, this.props.user_id)}}><span className="user-info">Update Profile</span></button>
                                     </div>
                                     <div className="col-md-6">
                                     

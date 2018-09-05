@@ -11,7 +11,7 @@ export default class Blurred extends Component{
         return(
             <React.Fragment>
             {splicedArray.map((spliced, id)=>
-            <div className="row">
+            <div key={spliced.id} className="row">
             <div className="col-md-1">
             </div>
 

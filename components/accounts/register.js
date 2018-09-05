@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
 import settings from '../../settings';
 import FacebookLogin from 'react-facebook-login';
+import {withRouter} from 'react-router-dom';
 import GoogleLogin from 'react-google-login';
 import { parse } from 'query-string';
 import {toastr} from 'react-redux-toastr'
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 const RegisterSuccess = () =>
     <div className="container-fluid register-wrapper-background aligned">
         <svg id="successAnimation" className="animated" xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 70 70">
@@ -35,7 +37,8 @@ export class Register extends Component {
             lastName: '',
             email: '',
             password: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            redirectScholarship: false
         };
         this.componentClicked = this.componentClicked.bind(this);
     }
@@ -46,7 +49,7 @@ export class Register extends Component {
             history.push(location.state? location.state.from : {pathname: '/'});
         }
         if(query.referrer){
-            toastr.warning('Message', 'Create an Account to search Scholarships');
+            this.setState({redirectScholarship: true})
         }
         
     }
@@ -119,9 +122,22 @@ export class Register extends Component {
     
     doRegister() {
         const {firstName, lastName, email, password, confirmPassword} = this.state;
-        this.setState({fetching: true, error: undefined});
-
+        
+        if ( email == ""){
+            toastr.error('Error!', 'A valid email is required')
+        }
+        else if ( firstName == ""){
+            toastr.error('Error!', 'First Name is required')
+        }
+        else if ( lastName == ""){
+            toastr.error('Error!', 'Last Name is required')
+        }
+        else if ( password == ""){
+            toastr.error('Error!', 'Password is required')
+        }
+        else{
         if ( password == confirmPassword){
+            this.setState({fetching: true, error: undefined});
         return fetch(settings.urls.register, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -140,6 +156,7 @@ export class Register extends Component {
             this.setState({error: 'Passwords do not match', fetching: false});
         }
     }
+    }
     
 
     render() {
@@ -149,23 +166,58 @@ export class Register extends Component {
 
         return (
             <div className="container-fluid register-wrapper-background">
-            
+            {this.state.redirectScholarship == true?
+                <div className="row scholarship-register-row">
+                    <span>Register an Account to view Scholarships</span>
+                </div>
+                :null
+            }
                 <div className="row row-height">
                     <div className="col-md-4"></div>
                     <div className="col-md-4 register-padding">
                         <div className="register-inner-box">
                         <h3 className="register-header">Register An Account</h3>
-                        <span className="major-select"><input type="text" placeholder="First Name" className="textInput"
-                                value={firstName} onChange={e=>this.setState({firstName: e.target.value})}/></span>
-                        <span className="major-select"><input type="text" placeholder="Last Name" className="textInput"
-                                value={lastName} onChange={e=>this.setState({lastName: e.target.value})}/></span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doRegister()} >
+                        <input type="text" placeholder="First Name" className="textInput"
+                                value={firstName} onChange={e=>this.setState({firstName: e.target.value})}/>
+                        </KeyboardEventHandler>
+                        </span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doRegister()} >
+                        <input type="text" placeholder="Last Name" className="textInput"
+                                value={lastName} onChange={e=>this.setState({lastName: e.target.value})}/>
+                        </KeyboardEventHandler>
+                        </span>
                             {/*<input type="text" placeholder="Username" className="register-input"/>*/}
-                        <span className="major-select"><input type="email" placeholder="Email" className="textInput"
-                                   value={email} onChange={e=>this.setState({email: e.target.value})}/></span>
-                        <span className="major-select"><input type="password" placeholder="Password" className="textInput"
-                                   value={password} onChange={e=>this.setState({password: e.target.value})}/></span>
-                        <span className="major-select"><input type="password" placeholder="Confirm Password" className="textInput"
-                                   value={confirmPassword} onChange={e=>this.setState({confirmPassword: e.target.value})}/></span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doRegister()} >
+                        <input type="email" placeholder="Email" className="textInput"
+                                   value={email} onChange={e=>this.setState({email: e.target.value})}/>
+                        </KeyboardEventHandler>          
+                        </span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doRegister()} >
+                        <input type="password" placeholder="Password" className="textInput"
+                                   value={password} onChange={e=>this.setState({password: e.target.value})}/>
+                        </KeyboardEventHandler>          
+                        </span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doRegister()} >
+                        <input type="password" placeholder="Confirm Password" className="textInput"
+                                   value={confirmPassword} onChange={e=>this.setState({confirmPassword: e.target.value})}/>
+                        </KeyboardEventHandler>           
+                        </span>
                             {error && <div className="register-validation-error">{error}</div>}
                             {fetching?
                                 <div className="register-button"><img className="register-button-puff" src="/img/puff.svg"/></div>
@@ -199,6 +251,10 @@ export class Register extends Component {
                             onSuccess={this.responseGoogle.bind(this)}
                             onFailure={this.failureGoogle.bind(this)}
                         />
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doRegister()} >
+                        </KeyboardEventHandler>
                         </div>
                         </div>
                         <span className="register-link">Already have an Account? &nbsp;<a href="/login"><strong>Login</strong></a>

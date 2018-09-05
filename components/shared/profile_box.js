@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {ShoppingCart} from 'react-feather'
+import {ShoppingCart, User} from 'react-feather'
+import UploadPopup from './upload-popup';
 //import {connect} from 'react-redux';
 //import settings from '../../settings'
 
@@ -7,35 +8,22 @@ export default class ProfileBox extends Component{
     constructor(props){
         super(props);
         this.state = {
+            opened: false,
         }
+        this.onOpenModal = this.onOpenModal.bind(this);
+        this.handleClose = this.handleClose.bind(this);
+        this.onUpdateImg = this.onUpdateImg.bind(this);
     }
-    /*componentDidMount() {
-        this.fetchUser(localStorage.token, this.props.user_id);
-    }
-
-
-    componentWillReceiveProps(nextProps) {
-        if (!this.props.user_id && !!nextProps.user_id && !this.state.user) {
-            this.fetchUser(localStorage.token, nextProps.user_id);
-        }
-    }
-
-    fetchUser(token, user_id) {
-        this.setState({isloading: true});
-        if (token && user_id) {
-            fetch(settings.urls.get_user.replace('{user_id}', user_id ), {
-                method: 'GET',
-                headers: {'Content-Type': 'application/json', 'Authorization': token},
-                mode: 'cors',
-            })
-            .then(
-                response => response.json()
-            )
-            .then(
-                data => console.log(data)/*this.setState({isloading: false, user: data})
-            )
-        }
-    }*/
+    onOpenModal() {
+        this.setState({ opened: true });
+      };
+    
+      handleClose(x){
+        this.setState({opened: x})
+    };
+    onUpdateImg() {
+        this.props.getUpdateImg(true); 
+      };
     render(){
         if (!this.props.userData){
                return <div>
@@ -69,6 +57,11 @@ export default class ProfileBox extends Component{
                 <div className="profile-img">
                 <div className="profile-img-tag">
                     <img src={image} className="profile-image"/>
+                    <div className="overlay">
+                    <span className="icon">
+                    <button className="navbar-btn aligner" onClick={this.onOpenModal}><User className="user-chevron-down-icon"/><span className="user-info">Change Profile Picture</span></button>
+                    </span>
+                    </div>
                 </div>
                 </div>
                 <div className="profile-sub-box">
@@ -86,6 +79,8 @@ export default class ProfileBox extends Component{
                         <a href="/buy_coin"><button className="navbar-btn aligner"><ShoppingCart className="user-chevron-down-icon"/><span className="user-info">Buy Coins</span></button></a>
                                     
                 </div>
+                <UploadPopup image={image} userId={id} open={this.state.opened} onUpdating={this.onUpdateImg} getInput={this.handleClose}/>
+                
                 </div>
         
     }

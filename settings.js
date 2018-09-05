@@ -45,6 +45,7 @@ export default {
         get_states: 'https://theacademist.herokuapp.com/services/get-state',
         send_invite: 'https://theacademist.herokuapp.com/services/send-invite',
         contact_us: 'https://theacademist.herokuapp.com/services/contact-us',
+        update_user_image: 'https://theacademist.herokuapp.com/services/image-upload/{user_id}',
         forum_search: 'https://theacademist.herokuapp.com/api/v1/forum/search'
     }
 };

@@ -15,15 +15,23 @@ export class ProfileTransactions extends Component{
         super(props);
         this.state = {
             user: null,
-            transactions: [],
+            transactions: null,
             isloading: false,
             offset: 0,
             activePage: 1,
             resultCount: 0,
         };
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.refreshImg = this.refreshImg.bind(this);
+        
     }
 
+    refreshImg(e){
+        //console.log(e)
+        this.setState({update: e}, ()=>{
+        this.fetchUser(localStorage.token, this.props.user_id);
+    })
+    }
     handlePageChange(pageNumber) {
         //console.log(`active page is ${pageNumber}`);
         //(n-1)15
@@ -90,7 +98,7 @@ export class ProfileTransactions extends Component{
         }
     }
     render(){
-        if(!this.state.user || this.state.transactions.length == 0){
+        if(!this.state.user || !this.state.transactions){
             return <React.Fragment>
             <div className="row">
             <section className="profile-section">
@@ -180,7 +188,7 @@ export class ProfileTransactions extends Component{
                 <div className="story-box">
                 <div className="row">
                 <div className="col-md-4 col-sm-12">
-                             <ProfileBox userData={this.state.user}/>
+                             <ProfileBox userData={this.state.user} getUpdateImg={this.refreshImg}/>
                              <ReferBox userData={this.state.user} />
                 </div>
                                 <div className="col-md-8 col-sm-12">

@@ -34,7 +34,7 @@ export class SinglePost extends React.Component{
         window.scrollTo(0, 0);
     }
     componentWillReceiveProps(nextProps) {
-        console.log('willreceiveprops', nextProps.isCreated)
+        //console.log('willreceiveprops', nextProps.isCreated)
         if(nextProps.isCreated != this.props.isCreated){
             this.getBlog(this.state.id)
         }
@@ -57,7 +57,7 @@ export class SinglePost extends React.Component{
             )
             .then(
                 data => this.setState({isloading: false, firstName: data.firstName, lastName: data.lastName, image: data.image}, ()=>{
-                    console.log(data);
+                    //console.log(data);
                 })
             )
     }
@@ -132,7 +132,7 @@ export class SinglePost extends React.Component{
                 <div className="col-md-4 forum-report">
                 <Share2 />
                 <a href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com${pathname}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
-                <a href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com${pathname}&via=TWITTER_HANDLE_HERE&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
+                <a href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com${pathname}&via=the_academist&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
                 <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
                 </div>
                 </div>

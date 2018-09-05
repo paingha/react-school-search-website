@@ -5,6 +5,7 @@ import settings from '../../settings';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
 import {toastr} from 'react-redux-toastr'
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 
 class Login extends Component {
 
@@ -116,6 +117,13 @@ class Login extends Component {
     doLogin(login, password) {
         const {dispatch, history, location} = this.props;
         //console.log('location', location)
+        if ( login == ""){
+            toastr.error('Error!', 'A valid email is required')
+        }
+        else if ( password == ""){
+            toastr.error('Error!', 'Password is required')
+        }
+        else{
         dispatch(requestLogin());
         return fetch(settings.urls.login, {
                          method: 'POST',
@@ -137,6 +145,7 @@ class Login extends Component {
                 }
             })
             .catch(error=>dispatch(errorLogin(error.message)));
+        }
     }
 
 
@@ -150,10 +159,22 @@ class Login extends Component {
                     <div className="col-md-4 login-padding">
                         <div className="login-inner-box">
                         <h3 className="login-header">Login</h3>
-                        <span className="major-select"><input type="email" placeholder="Email" className="textInput"
-                                   value={login} onChange={e=>this.setState({login: e.target.value})}/></span>
-                        <span className="major-select"><input type="password" placeholder="Password" className="textInput"
-                                   value={password} onChange={e=>this.setState({password: e.target.value})}/></span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doLogin(login, password)} >
+                        <input type="email" placeholder="Email" className="textInput"
+                                   value={login} onChange={e=>this.setState({login: e.target.value})}/>
+                        </KeyboardEventHandler>
+                        </span>
+                        <span className="major-select">
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doLogin(login, password)} >
+                        <input type="password" placeholder="Password" className="textInput"
+                                   value={password} onChange={e=>this.setState({password: e.target.value})}/>
+                        </KeyboardEventHandler>           
+                        </span>
                             {error && <div className="d-flex text-danger">{error}</div>}
                             {this.props.is_fetching?
                                 <div className="login-button"><img className="login-button-puff" src="/img/puff.svg"/></div>
@@ -185,6 +206,10 @@ class Login extends Component {
                             onSuccess={this.responseGoogle.bind(this)}
                             onFailure={this.failureGoogle.bind(this)}
                         />
+                        <KeyboardEventHandler
+                        handleKeys={['enter', 'return']}
+                        onKeyEvent={(key, e) => this.doLogin(login, password)} >
+                        </KeyboardEventHandler>
                         </div>
                         </div>
                         <span className="register-link">Need an Account? &nbsp;<a href="/register"><strong>Register</strong></a>

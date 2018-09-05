@@ -6,7 +6,6 @@ import {BrowserRouter, Route, Switch, Redirect} from 'react-router-dom';
 import {App} from './components/app'
 import {Home} from './components/home'
 import {AboutUs} from './components/about_us'
-import {Pay} from './components/pay'
 import {CheckoutForm} from './components/CheckoutForm'
 import {Register} from './components/accounts/register'
 import Profile from './components/accounts/profile'
