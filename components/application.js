@@ -236,7 +236,7 @@ class _CardForm extends Component {
                 className="StripeElement"
                 {...createOptions(this.props.fontSize)}
             />
-            <img className="card-align" src="https://theacademist.herokuapp.com/img/cards.png" />
+            <img className="card-align" src="https://www.theacademist.com/img/cards.png" />
             <button className="navbar-btn aligner" >Pay</button>
         </form>
         );
@@ -511,7 +511,7 @@ submitApplication(){
         const onSuccess = (payment) => {
             // Congratulation, it came here means everything's fine!
             this.setState({paymentID: payment.paymentID});
-            		console.log("The payment was succeeded!", payment);
+            		//console.log("The payment was succeeded!", payment);
             		// You can bind the "payment" object's value to your state or props or whatever here, please see below for sample returned data
             //verify paypal here
             //this.verifyPaypal()
@@ -533,7 +533,7 @@ submitApplication(){
 			// => sometimes it may take about 0.5 second for everything to get set, or for the button to appear			
 		}			
 		let shipping = 1;	
-		let env = 'sandbox'; // you can set here to 'production' for production
+		let env = 'production'; // you can set here to 'production' for production
 		let currency = 'USD'; // or you can set this value from your props or state  
 		let total = 25; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
 		// Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
@@ -544,8 +544,8 @@ submitApplication(){
         }
 
 		const client = {
-			sandbox:    'AcphHl8MmA17YkUMZ1B6Ik1yAwlHLCtjm6Kt94wDliCu9wdPFFwlWwbIEKz2TxUXXYCN1K6DgQAKmV4x',
-			production: 'YOUR-PRODUCTION-APP-ID',
+            production: 'AdTNa3E7DXeBoW-cjhAD_Gmwe8FjS16YcD3ii3WS8dELokeSqDh0tLqOTGiRollGfVVbCI6O0sIii_43',
+            sandbox:    'YOUR-SANDBOX-APP-ID',
 		}
 
         return <React.Fragment>
@@ -1037,10 +1037,10 @@ submitApplication(){
         <br />
         <div className="row">
             <div className="col-md-6">
-            <StripeProvider apiKey="pk_test_WwdF2h2PYwDQCIJikhCAeBDx">
+            <StripeProvider apiKey="pk_live_8J99qGwcdY6ydmEiBk8cq5jc">
                         <div className="appCheckout">
                             <Elements>
-                            <CardForm  getStore={() => ({...this.state})} updateStore={(u) => (this.setState(u))} fontSize={elementFontSize} stripe="pk_test_WwdF2h2PYwDQCIJikhCAeBDx" />
+                            <CardForm  getStore={() => ({...this.state})} updateStore={(u) => (this.setState(u))} fontSize={elementFontSize} stripe="pk_live_8J99qGwcdY6ydmEiBk8cq5jc" />
                             </Elements>
                         </div>
                     </StripeProvider>

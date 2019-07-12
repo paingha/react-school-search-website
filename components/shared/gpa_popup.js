@@ -25,26 +25,26 @@ export default class GpaPopup extends Component{
       };
 
     componentDidMount() {
-        this.fetchSchool(localStorage.token, this.props.school_id);
+        this.fetchSchool(this.props.school_id);
     }
 
 
     componentWillReceiveProps(nextProps) {
         if (this.props.school_id != nextProps.school_id) {
             //console.log(nextProps.scholarship_id)
-            this.fetchSchool(localStorage.token, nextProps.school_id);
+            this.fetchSchool(nextProps.school_id);
         }
         if (!this.props.open && !!nextProps.open) {
             this.setState({open: nextProps.open});
         }
     }
 
-    fetchSchool(token, school_id) {
+    fetchSchool(school_id) {
         this.setState({isloading: true});
-        if (token && school_id) {
+        if (school_id) {
             fetch(settings.urls.get_school.replace('{school_id}', school_id ), {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
             })
             .then(
@@ -69,6 +69,10 @@ export default class GpaPopup extends Component{
         state,
         sat,
         act,
+        gmat,
+        gre,
+        toefl,
+        ielts,
         zip,
         comment,
         website
@@ -84,10 +88,100 @@ export default class GpaPopup extends Component{
             <p><strong>School Description:</strong> {description}</p>
             <p><strong>School GPA:</strong> {gpa}</p>
             <p><strong>School Level:</strong> {level}</p>
-            <p><strong>School SAT:</strong> {sat}</p>
-            <p><strong>School ACT:</strong> {act}</p>
-            <p><strong>Scholarship Address:</strong> {address}</p>
-            <p><strong>School City:</strong> {city}</p>
+            {level == "Graduate" ?
+            <p><strong>School GRE:</strong>
+            {gre !== null ?
+            <React.Fragment>
+            {gre}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+             </p>
+            :
+            <p><strong>School SAT:</strong>
+            {sat !== null ?
+            <React.Fragment>
+            {sat}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
+            }
+            {level == "Graduate" ?
+            <p><strong>School GMAT:</strong>
+            {gmat !== null ?
+            <React.Fragment>
+            {gmat}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
+            :
+            <p><strong>School ACT:</strong>
+            {act !== null ?
+            <React.Fragment>
+            {act}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
+            }
+            <p><strong>School Address: </strong> 
+            {address !== null ?
+            <React.Fragment>
+            {address}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
+            <p><strong>School City: </strong> 
+            {city !== null ?
+            <React.Fragment>
+            {city}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
+            <p><strong>TOEFL: </strong> 
+            {toefl !== null ?
+            <React.Fragment>
+            {toefl}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
+            <p><strong>IELTS: </strong> 
+            {ielts !== null ?
+            <React.Fragment>
+            {ielts}
+            </React.Fragment>
+             :
+             <React.Fragment>
+                 N/A
+             </React.Fragment>
+            }
+            </p>
             <p><strong>School ZIP Code:</strong> {zip}</p>
             <p><strong>School State:</strong> {state}</p>
             </div>

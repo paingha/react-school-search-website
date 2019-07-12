@@ -131,9 +131,9 @@ export class SinglePost extends React.Component{
                 <div className="col-md-4"></div>
                 <div className="col-md-4 forum-report">
                 <Share2 />
-                <a href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com${pathname}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
-                <a href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com${pathname}&via=the_academist&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
-                <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
+                <a href={`https://www.facebook.com/sharer/sharer.php?u=https://www.theacademist.com${pathname}&quote=${topic}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
+                <a href={`https://www.twitter.com/intent/tweet?url=https://www.theacademist.com${pathname}&via=the_academist&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
+                <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://www.theacademist.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
                 </div>
                 </div>
                 <br/>
@@ -190,24 +190,24 @@ export class SinglePost extends React.Component{
                 <meta charSet="utf-8" />
                 <title>{topic} | The Academist</title>
 
-<meta name="description" content="Just read it -- it&#39;s cute!"/>
-<meta name="keywords" content="High Availability"/>
+<meta name="description" content={`${content}`}/>
+<meta name="keywords" content="The Academist, International, International Student, Scholarship, Grant, School, Schools, Universities"/>
 
 <meta name="og:title" content={`${topic} | The Academist`}/>
-<meta name="og:description" content="Just read it -- it&#39;s cute!"/>
+<meta name="og:description" content={`${content}`}/>
 <meta name="og:site_name" content="The Academist"/>
 <meta name="og:type" content="article"/>
 
 <meta name="twitter:site" content="The Academist" />
 <meta name="twitter:title" content={`${topic} | The Academist`}/>
-<meta name="twitter:description" content="Just read it -- it&#39;s cute!"/>
+<meta name="twitter:description" content={`${content}`}/>
 <meta name="twitter:creator" content="The Academist"/>
 <meta name="twitter:card" content="photo" />
-<meta name="twitter:url" content={`https://theacademist.herokuapp.com${pathname}`}/>
+<meta name="twitter:url" content={`https://www.theacademist.com${pathname}`}/>
 <meta property='og:image' content={`${featuredImage}`}/>
 <meta name="twitter:image" content={`${featuredImage}`}/>
 
-  <link rel='canonical' href={`https://theacademist.herokuapp.com${pathname}`}/>
+  <link rel='canonical' href={`https://www.theacademist.com${pathname}`}/>
 
             </Helmet>
 <div className="row">
@@ -247,9 +247,9 @@ export class SinglePost extends React.Component{
     <div className="col-md-4"></div>
     <div className="col-md-4 forum-report">
     <Share2 />&nbsp;&nbsp;
-    <a href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com${pathname}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
-    <a href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com${pathname}&via=TWITTER_HANDLE_HERE&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
-    <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
+    <a href={`https://www.facebook.com/sharer/sharer.php?u=https://www.theacademist.com${pathname}`}><img src="/img/facebook_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
+    <a href={`https://www.twitter.com/intent/tweet?url=https://www.theacademist.com${pathname}&via=the_academist&text=${topic}`}><img src="/img/twitter_icon.svg" className="footerImg" width="32px"/></a>&nbsp;
+    <a href={`http://www.linkedin.com/shareArticle?mini=true&url=https://www.theacademist.com${pathname}&title=${topic}&source="The Academist"`}><img src="/img/linked_in.svg" className="footerImg" width="32px"/></a>
     </div>
     </div>
     <br/>

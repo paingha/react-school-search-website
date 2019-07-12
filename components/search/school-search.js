@@ -10,14 +10,7 @@ import {Search} from 'react-feather'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 //import ScholarshipResult from './scholarship-result'
-const MAJORS = [
-	{ label: 'Business', value: '"Business"' },
-	{ label: 'Nursing', value: '"Nursing"' },
-	{ label: 'Strawberry', value: '"strawberry"' },
-	{ label: 'Caramel', value: '"caramel"' },
-	{ label: 'Cookies and Cream', value: '"cookiescream"' },
-	{ label: 'Peppermint', value: '"peppermint"' },
-];
+
 const LEVELS = [
 	{ label: 'Graduate', value: 'Graduate' },
 	{ label: 'Undergraduate', value: 'Undergraduate' }
@@ -26,25 +19,54 @@ const COUNTRIES = [
 	{ label: 'US', value: 'US' },
 	{ label: 'Canada', value: 'Canada' }
 ];
-const USSTATE = [
-    { label: 'All', value: 'All' },
-	{ label: 'AL', value: 'AL' },
-    { label: 'AK', value: 'AK' },
-    { label: 'AS', value: 'AS' },
-    { label: 'AZ', value: 'AZ' },
-    { label: 'AR', value: 'AR' },
-    { label: 'CA', value: 'CA' },
-    { label: 'CO', value: 'CO' },
-    { label: 'CT', value: 'CT' },
-    { label: 'DE', value: 'DE' },
-    { label: 'DC', value: 'DC' },
-    { label: 'FM', value: 'FM' }
+const CANSTATE = [{
+    value: 'AB',
+    label: 'Alberta'
+  },
+  {
+    value: 'BC',
+    label: 'British Columbia'
+  },
+  {
+    value: 'MB',
+    label: 'Manitoba'
+  },
+  {
+    value: 'NB',
+    label: 'New Brunswick'
+  },
+  {
+    value: 'NL',
+    label: 'Newfoundland and Labrador'
+  },
+  {
+    value: 'NS',
+    label: 'Nova Scotia'
+  },
+  {
+    value: 'NT',
+    label: 'Northwest Territories'
+  },
+  {
+    value: 'NU',
+    label: 'Nunavut'
+  },{
+    value: 'ON',
+    label: 'Ontario'
+  },{
+    value: 'PE',
+    label: 'Prince Edward Island'
+  },{
+    value: 'QC',
+    label: 'Québec'
+  },{
+    value: 'SK',
+    label: 'Saskatchewan'
+  },{
+    value: 'YT',
+    label: 'Yukon'
+  }
 ];
-const CANSTATE = [
-    { label: 'OTTAWA', value: 'OTTAWA' },
-    { label: 'ONTARIO', value: 'ONTARIO' },
-    { label: 'LONDON', value: 'LONDON' },
-]
 
 
 const SearchTab = withRouter(function (props) {
@@ -74,12 +96,15 @@ export class SchoolSearch extends Component{
             isloading: false,
             level: '',
             Majors: '',
+            majors: [],
             country: '',
             state: '',
             USstate: true,
+            states: [],
             error: null,
             results: [],
             refresh: false,
+            offset: 0
         };
         this.handleLevelChange = this.handleLevelChange.bind(this);
         this.handleMajorChange = this.handleMajorChange.bind(this);
@@ -90,24 +115,24 @@ export class SchoolSearch extends Component{
    
 
     handleLevelChange (level) {
-		console.log('You\'ve selected:', level);
+		//console.log('You\'ve selected:', level);
 		this.setState({ level });
     }
 
     handleMajorChange (Majors) {
-		console.log('You\'ve selected:', Majors);
+		//console.log('You\'ve selected:', Majors);
 		this.setState({ Majors }, ()=>{
-            console.log(this.state.Majors)
+            //console.log(this.state.Majors)
         });
     }
 
     handleStateChange (state) {
-		console.log('You\'ve selected:', state);
+		//console.log('You\'ve selected:', state);
 		this.setState({ state });
     }
     
     handleCountryChange (country) {
-		console.log('You\'ve selected:', country);
+		//console.log('You\'ve selected:', country);
         this.setState({ country }, ()=>{;
         if (country == "Canada"){
             this.setState({USstate: false})
@@ -120,15 +145,14 @@ export class SchoolSearch extends Component{
 
    
     Search() {
-        const {state, level, country, isloading, results, error, Majors} = this.state
-        let major = [];
-        major.push(Majors);
+        const {state, level, country, isloading, results, error, Majors, offset} = this.state
+        let major = Majors
         this.setState({isloading: true, error: undefined});
         return fetch(settings.urls.major_search, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             mode: 'cors',
-            body: JSON.stringify({state, major, country, level, user_id})
+            body: JSON.stringify({state, major, country, level, offset})
         })
         .then(
             response => response.json()
@@ -140,7 +164,41 @@ export class SchoolSearch extends Component{
         )
         
     }
-
+    fetchStates() {
+        let firstMajor = {
+            label: 'All',
+            value: 'All'
+        }
+        fetch(settings.urls.get_states, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({states: [firstMajor, ...data]})
+            )
+        
+    }
+    fetchMajors() {
+            fetch(settings.urls.get_majors, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                mode: 'cors',
+            })
+            .then(
+                response => response.json()
+            )
+            .then(
+                data => this.setState({majors: data})
+            )
+    }
+    componentDidMount(){
+        this.fetchMajors();
+        this.fetchStates();
+    }
     render(){
         let resultBlock;
         let {isloading, results} = this.state;
@@ -156,11 +214,10 @@ export class SchoolSearch extends Component{
                 <SchoolResult school={results}/>
             );
         }
-        let { level, gpa, country, Majors, USstate, state} = this.state;
-        const options = MAJORS;
+        let { level, gpa, country, majors, Majors, USstate, state} = this.state;
+        const options = majors;
         const levels = LEVELS;
         const countries = COUNTRIES;
-        const states = USSTATE;
         const canstate = CANSTATE;
         let SelectBlock;
         if (USstate){
@@ -173,7 +230,7 @@ export class SchoolSearch extends Component{
                 multi={false}
                 simpleValue
                 onChange={this.handleStateChange}
-                options={states}
+                options={this.state.states}
                 searchable={false}
                 />
             )
@@ -226,7 +283,7 @@ export class SchoolSearch extends Component{
                                             className="major-select"
                                             value={Majors}
                                             placeholder="Majors"
-                                            multi={true}
+                                            multi={false}
                                             simpleValue
                                             onChange={this.handleMajorChange}
                                             options={options}

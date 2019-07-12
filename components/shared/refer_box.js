@@ -56,16 +56,16 @@ export default class ReferBox extends Component{
                 
                 <div className="profile-sub-box">
                 <p className="gpa-result">Refer a Friend. Get Rewarded!</p>    
-                <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com/register?ref=${referralCode}`}>
+                <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`https://www.facebook.com/sharer/sharer.php?u=https://www.theacademist.com/register?ref=${referralCode}&quote=I just found scholarships on The Academist`}>
             <img src="/img/facebook_icon.svg" className="footerImg" width="42px"/>
             </a>&nbsp;
-            <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com/register?ref=${referralCode}&via=the_academist&text="I just found scholarships on The Academist"`}>
+            <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`https://www.twitter.com/intent/tweet?url=https://www.theacademist.com/register?ref=${referralCode}&via=the_academist&text="I just found scholarships on The Academist"`}>
             <img src="/img/twitter_icon.svg" className="footerImg" width="42px"/>
             </a>&nbsp;
-            <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com/register?ref=${referralCode}&title="I just found scholarships on The Academist"&source="The Academist"`}>
+            <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://www.theacademist.com/register?ref=${referralCode}&title="I just found scholarships on The Academist"&source="The Academist"`}>
             <img src="/img/linked_in.svg" className="footerImg" width="42px"/>
             </a>&nbsp;
-            <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`whatsapp://send?text="I just found scholarships on The Academist - https://theacademist.herokuapp.com/register?ref=${referralCode}"`}>
+            <a target="_blank" rel="noopener noreferrer" className="social-icon" href={`whatsapp://send?text="I just found scholarships on The Academist - https://www.theacademist.com/register?ref=${referralCode}"`}>
             <img src="/img/whatsapp_icon.svg" className="footerImg" width="42px"/>
             </a>&nbsp; 
             <span className="social-icon pointer" onClick={this.OpenModal}>

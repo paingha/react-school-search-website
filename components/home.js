@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { render } from "react-dom";
+import { Link } from '../tools/routes'
 import Navbar from './shared/navbar'
 import Footer from './shared/footer'
 import {Play} from 'react-feather'
@@ -62,23 +63,21 @@ export class Home extends Component {
                             </div>
                             <div className="col-md-6">
                             <div className="col-spacer-2">
-                            <button className="home-button-2 aligner" onClick={this.onOpenModal} ><Play className="user-icon" /> <span className="learn-more-text">Learn More</span></button>
-                            <Modal className="video-modal" open={open} onClose={this.onCloseModal} showCloseIcon={showCloseIcon} little>
-                            <Plyr
-                                type="video"
-                                autoplay
-                                url="https://www.theacademist.com/wp-content/uploads/2018/02/videoplayback.mp4"
-                                onEnd={this.onCloseModal}
-                                />
-                            </Modal>
+                            <button className="home-button-2 aligner"><Play className="user-icon" /> <span className="learn-more-text">Learn More</span></button>
+                            
                             </div>
                             </div>
                             </div>
                             </div>
                         </div>
-                        <div className="col-md-5 col-sm-6">
-                            <img className="featured-img" src="/img/Website_0_main-illustration.png" />
-                            </div>
+                        <div className="col-md-5 col-sm-6 remove-left-margin">
+                            <Plyr
+                                type="video"
+                                autoplay
+                                url="https://www.theacademist.com/img/The_Academist.mp4"
+                                onEnd={this.onCloseModal}
+                                />
+                        </div>
                         </div>
                     
                 </section>
@@ -111,7 +110,7 @@ export class Home extends Component {
                               <div className="col-md-4 col-sm-12">
                               <div className="col-spaced box">
                                     <img src="./img/Website_2.png" className="hero-img" />
-                                    <h4 className="hero-heading-1"><a href="/school-search/by-gpa">SEARCH SCHOOL BY GPA</a></h4>
+                                    <h4 className="hero-heading-1"><a href="/school-search/by-gpa">SEARCH SCHOOL BY GPA / MAJOR</a></h4>
                                     <p className="story-paragraph-1">Personalize your evaluated GPA to search for schools you might qualify for and the opportunities abound. Search schools based by your GPA.</p>
                                    
                                    </div></div>
@@ -145,7 +144,7 @@ export class Home extends Component {
                     <a className="center-btn" href="/about-us">Read More</a>
                     </div>
                     <div className="col-md-6 no-padding-md">
-                        <img className="how-to-search-img" src="/img/how-to-search.png"/>
+                        <img className="how-to-search-img" src="/img/Website_0_main-illustration.png"/>
                     </div>
                 </div>
                 </section>

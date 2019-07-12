@@ -9,6 +9,7 @@ import LoadingResult from './loading-result'
 import NoResult from './no-result'
 import {Search} from 'react-feather'
 import {Redirect} from 'react-router-dom';
+import Helmet from 'react-helmet';
 import { parse } from 'query-string';
 import Select from 'react-select';
 import Pagination from "react-js-pagination";
@@ -95,7 +96,9 @@ export class ScholarshipSearch extends Component{
           stuffs: null,
           majors: null,
           countries: null,
-          userID: 0
+          userID: 0,
+          confirmCoin: false,
+          continueSearch: false
         };
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handleCriteriaChange = this.handleCriteriaChange.bind(this);
@@ -200,10 +203,9 @@ export class ScholarshipSearch extends Component{
     }
     fetchMajors(token) {
         this.setState({isloading: true});
-        if (token) {
             fetch(settings.urls.get_majors, {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
             })
             .then(
@@ -212,14 +214,12 @@ export class ScholarshipSearch extends Component{
             .then(
                 data => this.setState({isloading: false, majors: data})
             )
-        }
     }
     fetchCountries(token) {
         this.setState({isloading: true});
-        if (token) {
             fetch(settings.urls.get_countries, {
                 method: 'GET',
-                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                headers: {'Content-Type': 'application/json'},
                 mode: 'cors',
             })
             .then(
@@ -228,7 +228,6 @@ export class ScholarshipSearch extends Component{
             .then(
                 data => this.setState({isloading: false, countries: data})
             )
-        }
     }
     handleGpaChange (gpa) {
 		//console.log('You\'ve selected:', gpa);
@@ -326,6 +325,25 @@ export class ScholarshipSearch extends Component{
                 })
         
         })
+    }
+    checkConfirmState = ()=> {
+        let confirm = new Promise((resolve, reject)=>{
+            if(this.state.continueSearch){
+                resolve(true)
+            }
+            else{
+                reject(false)
+            }
+        })
+        return confirm
+    }
+    confirmCoinState = async() => {
+        await this.setState({confirmCoin: true})
+        let res = await this.checkConfirmState
+        if(res){
+            this.Search()
+        }
+    
     }
     Search() {
         let {offset} = this.state;
@@ -457,6 +475,27 @@ export class ScholarshipSearch extends Component{
             return <React.Fragment>
             <div className="container-fluid">
             <div className="row">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Scholarship Search | The Academist</title>
+
+                <meta name="og:title" content="I qualified for scholarships in U.S and Canada!"/>
+                <meta name="og:description" content="I qualified for several full tuition scholarships to study in either the U.S or Canada. Why not try your chances here as well?"/>
+                <meta name="og:site_name" content="The Academist"/>
+                <meta property='og:image' content="https://www.theacademist.com/img/logo.png"/>
+                <meta name="og:url" content="https://www.theacademist.com/scholarship-search"/>
+                <meta name="og:type" content="article"/>
+
+                <meta name="twitter:site" content="The Academist" />
+                <meta name="twitter:title" content="I qualified for scholarships in U.S and Canada!"/>
+                <meta name="twitter:description" content="I qualified for several full tuition scholarships to study in either the U.S or Canada. Why not try your chances here as well?"/>
+                <meta name="twitter:creator" content="The Academist"/>
+                <meta name="twitter:card" content="photo" />
+                <meta name="twitter:url" content="https://www.theacademist.com/school-search/by-gpa"/>
+                <meta name="twitter:image" content="https://www.theacademist.com/img/logo.png"/>
+                <link rel='canonical' href="https://www.theacademist.com/school-search/by-gpa"/>
+
+            </Helmet>
                 <section className="profile-section">
                     <Navbar />  
                     <MobileSidebar />
@@ -583,7 +622,7 @@ export class ScholarshipSearch extends Component{
                                         />
                                         </div>
                                         <div className="col-md-4">
-                                        <button className="search-btn aligner" onClick={()=>this.Search()}><Search className="user-icon"/> <span className="user-info">Search</span></button>
+                                        <button className="search-btn aligner" onClick={()=>this.confirmCoinState}><Search className="user-icon"/> <span className="user-info">Search</span></button>
                                       </div>
                                     </div>
                                     </div>
@@ -625,13 +664,28 @@ export class ScholarshipSearch extends Component{
                 <div className="row">
                 <div className="col-md-2"></div>
                 <div className="col-md-8">
-                <a className="btn-facebook" href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com/register?ref=${referralCode}`}>Share on Facebook</a><br/>
-                <a className="btn-twitter" href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com/register?ref=${referralCode}&via=the_academist&text="I just found ${resultCount} scholarships on The Academist"`}>Share on Twitter</a><br/>
-                <a className="btn-linkedin" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com/register?ref=${referralCode}&title="I just found ${resultCount} scholarships on The Academist"&source="The Academist"`}>Share on LinkedIn</a>
+                <a className="btn-facebook" href={`https://www.facebook.com/sharer/sharer.php?u=https://www.theacademist.com/register?ref=${referralCode}&quote=I just found ${resultCount} scholarships on The Academist`}>Share on Facebook</a><br/>
+                <a className="btn-twitter" href={`https://www.twitter.com/intent/tweet?url=https://www.theacademist.com/register?ref=${referralCode}&via=the_academist&text="I just found ${resultCount} scholarships on The Academist"`}>Share on Twitter</a><br/>
+                <a className="btn-linkedin" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://www.theacademist.com/register?ref=${referralCode}&title="I just found ${resultCount} scholarships on The Academist"&source="The Academist"`}>Share on LinkedIn</a>
                 <br/>
                 <a onClick={this.createCookie} className="hide-modal">Don't Show Again</a>
                 </div>
                 <div className="col-md-2"></div>
+                </div>
+            </Modal> :
+            null
+            }  
+            { this.state.confirmCoin ?
+            <Modal className="video-modal share-modal" open={this.state.confirmCoin} onClose={this.CloseShareModal} showCloseIcon={true} little>
+                <h1>Friendly Reminder</h1>
+                
+                <div className="wrapper">
+                    <img src="./img/coin.png" className="coin-img"/>
+                    <h2>0.5 Coin will be deduced from your balance</h2>
+                    <div className="sub-wrapper">
+                    <button className="confirmBtn" onClick={()=>this.setState({continueSearch: true})}>Confirm</button>
+                    <button className="cancelBtn" onClick={()=>this.setState({continueSearch: false})}>Cancel</button>
+                    </div>
                 </div>
             </Modal> :
             null

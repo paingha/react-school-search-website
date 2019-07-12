@@ -5,11 +5,13 @@ import settings from '../../settings'
 import {SearchTabs} from './school-search'
 import GpaResult from './gpa-result'
 import LoadingResult from './loading-result'
+import NoResult from './no-result';
 import {Search} from 'react-feather'
 import {connect} from 'react-redux';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Pagination from "react-js-pagination";
+import Helmet from 'react-helmet'
 import Modal from 'react-responsive-modal'
 import 'react-responsive-modal/lib/react-responsive-modal.css';
 import {MobileSidebar} from '../shared/mobile_sidebar';
@@ -60,6 +62,7 @@ export class ByGpa extends Component{
             activePage: 1,
             offset: 0,
             resultCount: 0,
+            noResult: false,
             opened: false
         };
         this.handleLevelChange = this.handleLevelChange.bind(this);
@@ -73,9 +76,9 @@ export class ByGpa extends Component{
     }
 
     handleCriteriaChange (criteria) {
-		console.log('You\'ve selected:', criteria);
+		//console.log('You\'ve selected:', criteria);
 		this.setState({ criteria }, ()=>{
-            console.log(this.state.criteria)
+            //console.log(this.state.criteria)
         });
     }
     handleClose(x){
@@ -92,19 +95,19 @@ export class ByGpa extends Component{
     }
 
     handleGpaChange (gpa) {
-		console.log('You\'ve selected:', gpa);
+		//console.log('You\'ve selected:', gpa);
 		this.setState({ gpa }, ()=>{
-            console.log(this.state.gpa)
+            //console.log(this.state.gpa)
         });
     }
 
     handleStateChange (state) {
-		console.log('You\'ve selected:', state);
+		//console.log('You\'ve selected:', state);
 		this.setState({ state });
     }
     
     handleCountryChange (country) {
-		console.log('You\'ve selected:', country);
+		//console.log('You\'ve selected:', country);
         this.setState({ country }, ()=>{;
         if (country == "Canada"){
             this.setState({USstate: false})
@@ -119,7 +122,7 @@ export class ByGpa extends Component{
         this.fetchStates()
     }
     handlePageChange(pageNumber) {
-        console.log(`active page is ${pageNumber}`);
+        //console.log(`active page is ${pageNumber}`);
         //(n-1)15
         let mathStuff = pageNumber - 1;
         let multiplyStuff = mathStuff * 15;
@@ -130,14 +133,14 @@ export class ByGpa extends Component{
          
     }
     DoSearch(){
-        this.Search(localStorage.token, this.props.user_id)
+        this.Search()
     }
-    Search(token, user_id) {
+    Search() {
         const {gpa, state, level, isloading, results, error, offset} = this.state
         this.setState({isloading: true, error: undefined});
         return fetch(settings.urls.gpa_search, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Authorization': token},
+            headers: {'Content-Type': 'application/json'},
             mode: 'cors',
             body: JSON.stringify({gpa, state, level, offset})
         })
@@ -146,7 +149,13 @@ export class ByGpa extends Component{
         )
         .then(
             data => this.setState({isloading: false, results: data.rows, resultCount: data.count}, () => {
-                console.log(this.state.results)
+                //console.log(this.state.results)
+                if(data.count == 0){
+                    this.setState({noResult: true})
+                }
+                else{
+                    this.setState({noResult: false})
+                }
             })
         )
         
@@ -189,20 +198,47 @@ export class ByGpa extends Component{
         }
         else{
             resultsBlock = (
+                <React.Fragment>
+                {this.state.noResult == true?
+                <NoResult />
+                :
                 <GpaResult /*none={noneResult}*/getInput={this.handleClose} school={results}/>
+                }
+                </React.Fragment>
                 );
             
         }
             return <React.Fragment>
             <div className="container-fluid">
             <div className="row">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>School Search by GPA | The Academist</title>
+
+                <meta name="og:title" content="Search Schools in U.S and Canada by GPA"/>
+                <meta name="og:description" content="To know an exact list of schools which can accept your GPA to study in the U.S, click the link."/>
+                <meta name="og:site_name" content="The Academist"/>
+                <meta property='og:image' content="https://www.theacademist.com/img/logo.png"/>
+                <meta name="og:url" content="https://www.theacademist.com/school-search/by-gpa"/>
+                <meta name="og:type" content="article"/>
+
+                <meta name="twitter:site" content="The Academist" />
+                <meta name="twitter:title" content="Search Schools in U.S and Canada by GPA"/>
+                <meta name="twitter:description" content="To know an exact list of schools which can accept your GPA to study in the U.S, click the link."/>
+                <meta name="twitter:creator" content="The Academist"/>
+                <meta name="twitter:card" content="photo" />
+                <meta name="twitter:url" content="https://www.theacademist.com/school-search/by-gpa"/>
+                <meta name="twitter:image" content="https://www.theacademist.com/img/logo.png"/>
+                <link rel='canonical' href="https://www.theacademist.com/school-search/by-gpa"/>
+
+            </Helmet>
                 <section className="profile-section">
                     <Navbar />  
                     <MobileSidebar />
                     <div className="row-fluid hero-box">
                     <div className="col-md-12">
                         <div className="headline-box">
-                        <h1 className="home-headline">School Search By Gpa</h1>
+                        <h1 className="home-headline">School Search By GPA</h1>
                         </div>
                     </div>
                     <div className="col-md-6"></div>
@@ -296,13 +332,13 @@ export class ByGpa extends Component{
             </div>
              : null }
             <Modal className="video-modal share-modal" open={opened} onClose={this.CloseShareModal} showCloseIcon={true} little>
-                <h1>Share School to Friends</h1>
+                <h1>Share School with Friends</h1>
                 <div className="row">
                 <div className="col-md-2"></div>
                 <div className="col-md-8">
-                <a className="btn-facebook" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=https://theacademist.herokuapp.com/school-search/by-gpa`}>Share on Facebook</a><br/>
-                <a className="btn-twitter" target="_blank" href={`https://www.twitter.com/intent/tweet?url=https://theacademist.herokuapp.com/school-search/by-gpa&via=the_academist&text="I just found schools on The Academist"`}>Share on Twitter</a><br/>
-                <a className="btn-linkedin" target="_blank" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://theacademist.herokuapp.com/school-search/by-gpa&title="I just found schools on The Academist"&source="The Academist"`}>Share on LinkedIn</a>
+                <a className="btn-facebook" target="_blank" href={`https://www.facebook.com/sharer/sharer.php?u=https://www.theacademist.com/school-search/by-gpa`}>Share on Facebook</a><br/>
+                <a className="btn-twitter" target="_blank" href={`https://www.twitter.com/intent/tweet?url=https://www.theacademist.com/school-search/by-gpa&via=the_academist&text="I just found schools on The Academist"`}>Share on Twitter</a><br/>
+                <a className="btn-linkedin" target="_blank" href={`http://www.linkedin.com/shareArticle?mini=true&url=https://www.theacademist.com/school-search/by-gpa&title="I just found schools on The Academist"&source="The Academist"`}>Share on LinkedIn</a>
                 <br/>
                 </div>
                 <div className="col-md-2"></div>
@@ -313,11 +349,3 @@ export class ByGpa extends Component{
         </React.Fragment>
     }
 }
-function mapper(state) {
-    return {
-        user_id: state.user.data && state.user.data.id
-    }
-}
-
-
-export default connect(mapper)(ByGpa);

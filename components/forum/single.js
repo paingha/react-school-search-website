@@ -186,21 +186,21 @@ export class SingleForum extends Component{
                 <meta charSet="utf-8" />
                 <title>{topic} | The Academist</title>
 
-<meta name="description" content="Just read it -- it&#39;s cute!"/>
-<meta name="keywords" content="High Availability"/>
+<meta name="description" content={`${content}`}/>
+<meta name="keywords" content="The Academist, International, International Student, Scholarship, Grant, School, Schools, Universities"/>
 
 <meta name="og:title" content={`${topic} | The Academist`}/>
-<meta name="og:description" content="Just read it -- it&#39;s cute!"/>
+<meta name="og:description" content={`${content}`}/>
 <meta name="og:site_name" content="The Academist"/>
 <meta name="og:type" content="article"/>
 
 <meta name="twitter:site" content="The Academist" />
 <meta name="twitter:title" content={`${topic} | The Academist`}/>
-<meta name="twitter:description" content="Just read it -- it&#39;s cute!"/>
+<meta name="twitter:description" content={`${content}`}/>
 <meta name="twitter:creator" content="The Academist"/>
 <meta name="twitter:card" content="photo" />
-<meta name="twitter:url" content={`https://theacademist.herokuapp.com${pathname}`}/>
-<link rel='canonical' href={`https://theacademist.herokuapp.com${pathname}`}/>
+<meta name="twitter:url" content={`https://www.theacademist.com${pathname}`}/>
+<link rel='canonical' href={`https://www.theacademist.com${pathname}`}/>
 
             </Helmet>
 <div className="row">

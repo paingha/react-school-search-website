@@ -36,7 +36,7 @@ export class AboutUs extends Component {
                                     
                                     <div className="col-spaced box">
                                     <h2>Our Pride</h2>
-                                   <p>– The only scholarship source service for international students –</p>
+                                   <p><strong>– The only scholarship source service for international students –</strong></p>
                                    <div className="row">
                                    <div className="col-md-4">
                                    <img src="/img/academist-logo-300x300.jpg" />

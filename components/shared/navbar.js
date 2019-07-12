@@ -110,7 +110,7 @@ export default class Navbar extends Component{
                                 <div className="container">
                                   <div className="navbar-header">
                                   
-                                    <a className="navbar-brand" href="#"><img src="https://theacademist.herokuapp.com/img/logo.svg" className="logoImg"/></a>
+                                    <a className="navbar-brand" href="#"><img src="https://www.theacademist.com/img/logo.svg" className="logoImg"/></a>
                                   </div>
          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav navbar-right">
@@ -140,7 +140,7 @@ export default class Navbar extends Component{
                                 <div className="container">
                                   <div className="navbar-header">
                                   
-                                    <a className="navbar-brand" href="#"><img src="https://theacademist.herokuapp.com/img/logo.svg" className="logoImg"/></a>
+                                    <a className="navbar-brand" href="#"><img src="https://www.theacademist.com/img/logo.svg" className="logoImg"/></a>
                                   </div>
          <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul className="nav navbar-nav navbar-right added-top">

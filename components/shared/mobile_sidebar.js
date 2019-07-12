@@ -45,7 +45,7 @@ export class MobileSidebar extends Component {
                                 <li></li>
                                 <li><Link to="/">Home</Link></li>
                                 <li><Link to="/about_us">About Us</Link></li>
-                                <li><Link to="/gpa-calculator">Gpa Calculator</Link></li>
+                                <li><Link to="/gpa-calculator">GPA Calculator</Link></li>
                                 <li><Link to="/school-search">School Search</Link></li>
                                 <li><Link to="/scholarship-search">Scholarship Search</Link></li>
                                 <li><Link to="/admission-processing">Admissions</Link></li>

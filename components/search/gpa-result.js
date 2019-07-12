@@ -97,13 +97,24 @@ export default class GpaResult extends Component{
                                             text={school.name} /></h3>
                                         </div>
                                         <div className="col-md-3">
+                                        {school.level == "Graduate"?
+                                        <div className="aligner"><h3>GRE: </h3>
+
+                                        <span className="search-info"><h3>{ school.gre!=null ? `${school.gre}` : 'N/A'}</h3></span></div>
+                                        :
                                         <div className="aligner"><h3>SAT: </h3>
 
                                         <span className="search-info"><h3>{ school.sat!=null ? `${school.sat}` : 'N/A'}</h3></span></div>
+                                        }
                                         </div>
                                         <div className="col-md-3">
+                                        {school.level == "Graduate"?
+                                        <div className="aligner"><h3>GMAT: </h3>
+                                        <span className="search-info"><h3>{ school.gmat!=null ? `${school.gmat}` : 'N/A'}</h3></span></div>
+                                        :
                                         <div className="aligner"><h3>ACT: </h3>
                                         <span className="search-info"><h3>{ school.act!=null ? `${school.act}` : 'N/A'}</h3></span></div>
+                                        }
                                         </div>
                                         <div className="col-md-2">
                                         </div>

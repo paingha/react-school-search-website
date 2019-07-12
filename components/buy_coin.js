@@ -349,7 +349,7 @@ import {
         let token = stripeToken;
         let currency = currencyUser;
         //send token to stripe for charge
-        //console.log(currencyUser, stripeToken, coinNumber, coinPrice, userid);
+        console.log(coin, amount, token, currency);
         fetch(settings.urls.stripe_pay.replace('{user_id}', userid), {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
@@ -504,8 +504,8 @@ class Step1 extends Component {
     render () {
         const {currencySymbol, exchangeRate} = this.state
         const oneCoinPrice = Math.round((1.99 * this.state.exchangeRate)*100) / 100;
-        const twoCoinPrice = Math.round((3 * this.state.exchangeRate)*100) / 100;
-        const threeCoinPrice = Math.round((5.99 * this.state.exchangeRate)*100) / 100;
+        const twoCoinPrice = Math.round((2.99 * this.state.exchangeRate)*100) / 100;
+        const threeCoinPrice = Math.round((3.99 * this.state.exchangeRate)*100) / 100;
         /*console.log("Step 1")
         console.log(this.state.currencySymbol);
         console.log(this.state.exchangeRate);
@@ -535,7 +535,7 @@ class Step1 extends Component {
             <span className="monthly">
               <p className="pricing-number">2</p>
               <h4>coins</h4>
-              <button className="navbar-btn aligner" onClick={()=>this.onTwoCoin(2, 3)}>Buy Coin</button>
+              <button className="navbar-btn aligner" onClick={()=>this.onTwoCoin(2, 2.99)}>Buy Coin</button>
             </span>
             
           </div>
@@ -546,7 +546,7 @@ class Step1 extends Component {
             <span className="monthly">
               <p className="pricing-number">3</p>
               <h4>coins</h4>
-              <button className="navbar-btn aligner" onClick={()=>this.onOneCoin(3, 5.99)}>Buy Coin</button>
+              <button className="navbar-btn aligner" onClick={()=>this.onOneCoin(3, 3.99)}>Buy Coin</button>
             </span>
             
           </div>
@@ -600,7 +600,7 @@ class Step2 extends Component {
         return fetch(settings.urls.paypal_pay.replace('{user_id}', userid), {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Authorization': localStorage.token},
-            body: JSON.stringify({paymentID: paymentID, coin: coinNumber})
+            body: JSON.stringify({paymentID: paymentID, coin: coinNumber, price: coinPrice})
         })
             .then(response=>response.json())
             .then(json=>{
@@ -639,10 +639,10 @@ class Step2 extends Component {
             toastr.error('Error', 'An error occured please contact customer service');
 			// Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
 			// => sometimes it may take about 0.5 second for everything to get set, or for the button to appear			
-		}			
-		let shipping = 1;	
-		let env = 'sandbox'; // you can set here to 'production' for production
-		let currency = currencyUser; // or you can set this value from your props or state  
+        }	
+        let shipping = 1;	
+		let env = 'production'; // you can set here to 'production' for production
+		let currency = 'USD'; // or you can set this value from your props or state  
 		let total = coinPrice; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
 		// Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
 		let style = {
@@ -653,8 +653,8 @@ class Step2 extends Component {
 
 		const client = {
 			sandbox:    'AcphHl8MmA17YkUMZ1B6Ik1yAwlHLCtjm6Kt94wDliCu9wdPFFwlWwbIEKz2TxUXXYCN1K6DgQAKmV4x',
-			production: 'YOUR-PRODUCTION-APP-ID',
-		}
+			production: 'AdTNa3E7DXeBoW-cjhAD_Gmwe8FjS16YcD3ii3WS8dELokeSqDh0tLqOTGiRollGfVVbCI6O0sIii_43',
+		}	
 
         return (
             <div ref="body" className="pricing-table">
@@ -663,7 +663,7 @@ class Step2 extends Component {
                 <div className="pricing-card-inner pricing-match-height">
                     <span className="monthly">
                     <p className="pricing-number">Stripe </p>
-                    <StripeProvider apiKey="pk_test_WwdF2h2PYwDQCIJikhCAeBDx">
+                    <StripeProvider apiKey="pk_live_8J99qGwcdY6ydmEiBk8cq5jc">
                         <div className="Checkout">
                             <Elements>
                             <CardForm onNext={this.props.onNext} getStore={() => ({...this.state})} updateStore={(u) => (this.setState(u))} fontSize={elementFontSize} stripe="pk_test_WwdF2h2PYwDQCIJikhCAeBDx" />

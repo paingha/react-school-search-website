@@ -185,19 +185,19 @@ export default class ScholarshipResult extends Component{
     }
     mouseEnter(e){
         this.setState({visibleID: e, visible: false},()=>{
-            console.log("hover")
+            //console.log("hover")
         })
     }
     mouseLeave(){
         this.setState({visible: true},()=>{
-            console.log("leave")
+            //console.log("leave")
         })
     }
     doStuff(e){
         let childArray = this.props.visibility
-        console.log(childArray);
+        //console.log(childArray);
         let give = _.find(childArray, { 'id': e })
-        console.log(give);
+        //console.log(give);
         return give;
     }
     render(){

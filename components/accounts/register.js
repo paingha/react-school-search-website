@@ -38,6 +38,7 @@ export class Register extends Component {
             email: '',
             password: '',
             confirmPassword: '',
+            refCode: '',
             redirectScholarship: false
         };
         this.componentClicked = this.componentClicked.bind(this);
@@ -51,9 +52,12 @@ export class Register extends Component {
         if(query.referrer){
             this.setState({redirectScholarship: true})
         }
+        if(query.ref){
+            this.setState({refCode: query.ref})
+        }
         
     }
-    responseFacebook(response){
+    async responseFacebook(response){
         const {fetching, error, registered} = this.state;
         let email = response.email;
         let firstName = response.first_name;
@@ -61,8 +65,9 @@ export class Register extends Component {
         let token = response.accessToken;
         let userId = response.userID;
         //post to facebook register api
+        console.log(response)
         this.setState({fetching: true});
-        return fetch(settings.urls.facebook_register, {
+        await fetch(settings.urls.facebook_register, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             mode: 'cors',
@@ -70,27 +75,39 @@ export class Register extends Component {
         })
             .then(response=>response.json())
             .then(json=>{
+                console.log(json)
                 if (json.error){
-                    throw Error(json.error.message || 'Unknown fetch error');
-                    toastr.error('Error!', 'An error occured, please try again')
+                    //toastr.error('Error!', 'Account already exists or an error occured')
+                    //this.setState({fetching: false});
+                    let error = json.error
+                    if (error.status == 409){
+                        toastr.error('Error!', 'User already exists please login')
+                        this.setState({fetching: false});
+                    }
+                    else if (error.status == 500){
+                        toastr.error('Error!', 'An error occured please try again')
+                        this.setState({fetching: false});
+                    }
                 }
+                else{
                 this.setState({fetching: false, registered: true}, ()=>{
                     //toastr.success('Success!', 'Profile Updated Successfully')
                 });
+            }
             })
-            .catch(error=>this.setState({fetching: false}));
+            .catch(error=>this.setState({fetching: false}, ()=>{
+                //toastr.error('Error!', 'An error occured, please try again')
+                console.log(error)
+            }));
     
       }
       componentClicked(){
-        console.log("Clicked");
-      }
-      failureGoogle(response){
-        toastr.error('Error!', 'An error occured, please try again')
+        //console.log("Clicked");
       }
       facebookFailure(response){
         toastr.error('Error!', 'An error occured, please try again')
       }
-      responseGoogle(response){
+      async responseGoogle(response){
         const {fetching, error, registered} = this.state
         let userObj = response.profileObj;
         //post to google register api
@@ -98,7 +115,7 @@ export class Register extends Component {
         let firstName = userObj.givenName;
         let lastName = userObj.familyName;
         this.setState({fetching: true});
-        return fetch(settings.urls.google_register, {
+        await fetch(settings.urls.google_register, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             mode: 'cors',
@@ -107,21 +124,33 @@ export class Register extends Component {
             .then(response=>response.json())
             .then(json=>{
                 if (json.error){
-                    throw Error(json.error.message || 'Unknown fetch error');
-                    toastr.error('Error!', 'An error occured, please try again')
+                    //toastr.error('Error!', 'Account already exists or an error occured')
+                    //this.setState({fetching: false});
+                    let error = json.error
+                    if (error.status == 409){
+                        toastr.error('Error!', 'User already exists please login')
+                        this.setState({fetching: false});
+                    }
+                    else if (error.status == 500){
+                        toastr.error('Error!', 'An error occured please try again')
+                        this.setState({fetching: false});
+                    }
                 }
+                else{
                 this.setState({fetching: false, registered: true}, ()=>{
                     //toastr.success('Success!', 'Profile Updated Successfully')
                 });
+            }
             })
             .catch(error=>this.setState({fetching: false}, ()=> {
-                toastr.error('Error!', 'An error occured, please try again')
+                //toastr.error('Error!', 'An error occured, please try again')
+                console.log(error)
             }));
     
       }
     
     doRegister() {
-        const {firstName, lastName, email, password, confirmPassword} = this.state;
+        const {firstName, lastName, email, password, confirmPassword, refCode} = this.state;
         
         if ( email == ""){
             toastr.error('Error!', 'A valid email is required')
@@ -138,7 +167,7 @@ export class Register extends Component {
         else{
         if ( password == confirmPassword){
             this.setState({fetching: true, error: undefined});
-        return fetch(settings.urls.register, {
+        return fetch(settings.urls.register.replace('{referral}', refCode), {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             mode: 'cors',
@@ -229,10 +258,9 @@ export class Register extends Component {
                         <br />
                         <div className="row">
                         <div className="col-md-6">
-                            <FacebookLogin
-                            appId="221044735203389"
+                        <FacebookLogin
+                            appId="198600234003675"
                             autoLoad={false}
-                            isMobile={true}
                             textButton="Facebook"
                             fields="first_name, last_name ,email"
                             cssClass="social-button facebook-connect"
@@ -240,16 +268,16 @@ export class Register extends Component {
                             //onClick={this.componentClicked}
                             onFailure={this.facebookFailure.bind(this)}
                             callback={this.responseFacebook.bind(this)} />
-                        </div>
+                             </div>
                         <div className="col-md-6">
                         <GoogleLogin 
-                            clientId="607932067834-c7accuf92bvs0m9u8gego87v61d5daoq.apps.googleusercontent.com"
+                            clientId="638073687773-flr8fq4sifc9eue2bs4001dr23rjjtb4.apps.googleusercontent.com"
                             buttonText="Google"
                             autoLoad={false}
                             className="social-button google-connect"
                             //icon={<TiSocialFacebookCircular size={30}/>}
                             onSuccess={this.responseGoogle.bind(this)}
-                            onFailure={this.failureGoogle.bind(this)}
+                            //onFailure={this.failureGoogle.bind(this)}
                         />
                         <KeyboardEventHandler
                         handleKeys={['enter', 'return']}

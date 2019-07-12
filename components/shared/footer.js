@@ -39,7 +39,7 @@ handleClose(x){
         <ul className="new-homepage-footer-links">
           <h4>Company</h4>
           <li>
-            <a href="/about-us">About Us</a>
+            <a href="/about_us">About Us</a>
           </li>
           <li>
             <a href="/admission-processing">Admission Processing</a>
@@ -63,7 +63,7 @@ handleClose(x){
             <a href="/school-search">Schools By Major</a>
           </li>
           <li>
-            <a href="/school-search/by-gpa">Schools by Gpa</a>
+            <a href="/school-search/by-gpa">Schools by GPA</a>
           </li>
           <h4>Legal</h4>
           <li>
@@ -82,7 +82,7 @@ handleClose(x){
           <h4>Get in touch</h4>
           <li>We're here if you need us:</li>
           <li>
-          <span className="pointer" onClick={this.OpenModal}>Contact us</span>
+          <span><strong>Contact us</strong></span>
           </li>
           <li className="social-icons">
             <a target="_blank" rel="noopener noreferrer" className="social-icon" href="https://www.facebook.com/TheAcademistCommunity">
@@ -93,6 +93,10 @@ handleClose(x){
             </a>&nbsp;
             <a target="_blank" rel="noopener noreferrer" className="social-icon" href="https://www.linkedin.com">
             <img src="/img/linked_in.svg" className="footerImg" width="32px"/>
+            </a>
+            &nbsp;
+            <a className="pointer" onClick={this.OpenModal}>
+            <img src="/img/mail_icon.svg" className="footerImg" width="32px"/>
             </a>
             
           </li>

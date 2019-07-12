@@ -25,7 +25,7 @@ class Login extends Component {
         }
         
     }
-    responseFacebook(response){
+    async responseFacebook(response){
         const {fetching, error} = this.state;
         const {dispatch, history, location} = this.props;
         let email = response.email;
@@ -33,10 +33,12 @@ class Login extends Component {
         let lastName = response.last_name;
         let token = response.accessToken;
         let userId = response.userID;
-        console.log(response)
+        //console.log(response)
         //post to facebook register api
         this.setState({fetching: true});
-        return fetch(settings.urls.facebook_login, {
+        //dispatch(requestLogin());
+        //console.log(JSON.stringify({email, token, userId}))
+        await fetch(settings.urls.facebook_login, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             mode: 'cors',
@@ -44,29 +46,42 @@ class Login extends Component {
         })
             .then(response=>response.json())
             .then(json=>{
+                //console.log(json)
                 if (json.error){
-                    throw Error(json.error.message || 'Unknown fetch error');
-                    toastr.error('Error!', 'An error occured, please try again - facebook')
+                    let error = json.error
+                    if (error.status == 401){
+                        toastr.error('Error!', 'User not registered or email not verified')
+                        this.setState({fetching: false});
+                    }
+                    else if (error.status == 500){
+                        toastr.error('Error!', 'An error occured please try again')
+                        this.setState({fetching: false});
+                    }
                 }
+                else{
                 dispatch(receiveLogin(json));
                 localStorage.token = json.token;
                 if (!json.user.firstLogin){
                     this.setState({fetching: false}, ()=> {
                 history.push(location.state? location.state.from : {pathname: '/'});
-                    });
+                });
                 }
                 else{
                     this.setState({fetching: false}, ()=> {
                     history.push(location.state? location.state.from : {pathname: '/get-started'});  
-                    });
+                });
                 }
-                
+            }
             })
-            .catch(error=>this.setState({fetching: false}));
-    
+        
+            .catch(error=>this.setState({fetching: false}, ()=>{
+                //toastr.error('Error!', 'An error occured!');
+                console.log(error);
+            }));
+        
       }
       componentClicked(){
-        console.log("Clicked");
+        //console.log("Clicked");
       }
       failureGoogle(response){
         toastr.error('Error!', 'An error occured, please try again')
@@ -78,11 +93,13 @@ class Login extends Component {
         const {fetching, error} = this.state;
         const {dispatch, history, location} = this.props;
         let userObj = response.profileObj;
+        console.log(response);
         //post to google register api
         let email = userObj.email;
         let firstName = userObj.givenName;
         let lastName = userObj.familyName;
         this.setState({fetching: true});
+        //dispatch(requestLogin());
         return fetch(settings.urls.google_login, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -91,26 +108,45 @@ class Login extends Component {
         })
             .then(response=>response.json())
             .then(json=>{
-                if (json.error){
-                    throw Error(json.error.message || 'Unknown fetch error');
-                    toastr.error('Error!', 'An error occured, please try again')
+                //console.log(json)
+                /*if (json.error.status == 401){
+                    //throw Error(json.error.message || 'Unknown fetch error');
+                    toastr.error('Error!', 'User not registered or email not verified');
+                    this.setState({fetching: false});
                 }
+                if(json.error.status == 500 || json.error.status == 403){
+                    toastr.error('Error!', 'An error occured, please try again');
+                    this.setState({fetching: false});
+                }*/
+                if (json.error){
+                    let error = json.error
+                    if (error.status == 401){
+                        toastr.error('Error!', 'User not registered or email not verified')
+                        this.setState({fetching: false});
+                    }
+                    else if (error.status == 500){
+                        toastr.error('Error!', 'An error occured please try again')
+                        this.setState({fetching: false});
+                    }
+                }
+                else{
                 dispatch(receiveLogin(json));
                 localStorage.token = json.token;
                 if (!json.user.firstLogin){
                     this.setState({fetching: false}, ()=> {
                 history.push(location.state? location.state.from : {pathname: '/'});
-            });
+                });
                 }
                 else{
                     this.setState({fetching: false}, ()=> {
                     history.push(location.state? location.state.from : {pathname: '/get-started'});  
                 });
                 }
-                
+            }
             })
-            .catch(error=>this.setState({fetching: false}, ()=> {
-                toastr.error('Error!', 'An error occured, please try again')
+            .catch(error=>this.setState({fetching: false},()=>{
+                //toastr.error('Error!', 'User not registered or email not verified');
+                console.log(error)
             }));
     
       }
@@ -184,10 +220,9 @@ class Login extends Component {
                         </div>
                         <div className="row">
                         <div className="col-md-6">
-                            <FacebookLogin
-                            appId="221044735203389"
+                        <FacebookLogin
+                            appId="198600234003675"
                             autoLoad={false}
-                            isMobile={true}
                             textButton="Facebook"
                             fields="first_name, last_name ,email"
                             cssClass="social-button facebook-connect"
@@ -195,10 +230,10 @@ class Login extends Component {
                             //onClick={this.componentClicked}
                             onFailure={this.facebookFailure.bind(this)}
                             callback={this.responseFacebook.bind(this)} />
-                        </div>
+                            </div>
                         <div className="col-md-6">
                         <GoogleLogin 
-                            clientId="607932067834-c7accuf92bvs0m9u8gego87v61d5daoq.apps.googleusercontent.com"
+                            clientId="638073687773-flr8fq4sifc9eue2bs4001dr23rjjtb4.apps.googleusercontent.com"
                             buttonText="Google"
                             autoLoad={false}
                             className="social-button google-connect"

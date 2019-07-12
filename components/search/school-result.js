@@ -80,11 +80,31 @@ export default class SchoolResult extends Component{
                                         </div>
                                         <div className="col-md-3">
                                         <div className="aligner"><DollarSign className="dollar-icon" />
-                                        <span className="search-info"><h3>{school.sat}</h3></span></div>
+                                        <span className="search-info"><h3>
+                                        {`${school.level}` == "Graduate" ?
+                                        <React.Fragment>
+                                        {school.gre}
+                                        </React.Fragment>
+                                        :
+                                        <React.Fragment>
+                                        {school.sat}
+                                        </React.Fragment>
+                                        }
+                                        </h3></span></div>
                                         </div>
                                         <div className="col-md-3">
                                         <div className="aligner"><DollarSign className="dollar-icon" />
-                                        <span className="search-info"><h3>{school.act}</h3></span></div>
+                                        <span className="search-info"><h3>
+                                        {`${school.level}` == "Graduate" ?
+                                        <React.Fragment>
+                                        {school.gmat}
+                                        </React.Fragment>
+                                        :
+                                        <React.Fragment>
+                                        {school.act}
+                                        </React.Fragment>
+                                        }
+                                        </h3></span></div>
                                         </div>
                                         <div className="col-md-2">
                                         <div className="aligner"><Calendar className="date-icon" />
@@ -102,7 +122,7 @@ export default class SchoolResult extends Component{
                                         <div className="col-md-1">
                                         </div>
                                         <div className="col-md-3">
-                                        <span className="heart" onClick={this.clickSave}></span>Save
+                                        
                                         </div>
                                         <div className="col-md-4">
                                         <button className="search-btn aligner"><Edit className="user-icon"/> <span className="user-info">Visit</span></button>
