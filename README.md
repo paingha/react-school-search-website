@@ -7,7 +7,7 @@
 ### How to Run
 
 * npm install
-* npm run build (for development environment)
+* npm run build (for development build)
 * npm run build-prod (for production build)
 
 ### Created and Developed for The Academist
